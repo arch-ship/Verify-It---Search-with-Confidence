@@ -1,5 +1,6 @@
 import os
 import re
+import difflib
 import requests
 import xml.etree.ElementTree as ET
 from datetime import datetime
@@ -26,8 +27,6 @@ except ImportError:
 # 1. MULTI-FORMAT FILE PARSER
 # =====================================================================
 class DocumentParser:
-    """Extracts text and metadata from uploaded TXT, PDF, DOCX, or XML files."""
-
     @staticmethod
     def parse_file(file_path: str, original_name: str = None) -> dict:
         ext = os.path.splitext(file_path)[1].lower()
@@ -61,13 +60,13 @@ class DocumentParser:
             "url": "#uploaded-file",
             "source": "uploaded-document.org",
             "date": datetime.now().strftime("%Y-%m-%d"),
-            "text": text.strip()[:1500],
+            "text": text.strip()[:2000],
             "type": "uploaded"
         }
 
 
 # =====================================================================
-# 2. QUERY FORMULATION & TRANSLATION
+# 2. QUERY FORMULATION, CLIR & GOOGLE-STYLE "DID YOU MEAN?" SPELL CHECK
 # =====================================================================
 class QueryFormulator:
     OFFLINE_CLIR_DICT = {
@@ -77,6 +76,48 @@ class QueryFormulator:
         "नीति": "policy",
         "परीक्षा": "examination"
     }
+
+    # Core vocabulary for n-gram / edit-distance "Did you mean?" spell correction
+    SPELL_VOCABULARY = {
+        "scholarship", "scholarships", "admission", "admissions", "university",
+        "universities", "jaypee", "institute", "information", "technology",
+        "jiit", "noida", "imran", "rasheed", "retrieval", "analytics", "national",
+        "merit", "guidelines", "eligibility", "examination", "engineering",
+        "government", "policy", "research", "fellowship", "undergraduate",
+        "academic", "syllabus", "portal", "computer", "applications", "science",
+        "artificial", "intelligence", "reliable", "verification", "semester"
+    }
+
+    @classmethod
+    def suggest_query_correction(cls, query: str, dynamic_vocab: set = None) -> str:
+        """
+        Module 2: Uses Character n-gram & sequence similarity to suggest
+        Google-style 'Did you mean?' query corrections for misspelled words.
+        """
+        vocab = set(cls.SPELL_VOCABULARY)
+        if dynamic_vocab:
+            vocab.update(w.lower() for w in dynamic_vocab if len(w) >= 4)
+
+        words = re.findall(r'\b[a-zA-Z]+\b', query.lower())
+        if not words:
+            return None
+
+        corrected_words = []
+        changed = False
+
+        for w in words:
+            if w in vocab or len(w) <= 3:
+                corrected_words.append(w)
+                continue
+
+            matches = difflib.get_close_matches(w, vocab, n=1, cutoff=0.72)
+            if matches and matches[0] != w:
+                corrected_words.append(matches[0])
+                changed = True
+            else:
+                corrected_words.append(w)
+
+        return " ".join(corrected_words) if changed else None
 
     @classmethod
     def translate_to_english(cls, text: str) -> str:
@@ -92,31 +133,31 @@ class QueryFormulator:
         return candidate
 
     @classmethod
-    def formulate_query_from_input(cls, raw_text: str, max_terms: int = 6) -> str:
+    def formulate_query_from_input(cls, raw_text: str, max_terms: int = 7) -> str:
+        """If user pastes a long paragraph/article, extracts top TF keywords as the search query."""
         english_text = cls.translate_to_english(raw_text)
+        # If it is already a short search query (<= 8 words), keep it intact
+        raw_words = english_text.split()
+        if len(raw_words) <= 8:
+            return english_text.strip()
+
         tokens = re.findall(r'\b[a-zA-Z]{4,}\b', english_text.lower())
         stop_words = {
-            "this", "that", "with", "from", "have", "will", "your",
-            "about", "into", "their", "there", "which", "would", "could"
+            "this", "that", "with", "from", "have", "will", "your", "about",
+            "into", "their", "there", "which", "would", "could", "should", "been"
         }
         keywords = [t for t in tokens if t not in stop_words]
         freq = {}
         for k in keywords:
             freq[k] = freq.get(k, 0) + 1
         top_keywords = sorted(freq.keys(), key=lambda x: freq[x], reverse=True)[:max_terms]
-        return " ".join(top_keywords) if top_keywords else english_text[:60]
+        return " ".join(top_keywords) if top_keywords else english_text[:70]
 
 
 # =====================================================================
-# 3. LIVE WEB CRAWLER & SEARCH ENGINE FETCHER
+# 3. LIVE WEB CRAWLER (FETCHES 12 TO 18+ RESULTS PER QUERY)
 # =====================================================================
 class WebAndSocialCrawler:
-    """
-    Fetches real-time web search results from DuckDuckGo HTML & Wikipedia API
-    for ANY user query, plus adds synthetic spam/clickbait contrast samples
-    so Naive Bayes & PageRank have both reliable and unreliable training classes.
-    """
-
     HEADERS = {
         "User-Agent": (
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
@@ -124,7 +165,7 @@ class WebAndSocialCrawler:
         )
     }
 
-    def _fetch_live_duckduckgo(self, query: str, max_results: int = 6) -> list:
+    def _fetch_live_duckduckgo(self, query: str, max_results: int = 12) -> list:
         results = []
         try:
             resp = requests.post(
@@ -158,7 +199,7 @@ class WebAndSocialCrawler:
                         "date": "2026-02-15" if is_trusted_tld else "2025-10-10",
                         "type": "live_web",
                         "text": snippet,
-                        "outlinks": ["wikipedia.org", domain],
+                        "outlinks": ["en.wikipedia.org", domain],
                         "label_reliable": 1,
                         "is_relevant": 1
                     })
@@ -168,7 +209,7 @@ class WebAndSocialCrawler:
             pass
         return results
 
-    def _fetch_wikipedia_fallback(self, query: str, max_results: int = 3) -> list:
+    def _fetch_wikipedia_results(self, query: str, max_results: int = 5) -> list:
         results = []
         try:
             url = "https://en.wikipedia.org/w/api.php"
@@ -202,16 +243,11 @@ class WebAndSocialCrawler:
         return results
 
     def crawl_and_collect(self, formulated_query: str, uploaded_doc: dict = None):
-        """
-        Fetches live web results for the exact query, pairs them with baseline
-        unverified/clickbait contrast nodes so Naive Bayes & PageRank can differentiate
-        trustworthy vs. sensationalist sources, and constructs the domain link graph.
-        """
-        live_docs = self._fetch_live_duckduckgo(formulated_query, max_results=5)
-        if len(live_docs) < 2:
-            live_docs.extend(self._fetch_wikipedia_fallback(formulated_query, max_results=3))
+        # Fetch both DuckDuckGo (up to 12) + Wikipedia (up to 5) so user gets 12-18+ results
+        ddg_docs = self._fetch_live_duckduckgo(formulated_query, max_results=12)
+        wiki_docs = self._fetch_wikipedia_results(formulated_query, max_results=5)
+        live_docs = ddg_docs + wiki_docs
 
-        # If completely offline, synthesize a dynamic official record for the query
         if not live_docs:
             live_docs.append({
                 "id": "WEB_1",
@@ -229,8 +265,6 @@ class WebAndSocialCrawler:
                 "is_relevant": 1
             })
 
-        # Add 2 unverified/clickbait contrast documents dynamically tailored to the query
-        # so Naive Bayes, KNN, and PageRank always have both classes (reliable=1 and spam=0)
         contrast_spam_docs = [
             {
                 "id": "SPAM_1",
@@ -272,7 +306,6 @@ class WebAndSocialCrawler:
             uploaded_doc["is_relevant"] = 1
             collected_docs.insert(0, uploaded_doc)
 
-        # Connect trusted domains to each other so PageRank & HITS reward authoritative networks
         trusted_domains = [
             d["source"] for d in collected_docs
             if d.get("label_reliable", 0) == 1
@@ -281,7 +314,6 @@ class WebAndSocialCrawler:
             if doc.get("label_reliable", 0) == 1 and len(trusted_domains) > 1:
                 doc["outlinks"] = list(set(doc.get("outlinks", []) + trusted_domains[:2]))
 
-        # Build Directed Link Graph
         link_graph = {}
         for doc in collected_docs:
             src = doc["source"]
