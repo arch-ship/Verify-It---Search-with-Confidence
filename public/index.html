@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Verify It — Search with Confidence</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }
+    .fade-in { animation: fadeIn 0.35s ease-in-out; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
+
+  <!-- 1. INITIAL BOOT SPLASH LOADER -->
+  <div id="boot-loader" class="fixed inset-0 bg-white z-50 flex flex-col items-center justify-center transition-opacity duration-500">
+    <div class="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mb-4"></div>
+    <h2 class="text-xl font-semibold text-slate-800">Verify It</h2>
+    <p class="text-sm text-slate-500 mt-1">Initializing Search & Trust Engine...</p>
+  </div>
+
+  <!-- 2. MAIN CONTAINER (TRANSITIONS FROM CENTERED GOOGLE VIEW TO TOP BAR) -->
+  <div id="app-wrapper" class="flex-1 flex flex-col justify-center items-center px-4 transition-all duration-300">
+    
+    <!-- BRAND HEADER -->
+    <div id="brand-header" class="text-center mb-6">
+      <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900">
+        <span class="text-blue-600">Verify</span><span class="text-indigo-600">It</span>
+      </h1>
+      <p class="text-sm text-slate-500 mt-2">Search with Confidence — Live Web Retrieval & Reliability Scoring</p>
+    </div>
+
+    <!-- GOOGLE-STYLE SEARCH BAR -->
+    <form id="search-form" class="w-full max-w-2xl">
+      <div class="flex items-center bg-white border border-slate-200 hover:border-slate-300 focus-within:border-blue-500 focus-within:ring-4 focus-within:ring-blue-100 rounded-full px-5 py-3 shadow-sm transition">
+        <svg class="w-5 h-5 text-slate-400 mr-3 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+        </svg>
+        <input
+          id="query-input"
+          type="text"
+          placeholder="Search anything (e.g., Imran Rasheed JIIT, National Scholarship 2026)..."
+          class="w-full bg-transparent focus:outline-none text-slate-800 text-base"
+        />
+        <!-- File Upload Trigger -->
+        <label for="file-input" class="cursor-pointer text-slate-400 hover:text-blue-600 mx-2" title="Upload File (TXT, PDF, DOCX, XML)">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"/>
+          </svg>
+        </label>
+        <input id="file-input" type="file" accept=".txt,.pdf,.docx,.xml" class="hidden" />
+        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-5 py-2 rounded-full transition shrink-0">
+          Search
+        </button>
+      </div>
+
+      <!-- Subtle Controls Row -->
+      <div class="flex flex-wrap items-center justify-center gap-4 mt-3 text-xs text-slate-500">
+        <span id="file-badge" class="hidden bg-blue-50 text-blue-700 px-2.5 py-1 rounded-full font-medium"></span>
+        <label class="flex items-center gap-1.5 cursor-pointer">
+          <span>Trust Weight:</span>
+          <input id="alpha-slider" type="range" min="0" max="1" step="0.05" value="0.50" class="w-20 accent-blue-600" />
+          <span id="alpha-label" class="font-semibold text-slate-700">50%</span>
+        </label>
+        <label class="flex items-center gap-1 cursor-pointer">
+          <input id="prf-check" type="checkbox" checked class="accent-blue-600 rounded" />
+          <span>Smart Query Expansion</span>
+        </label>
+      </div>
+    </form>
+  </div>
+
+  <!-- 3. ANIMATED SEARCHING PROGRESS OVERLAY -->
+  <div id="search-loader" class="hidden max-w-xl mx-auto my-12 bg-white p-6 rounded-2xl shadow-sm border border-slate-100 text-center">
+    <div class="w-9 h-9 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-3"></div>
+    <p id="loader-step-text" class="text-sm font-medium text-slate-700">Crawling live web sources...</p>
+    <div class="w-full bg-slate-100 h-1.5 rounded-full mt-3 overflow-hidden">
+      <div id="loader-bar" class="bg-blue-600 h-full transition-all duration-300" style="width: 20%"></div>
+    </div>
+  </div>
+
+  <!-- 4. RESULTS SECTION (HIDDEN UNTIL FIRST SEARCH) -->
+  <main id="results-container" class="hidden max-w-5xl w-full mx-auto px-4 pb-16 fade-in">
+    
+    <!-- Quick Summary & Direct Answer Box -->
+    <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-200/80 mb-6">
+      <div class="flex flex-wrap items-center justify-between gap-2 text-xs text-slate-500 mb-2">
+        <div>
+          <span class="font-semibold text-slate-700">Processed Query:</span>
+          <span id="out-active-query" class="bg-slate-100 px-2 py-0.5 rounded text-slate-700"></span>
+        </div>
+        <div>
+          <span class="font-semibold text-slate-700">Expanded Terms:</span>
+          <span id="out-expanded-terms" class="text-blue-600 font-medium"></span>
+        </div>
+      </div>
+      <div class="bg-blue-50/70 border border-blue-100 rounded-xl p-4 mt-2">
+        <div class="text-xs font-bold uppercase tracking-wider text-blue-700 mb-1">Instant Answer</div>
+        <p id="out-answer" class="text-slate-800 text-sm md:text-base font-medium leading-relaxed"></p>
+        <div id="out-answer-meta" class="text-xs text-slate-500 mt-1.5"></div>
+      </div>
+    </div>
+
+    <!-- SHORT CLEAN NAVIGATION TABS -->
+    <div class="flex border-b border-slate-200 mb-6 gap-6 text-sm font-medium text-slate-500 overflow-x-auto">
+      <button onclick="switchTab('tab-results')" id="btn-tab-results" class="tab-btn pb-3 border-b-2 border-blue-600 text-blue-600 whitespace-nowrap">Search Results</button>
+      <button onclick="switchTab('tab-trust')" id="btn-tab-trust" class="tab-btn pb-3 border-b-2 border-transparent hover:text-slate-800 whitespace-nowrap">Trust Breakdown</button>
+      <button onclick="switchTab('tab-compare')" id="btn-tab-compare" class="tab-btn pb-3 border-b-2 border-transparent hover:text-slate-800 whitespace-nowrap">Keyword Compare</button>
+      <button onclick="switchTab('tab-index')" id="btn-tab-index" class="tab-btn pb-3 border-b-2 border-transparent hover:text-slate-800 whitespace-nowrap">Index View</button>
+      <button onclick="switchTab('tab-metrics')" id="btn-tab-metrics" class="tab-btn pb-3 border-b-2 border-transparent hover:text-slate-800 whitespace-nowrap">Accuracy Metrics</button>
+    </div>
+
+    <!-- TAB 1: SEARCH RESULTS -->
+    <div id="tab-results" class="tab-pane space-y-4"></div>
+
+    <!-- TAB 2: TRUST BREAKDOWN -->
+    <div id="tab-trust" class="tab-pane hidden bg-white rounded-2xl p-5 border border-slate-200 overflow-x-auto">
+      <h3 class="text-base font-semibold mb-3">Source Trust & Pattern Scores</h3>
+      <table class="w-full text-left text-sm">
+        <thead class="bg-slate-50 text-slate-600 text-xs uppercase">
+          <tr>
+            <th class="p-3">Source</th>
+            <th class="p-3">PageRank</th>
+            <th class="p-3">Authority</th>
+            <th class="p-3">Spam Filter</th>
+            <th class="p-3">Consensus</th>
+            <th class="p-3">Recency</th>
+            <th class="p-3">Trust Score</th>
+          </tr>
+        </thead>
+        <tbody id="trust-table-body" class="divide-y divide-slate-100"></tbody>
+      </table>
+    </div>
+
+    <!-- TAB 3: SIDE-BY-SIDE KEYWORD COMPARE -->
+    <div id="tab-compare" class="tab-pane hidden grid md:grid-cols-2 gap-6">
+      <div>
+        <h3 class="text-sm font-bold uppercase tracking-wider text-emerald-700 mb-3">Verify-It Ranking (Relevance + Trust)</h3>
+        <div id="compare-hybrid" class="space-y-3"></div>
+      </div>
+      <div>
+        <h3 class="text-sm font-bold uppercase tracking-wider text-amber-700 mb-3">Standard Search (Keywords Only)</h3>
+        <div id="compare-standard" class="space-y-3"></div>
+      </div>
+    </div>
+
+    <!-- TAB 4: INDEX VIEW -->
+    <div id="tab-index" class="tab-pane hidden bg-white rounded-2xl p-5 border border-slate-200 space-y-3 text-sm">
+      <h3 class="text-base font-semibold">Term Index & Compression Preview</h3>
+      <p><strong>Root Term:</strong> <code id="idx-stem" class="bg-slate-100 px-2 py-0.5 rounded"></code></p>
+      <p><strong>Matched Documents:</strong> <code id="idx-inv" class="bg-slate-100 px-2 py-0.5 rounded"></code></p>
+      <p><strong>Compressed Gaps:</strong> <code id="idx-comp" class="bg-slate-100 px-2 py-0.5 rounded"></code></p>
+      <div>
+        <strong>Word Positions:</strong>
+        <pre id="idx-pos" class="bg-slate-900 text-slate-100 p-3 rounded-xl text-xs mt-1 overflow-x-auto"></pre>
+      </div>
+    </div>
+
+    <!-- TAB 5: ACCURACY METRICS -->
+    <div id="tab-metrics" class="tab-pane hidden bg-white rounded-2xl p-5 border border-slate-200">
+      <h3 class="text-base font-semibold mb-3">Retrieval Quality Comparison (Top 3 Results)</h3>
+      <div id="metrics-cards" class="grid md:grid-cols-2 gap-4"></div>
+    </div>
+
+  </main>
+
+  <script>
+    // Hide boot splash after 700ms
+    window.addEventListener('DOMContentLoaded', () => {
+      setTimeout(() => {
+        const boot = document.getElementById('boot-loader');
+        boot.style.opacity = '0';
+        setTimeout(() => boot.style.display = 'none', 400);
+      }, 600);
+    });
+
+    const alphaSlider = document.getElementById('alpha-slider');
+    const alphaLabel = document.getElementById('alpha-label');
+    alphaSlider.addEventListener('input', () => {
+      alphaLabel.textContent = Math.round((1 - parseFloat(alphaSlider.value)) * 100) + '%';
+    });
+
+    const fileInput = document.getElementById('file-input');
+    const fileBadge = document.getElementById('file-badge');
+    fileInput.addEventListener('change', () => {
+      if (fileInput.files.length > 0) {
+        fileBadge.textContent = 'Attached: ' + fileInput.files[0].name;
+        fileBadge.classList.remove('hidden');
+      } else {
+        fileBadge.classList.add('hidden');
+      }
+    });
+
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-pane').forEach(el => el.classList.add('hidden'));
+      document.getElementById(tabId).classList.remove('hidden');
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('border-blue-600', 'text-blue-600');
+        btn.classList.add('border-transparent');
+      });
+      document.getElementById('btn-' + tabId).classList.add('border-blue-600', 'text-blue-600');
+    }
+
+    document.getElementById('search-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const query = document.getElementById('query-input').value.trim();
+      if (!query && fileInput.files.length === 0) return;
+
+      // Dock search bar to top like Google
+      const wrapper = document.getElementById('app-wrapper');
+      wrapper.classList.remove('flex-1', 'justify-center');
+      wrapper.classList.add('pt-6', 'pb-4', 'border-b', 'border-slate-200', 'bg-white');
+      document.getElementById('brand-header').classList.add('mb-3');
+
+      // Show animated step loader
+      const loader = document.getElementById('search-loader');
+      const resultsBox = document.getElementById('results-container');
+      resultsBox.classList.add('hidden');
+      loader.classList.remove('hidden');
+
+      const steps = [
+        { text: 'Crawling live web results...', pct: '25%' },
+        { text: 'Tokenizing text & building indexes...', pct: '55%' },
+        { text: 'Calculating relevance & expanding query...', pct: '80%' },
+        { text: 'Evaluating domain authority & spam patterns...', pct: '95%' }
+      ];
+      let sIdx = 0;
+      const stepTimer = setInterval(() => {
+        if (sIdx < steps.length) {
+          document.getElementById('loader-step-text').textContent = steps[sIdx].text;
+          document.getElementById('loader-bar').style.width = steps[sIdx].pct;
+          sIdx++;
+        }
+      }, 320);
+
+      const formData = new FormData();
+      formData.append('query', query);
+      formData.append('alpha', alphaSlider.value);
+      formData.append('use_prf', document.getElementById('prf-check').checked);
+      if (fileInput.files.length > 0) {
+        formData.append('file', fileInput.files[0]);
+      }
+
+      try {
+        const res = await fetch('/api/search', { method: 'POST', body: formData });
+        const data = await res.json();
+        clearInterval(stepTimer);
+        loader.classList.add('hidden');
+        renderResults(data);
+        resultsBox.classList.remove('hidden');
+      } catch (err) {
+        clearInterval(stepTimer);
+        document.getElementById('loader-step-text').textContent = 'Error connecting to backend.';
+      }
+    });
+
+    function renderResults(data) {
+      document.getElementById('out-active-query').textContent = data.active_query;
+      document.getElementById('out-expanded-terms').textContent =
+        data.added_terms && data.added_terms.length ? '+' + data.added_terms.join(', +') : 'None';
+
+      document.getElementById('out-answer').textContent = data.direct_answer.answer;
+      document.getElementById('out-answer-meta').textContent =
+        `Source: ${data.direct_answer.source_domain} | Confidence Score: ${data.direct_answer.confidence}`;
+
+      // Render Tab 1: Search Results
+      const tabResults = document.getElementById('tab-results');
+      tabResults.innerHTML = '';
+      data.hybrid_results.forEach((item, idx) => {
+        const d = item.doc;
+        const trustPct = Math.round(item.reliability_score * 100);
+        const badgeColor = trustPct >= 70
+          ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
+          : trustPct >= 45
+          ? 'bg-amber-50 text-amber-700 border-amber-200'
+          : 'bg-rose-50 text-rose-700 border-rose-200';
+        const badgeLabel = trustPct >= 70 ? 'Verified / High Trust' : trustPct >= 45 ? 'Moderate Trust' : 'Low Trust / Clickbait Risk';
+
+        tabResults.innerHTML += `
+          <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200/80 hover:border-blue-300 transition">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-1">
+              <span class="text-xs font-medium text-slate-400">#${idx + 1} • ${d.source} • ${d.date}</span>
+              <span class="text-xs font-semibold px-2.5 py-0.5 rounded-full border ${badgeColor}">
+                ${badgeLabel} (${trustPct}%)
+              </span>
+            </div>
+            <a href="${d.url || '#'}" target="_blank" class="text-lg font-semibold text-blue-600 hover:underline block">${d.title}</a>
+            <p class="text-sm text-slate-600 mt-1.5 leading-relaxed">${d.text}</p>
+            <div class="flex flex-wrap gap-4 mt-3 pt-3 border-t border-slate-100 text-xs text-slate-500">
+              <span><strong>Overall Score:</strong> ${item.hybrid_score}</span>
+              <span><strong>Relevance:</strong> ${item.relevance_score}</span>
+              <span><strong>Trust Score:</strong> ${item.reliability_score}</span>
+            </div>
+          </div>
+        `;
+      });
+
+      // Render Tab 2: Trust Breakdown
+      const trustBody = document.getElementById('trust-table-body');
+      trustBody.innerHTML = '';
+      data.hybrid_results.forEach(item => {
+        const r = item.reliability_details;
+        trustBody.innerHTML += `
+          <tr>
+            <td class="p-3 font-medium text-slate-800">${r.source}</td>
+            <td class="p-3">${r.pagerank}</td>
+            <td class="p-3">${r.hits_authority}</td>
+            <td class="p-3">${r.nb_trust_prob}</td>
+            <td class="p-3">${r.claim_consensus}</td>
+            <td class="p-3">${r.recency_score}</td>
+            <td class="p-3 font-bold text-blue-600">${r.total_reliability}</td>
+          </tr>
+        `;
+      });
+
+      // Render Tab 3: Keyword Compare
+      const compHybrid = document.getElementById('compare-hybrid');
+      const compStd = document.getElementById('compare-standard');
+      compHybrid.innerHTML = '';
+      compStd.innerHTML = '';
+      data.hybrid_results.forEach((item, i) => {
+        compHybrid.innerHTML += `
+          <div class="bg-white p-3.5 rounded-xl border border-slate-200 text-sm">
+            <div class="font-semibold text-slate-800">#${i + 1} ${item.doc.title}</div>
+            <div class="text-xs text-slate-500 mt-1">${item.doc.source} • Hybrid: <strong>${item.hybrid_score}</strong></div>
+          </div>`;
+      });
+      data.standard_results.forEach((item, i) => {
+        compStd.innerHTML += `
+          <div class="bg-white p-3.5 rounded-xl border border-slate-200 text-sm">
+            <div class="font-semibold text-slate-800">#${i + 1} ${item.doc.title}</div>
+            <div class="text-xs text-slate-500 mt-1">${item.doc.source} • Keyword BM25: <strong>${item.retrieval_details.bm25}</strong></div>
+          </div>`;
+      });
+
+      // Render Tab 4: Index View
+      document.getElementById('idx-stem').textContent = data.index_preview.stem;
+      document.getElementById('idx-inv').textContent = JSON.stringify(data.index_preview.inverted);
+      document.getElementById('idx-comp').textContent = JSON.stringify(data.index_preview.compressed_gaps);
+      document.getElementById('idx-pos').textContent = JSON.stringify(data.index_preview.positional, null, 2);
+
+      // Render Tab 5: Accuracy Metrics
+      const mCards = document.getElementById('metrics-cards');
+      const mStd = data.evaluation.standard_bm25;
+      const mHyb = data.evaluation.credence_hybrid;
+      mCards.innerHTML = `
+        <div class="p-4 rounded-xl bg-emerald-50/60 border border-emerald-200">
+          <div class="font-bold text-emerald-800 mb-2">Verify-It Hybrid Ranking</div>
+          <div class="text-sm space-y-1 text-slate-700">
+            <div>Precision@3: <strong>${mHyb['Precision@3']}</strong></div>
+            <div>Recall@3: <strong>${mHyb['Recall@3']}</strong></div>
+            <div>F1-Score@3: <strong>${mHyb['F1-Score@3']}</strong></div>
+            <div>Average Precision: <strong>${mHyb['Average Precision (AP)']}</strong></div>
+          </div>
+        </div>
+        <div class="p-4 rounded-xl bg-slate-100 border border-slate-200">
+          <div class="font-bold text-slate-700 mb-2">Standard Keyword Ranking</div>
+          <div class="text-sm space-y-1 text-slate-600">
+            <div>Precision@3: <strong>${mStd['Precision@3']}</strong></div>
+            <div>Recall@3: <strong>${mStd['Recall@3']}</strong></div>
+            <div>F1-Score@3: <strong>${mStd['F1-Score@3']}</strong></div>
+            <div>Average Precision: <strong>${mStd['Average Precision (AP)']}</strong></div>
+          </div>
+        </div>
+      `;
+    }
+  </script>
+</body>
+</html>
