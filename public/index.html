@@ -14,14 +14,76 @@
     }
 
     /* =================================================================
-       FIXED 3D POP-UP + MOTION-BLUR FLIP CARD (NO MIRRORED FRONT TEXT)
+       1. GOOGLE AI MODE CURSOR-FOLLOWING GLOW BUTTON
+       ================================================================= */
+    .ai-glow-btn {
+      position: relative;
+      overflow: hidden;
+      background: #0f172a;
+      color: #ffffff;
+      border-radius: 9999px;
+      padding: 0.55rem 1.4rem;
+      font-size: 0.875rem;
+      font-weight: 600;
+      isolation: isolate;
+      transition: transform 0.2s ease, box-shadow 0.25s ease;
+      box-shadow: 0 2px 10px rgba(37, 99, 235, 0.18);
+    }
+
+    .ai-glow-btn:hover {
+      box-shadow: 0 0 22px rgba(99, 102, 241, 0.45), 0 0 8px rgba(56, 189, 248, 0.35);
+    }
+
+    .ai-glow-btn:active {
+      transform: scale(0.97);
+    }
+
+    /* Outer cursor-tracking multi-color Google AI spotlight */
+    .ai-glow-btn::before {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      background: radial-gradient(
+        95px circle at var(--x, 50%) var(--y, 50%),
+        #38bdf8 0%,
+        #818cf8 35%,
+        #c084fc 65%,
+        transparent 100%
+      );
+      opacity: 0;
+      transition: opacity 0.25s ease;
+      z-index: -2;
+    }
+
+    /* Inner dark pill mask so the border + soft inner aura glow under the cursor */
+    .ai-glow-btn::after {
+      content: '';
+      position: absolute;
+      inset: 1.5px;
+      border-radius: 9999px;
+      background:
+        radial-gradient(
+          65px circle at var(--x, 50%) var(--y, 50%),
+          rgba(99, 102, 241, 0.38),
+          rgba(14, 165, 233, 0.15) 55%,
+          rgba(15, 23, 42, 0.96) 100%
+        ),
+        #0f172a;
+      z-index: -1;
+    }
+
+    .ai-glow-btn:hover::before {
+      opacity: 1;
+    }
+
+    /* =================================================================
+       2. 3D POP-UP + MOTION-BLUR FLIP CARD (NO MIRRORED FRONT TEXT)
        ================================================================= */
     .flip-card-scene {
       perspective: 1400px;
       height: 360px;
     }
 
-    /* Stage 1: Pop-up lift + Motion Blur on outer wrapper (preserves 3D children) */
     .flip-card-lift {
       width: 100%;
       height: 100%;
@@ -44,7 +106,6 @@
       100% { filter: blur(0px); }
     }
 
-    /* Stage 2: Pure 3D Rotation Container (No filter here so backface-visibility works!) */
     .flip-card-inner {
       position: relative;
       width: 100%;
@@ -70,7 +131,6 @@
       -webkit-backface-visibility: hidden;
     }
 
-    /* Front sits at 0deg; Back is pre-rotated 180deg so text is never backwards */
     .flip-card-front {
       transform: rotateY(0deg) translateZ(1px);
       z-index: 2;
@@ -98,30 +158,35 @@
       <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900">
         <span class="text-blue-600">Verify</span><span class="text-indigo-600">It</span>
       </h1>
-      <p class="text-sm text-slate-500 mt-2">Search with Confidence — Live Web Retrieval & Reliability Scoring</p>
+      <p class="text-sm text-slate-500 mt-2">Search with Confidence — Sorted by Verified Source Trust</p>
     </div>
 
     <!-- GOOGLE-STYLE SEARCH BAR -->
     <form id="search-form" class="w-full max-w-2xl">
-      <div class="flex items-center bg-white border border-slate-200 hover:border-slate-300 focus-within:border-blue-500 focus-within:ring-4 focus-within:ring-blue-100 rounded-full px-5 py-3 shadow-sm transition">
+      <div class="flex items-center bg-white border border-slate-200 hover:border-slate-300 focus-within:border-blue-500 focus-within:ring-4 focus-within:ring-blue-100 rounded-full pl-5 pr-2.5 py-2 shadow-sm transition">
         <svg class="w-5 h-5 text-slate-400 mr-3 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
         </svg>
         <input
           id="query-input"
           type="text"
-          placeholder="Search anything (e.g., Free Money, National Scholarship 2026)..."
-          class="w-full bg-transparent focus:outline-none text-slate-800 text-base"
+          placeholder="Search anything (e.g., Imran Rasheed JIIT, National Scholarship 2026)..."
+          class="w-full bg-transparent focus:outline-none text-slate-800 text-base py-1"
         />
         <!-- File Upload Trigger -->
-        <label for="file-input" class="cursor-pointer text-slate-400 hover:text-blue-600 mx-2" title="Upload File (TXT, PDF, DOCX, XML)">
+        <label for="file-input" class="cursor-pointer text-slate-400 hover:text-blue-600 mx-2.5" title="Upload File (TXT, PDF, DOCX, XML)">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"/>
           </svg>
         </label>
         <input id="file-input" type="file" accept=".txt,.pdf,.docx,.xml" class="hidden" />
-        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-5 py-2 rounded-full transition shrink-0">
-          Search
+
+        <!-- GOOGLE AI MODE CURSOR-FOLLOWING GLOW SEARCH BUTTON -->
+        <button id="search-btn" type="submit" class="ai-glow-btn shrink-0 flex items-center gap-1.5 cursor-pointer">
+          <svg class="w-3.5 h-3.5 text-sky-300" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+          </svg>
+          <span>Search</span>
         </button>
       </div>
 
@@ -141,7 +206,7 @@
     </form>
   </div>
 
-  <!-- 3. WORKSPACE AREA (QUERY BAR + CLAUDE/GEMINI DEEP RESEARCH STREAM + RESULTS) -->
+  <!-- 3. WORKSPACE AREA -->
   <main id="workspace-container" class="hidden max-w-6xl w-full mx-auto px-4 pb-16 pt-4">
     
     <!-- Processed Query Pill Bar -->
@@ -170,14 +235,13 @@
           Show/Hide Sources
         </button>
       </div>
-      <!-- Streaming Source Pills -->
       <div id="research-links-stream" class="mt-3 flex flex-wrap gap-2"></div>
     </div>
 
     <!-- GOOGLE-STYLE SEARCH STATS LINE -->
     <div id="google-stats-line" class="hidden text-xs text-slate-500 px-1 mb-4"></div>
 
-    <!-- ACTUAL RESULTS WRAPPER (REVEALED AFTER STREAMING SOURCES FINISH) -->
+    <!-- ACTUAL RESULTS WRAPPER -->
     <div id="results-content" class="hidden fade-in">
 
       <!-- Instant Answer Box -->
@@ -190,13 +254,13 @@
       <!-- SHORT CLEAN NAVIGATION TABS -->
       <div class="flex items-center justify-between border-b border-slate-200 mb-6">
         <div class="flex gap-6 text-sm font-medium text-slate-500 overflow-x-auto">
-          <button onclick="switchTab('tab-results')" id="btn-tab-results" class="tab-btn pb-3 border-b-2 border-blue-600 text-blue-600 whitespace-nowrap">Search Results</button>
+          <button onclick="switchTab('tab-results')" id="btn-tab-results" class="tab-btn pb-3 border-b-2 border-blue-600 text-blue-600 whitespace-nowrap">Search Results (By Trust)</button>
           <button onclick="switchTab('tab-trust')" id="btn-tab-trust" class="tab-btn pb-3 border-b-2 border-transparent hover:text-slate-800 whitespace-nowrap">Trust Breakdown</button>
           <button onclick="switchTab('tab-compare')" id="btn-tab-compare" class="tab-btn pb-3 border-b-2 border-transparent hover:text-slate-800 whitespace-nowrap">Keyword Compare</button>
           <button onclick="switchTab('tab-index')" id="btn-tab-index" class="tab-btn pb-3 border-b-2 border-transparent hover:text-slate-800 whitespace-nowrap">Index View</button>
           <button onclick="switchTab('tab-metrics')" id="btn-tab-metrics" class="tab-btn pb-3 border-b-2 border-transparent hover:text-slate-800 whitespace-nowrap">Accuracy Metrics</button>
         </div>
-        <span class="hidden md:inline-block text-xs text-slate-400 pb-2">✨ Hover any card to pop-up & flip</span>
+        <span class="hidden md:inline-block text-xs text-slate-400 pb-2">✨ Sorted by Trust (High → Low) • Hover card to flip</span>
       </div>
 
       <!-- TAB 1: VERTICAL 3D FLIP CARDS GRID -->
@@ -204,7 +268,7 @@
 
       <!-- TAB 2: TRUST BREAKDOWN -->
       <div id="tab-trust" class="tab-pane hidden bg-white rounded-2xl p-5 border border-slate-200 overflow-x-auto">
-        <h3 class="text-base font-semibold mb-3">Source Trust & Pattern Scores</h3>
+        <h3 class="text-base font-semibold mb-3">Source Trust & Pattern Scores (Descending Order)</h3>
         <table class="w-full text-left text-sm">
           <thead class="bg-slate-50 text-slate-600 text-xs uppercase">
             <tr>
@@ -224,7 +288,7 @@
       <!-- TAB 3: SIDE-BY-SIDE KEYWORD COMPARE -->
       <div id="tab-compare" class="tab-pane hidden grid md:grid-cols-2 gap-6">
         <div>
-          <h3 class="text-sm font-bold uppercase tracking-wider text-emerald-700 mb-3">Verify-It Ranking (Relevance + Trust)</h3>
+          <h3 class="text-sm font-bold uppercase tracking-wider text-emerald-700 mb-3">Sorted by Trust Score (High → Low)</h3>
           <div id="compare-hybrid" class="space-y-3"></div>
         </div>
         <div>
@@ -255,12 +319,23 @@
   </main>
 
   <script>
+    // Hide initial splash loader
     window.addEventListener('DOMContentLoaded', () => {
       setTimeout(() => {
         const boot = document.getElementById('boot-loader');
         boot.style.opacity = '0';
         setTimeout(() => boot.style.display = 'none', 400);
       }, 500);
+    });
+
+    // Cursor-tracking glow effect on Search Button (Google AI Mode style)
+    const searchBtn = document.getElementById('search-btn');
+    searchBtn.addEventListener('mousemove', (e) => {
+      const rect = searchBtn.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      searchBtn.style.setProperty('--x', `${x}px`);
+      searchBtn.style.setProperty('--y', `${y}px`);
     });
 
     const alphaSlider = document.getElementById('alpha-slider');
@@ -339,6 +414,14 @@
         const res = await fetch('/api/search', { method: 'POST', body: formData });
         const data = await res.json();
 
+        // SORT RESULTS IN DESCENDING ORDER OF TRUST (reliability_score)
+        data.hybrid_results.sort((a, b) => {
+          if (b.reliability_score !== a.reliability_score) {
+            return b.reliability_score - a.reliability_score;
+          }
+          return b.hybrid_score - a.hybrid_score;
+        });
+
         document.getElementById('out-active-query').textContent = data.active_query;
         document.getElementById('out-expanded-terms').textContent =
           data.added_terms && data.added_terms.length ? '+' + data.added_terms.join(', +') : 'None';
@@ -358,19 +441,18 @@
             <span class="text-emerald-600 font-bold">✓</span>
           `;
           streamContainer.appendChild(pill);
-          await sleep(160);
+          await sleep(150);
         }
 
         const elapsedSeconds = ((performance.now() - tStart) / 1000).toFixed(2);
         const totalCount = data.hybrid_results.length;
 
-        // Mark Deep Research complete
         document.getElementById('research-spinner').classList.add('hidden');
         document.getElementById('research-check').classList.remove('hidden');
         document.getElementById('research-status-title').textContent =
-          `Verified ${totalCount} web & social sources across PageRank, HITS & Spam Classifiers`;
+          `Verified & ranked ${totalCount} sources by descending Trust Score`;
 
-        // Show Google-style "Searched about X results in (Y seconds)"
+        // Google-style "Searched about X results in (Y seconds)"
         statsLine.textContent = `Searched about ${totalCount} results in (${elapsedSeconds} seconds)`;
         statsLine.classList.remove('hidden');
 
@@ -387,7 +469,7 @@
       document.getElementById('out-answer-meta').textContent =
         `Source: ${data.direct_answer.source_domain} | Confidence Score: ${data.direct_answer.confidence}`;
 
-      // Render Tab 1: Split-Half Front + Clean 3-Score Back Vertical Flip Cards
+      // Render Tab 1: Split-Half Front + Clean 3-Score Back Vertical Flip Cards (Sorted by Trust Descending)
       const tabResults = document.getElementById('tab-results');
       tabResults.innerHTML = '';
 
@@ -419,16 +501,11 @@
             <div class="flip-card-lift">
               <div class="flip-card-inner">
                 
-                <!-- =========================================================
-                     FRONT FACE: DIVIDED INTO TWO HALVES
-                     Top Half: Website Browser Preview & Content Snapshot
-                     Bottom Half: Website Domain Name & Title
-                     ========================================================= -->
+                <!-- FRONT FACE: DIVIDED INTO TWO HALVES -->
                 <div class="flip-card-front bg-white border border-slate-200/90 flex flex-col shadow-sm">
                   
-                  <!-- UPPER HALF (55% Height): Visual Website Preview Window -->
+                  <!-- UPPER HALF (55% Height): Website Preview Window -->
                   <div class="h-[55%] bg-gradient-to-br ${previewGradient} p-3.5 flex flex-col justify-between border-b border-slate-200/80 relative">
-                    <!-- Fake Browser Top Bar -->
                     <div class="flex items-center justify-between bg-white/90 backdrop-blur px-2.5 py-1.5 rounded-xl border border-slate-200/70 shadow-2xs">
                       <div class="flex items-center gap-1.5 truncate">
                         <span class="w-2 h-2 rounded-full bg-rose-400"></span>
@@ -441,7 +518,6 @@
                       </span>
                     </div>
 
-                    <!-- Mini Webpage Content Preview Card inside Upper Half -->
                     <div class="bg-white/95 rounded-xl p-3 border border-slate-200/60 shadow-2xs my-auto">
                       <div class="flex items-center gap-2 mb-1.5">
                         <img
@@ -457,12 +533,12 @@
                     </div>
 
                     <div class="flex items-center justify-between text-[10px] text-slate-400 px-1">
-                      <span>Rank #${idx + 1}</span>
+                      <span>Trust Rank #${idx + 1}</span>
                       <span>Published: ${d.date}</span>
                     </div>
                   </div>
 
-                  <!-- LOWER HALF (45% Height): Website Identity & Title Below Preview -->
+                  <!-- LOWER HALF (45% Height): Website Domain & Title -->
                   <div class="h-[45%] p-4 flex flex-col justify-between bg-white">
                     <div>
                       <div class="flex items-center gap-2 mb-1">
@@ -482,16 +558,14 @@
                     </div>
 
                     <div class="flex items-center justify-between pt-2 border-t border-slate-100 text-[11px] text-slate-400">
-                      <span>Overall Score: <strong class="text-slate-700">${item.hybrid_score}</strong></span>
+                      <span>Trust Score: <strong class="text-emerald-700">${item.reliability_score} (${trustPct}%)</strong></span>
                       <span class="text-blue-600 font-medium">Hover to flip ↻</span>
                     </div>
                   </div>
 
                 </div>
 
-                <!-- =========================================================
-                     BACK FACE: DESCRIPTION + MAX 3 CORE SCORES
-                     ========================================================= -->
+                <!-- BACK FACE: DESCRIPTION + MAX 3 CORE SCORES -->
                 <div class="flip-card-back bg-slate-900 text-slate-100 p-5 flex flex-col justify-between border border-slate-700 shadow-xl">
                   
                   <div>
@@ -504,10 +578,9 @@
                         />
                         <span class="text-xs font-bold text-white truncate">${d.source}</span>
                       </div>
-                      <span class="text-[11px] text-slate-400 font-mono">Rank #${idx + 1}</span>
+                      <span class="text-[11px] text-emerald-400 font-mono">Trust #${idx + 1}</span>
                     </div>
 
-                    <!-- Full Content Description -->
                     <div class="mb-4">
                       <span class="text-[10px] uppercase tracking-wider text-blue-400 font-bold block mb-1">
                         Document Summary
@@ -517,7 +590,6 @@
                       </p>
                     </div>
 
-                    <!-- Max 3 Key Scores (Reliability, IR Relevance, Hybrid Score) -->
                     <div class="space-y-2.5 bg-slate-800/90 p-3 rounded-2xl border border-slate-700/70">
                       <div>
                         <div class="flex justify-between text-xs mb-1">
@@ -574,7 +646,7 @@
             <td class="p-3">${r.nb_trust_prob}</td>
             <td class="p-3">${r.claim_consensus}</td>
             <td class="p-3">${r.recency_score}</td>
-            <td class="p-3 font-bold text-blue-600">${r.total_reliability}</td>
+            <td class="p-3 font-bold text-emerald-600">${r.total_reliability}</td>
           </tr>
         `;
       });
@@ -588,7 +660,7 @@
         compHybrid.innerHTML += `
           <div class="bg-white p-3.5 rounded-xl border border-slate-200 text-sm">
             <div class="font-semibold text-slate-800">#${i + 1} ${item.doc.title}</div>
-            <div class="text-xs text-slate-500 mt-1">${item.doc.source} • Hybrid: <strong>${item.hybrid_score}</strong></div>
+            <div class="text-xs text-slate-500 mt-1">${item.doc.source} • Trust: <strong class="text-emerald-700">${item.reliability_score}</strong> • Hybrid: <strong>${item.hybrid_score}</strong></div>
           </div>`;
       });
       data.standard_results.forEach((item, i) => {
@@ -611,7 +683,7 @@
       const mHyb = data.evaluation.credence_hybrid;
       mCards.innerHTML = `
         <div class="p-4 rounded-xl bg-emerald-50/60 border border-emerald-200">
-          <div class="font-bold text-emerald-800 mb-2">Verify-It Hybrid Ranking</div>
+          <div class="font-bold text-emerald-800 mb-2">Verify-It Ranking (Trust-Prioritized)</div>
           <div class="text-sm space-y-1 text-slate-700">
             <div>Precision@3: <strong>${mHyb['Precision@3']}</strong></div>
             <div>Recall@3: <strong>${mHyb['Recall@3']}</strong></div>
