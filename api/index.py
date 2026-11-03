@@ -1,4 +1,5 @@
 import os
+import re
 import tempfile
 from fastapi import FastAPI, UploadFile, File, Form
 from fastapi.responses import HTMLResponse, JSONResponse
@@ -34,7 +35,7 @@ async def serve_ui():
 @app.post("/api/search")
 async def search_endpoint(
     query: str = Form(""),
-    alpha: float = Form(0.55),
+    alpha: float = Form(0.50),
     use_prf: bool = Form(True),
     interests: str = Form("official, verified, academic, research"),
     file: UploadFile = File(None)
@@ -55,10 +56,21 @@ async def search_endpoint(
     if uploaded_doc and not query.strip():
         active_query = QueryFormulator.formulate_query_from_input(uploaded_doc["text"])
     else:
-        active_query = QueryFormulator.translate_to_english(query.strip() or "information retrieval")
+        active_query = QueryFormulator.formulate_query_from_input(query.strip() or "information retrieval")
 
     crawler = WebAndSocialCrawler()
     docs, link_graph = crawler.crawl_and_collect(active_query, uploaded_doc=uploaded_doc)
+
+    # Build dynamic vocabulary from crawled titles/texts for "Did you mean?" spell suggestion
+    dynamic_vocab = set()
+    for d in docs:
+        dynamic_vocab.update(re.findall(r'\b[a-zA-Z]{4,}\b', f"{d.get('title', '')} {d.get('text', '')}".lower()))
+    suggested_query = QueryFormulator.suggest_query_correction(active_query, dynamic_vocab=dynamic_vocab)
+
+    # Compute Lemmatized & Stemmed Tokens for display
+    raw_tokens = TextPreprocessor.remove_stopwords(TextPreprocessor.tokenize(active_query))
+    lemmatized_tokens = [TextPreprocessor.lemmatize(t) for t in raw_tokens]
+    stemmed_tokens = [TextPreprocessor.stem(t) for t in lemmatized_tokens]
 
     indexer = DocumentIndexer(ngram_size=3)
     indexer.build_indexes(docs)
@@ -72,13 +84,14 @@ async def search_endpoint(
         use_query_expansion=bool(use_prf)
     )
 
-    # Sample index preview for the first query word
-    first_stems = TextPreprocessor.preprocess(active_query)
-    sample_stem = first_stems[0] if first_stems else ""
+    sample_stem = stemmed_tokens[0] if stemmed_tokens else ""
 
     return JSONResponse({
         "raw_query": query,
         "active_query": active_query,
+        "suggested_query": suggested_query,
+        "lemmatized_tokens": lemmatized_tokens,
+        "stemmed_tokens": stemmed_tokens,
         "expanded_query": pipeline_out["query_metadata"]["expanded_query"],
         "added_terms": pipeline_out["query_metadata"]["added_terms"],
         "direct_answer": pipeline_out["extracted_answer"],
