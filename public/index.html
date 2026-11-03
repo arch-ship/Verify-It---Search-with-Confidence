@@ -38,7 +38,6 @@
       transform: scale(0.97);
     }
 
-    /* Outer cursor-tracking multi-color Google AI spotlight */
     .ai-glow-btn::before {
       content: '';
       position: absolute;
@@ -55,7 +54,6 @@
       z-index: -2;
     }
 
-    /* Inner dark pill mask so the border + soft inner aura glow under the cursor */
     .ai-glow-btn::after {
       content: '';
       position: absolute;
@@ -77,7 +75,30 @@
     }
 
     /* =================================================================
-       2. 3D POP-UP + MOTION-BLUR FLIP CARD (NO MIRRORED FRONT TEXT)
+       2. THREE PULSING DOTS FOR SEQUENTIAL SOURCE VISITING
+       ================================================================= */
+    .visiting-dots {
+      display: inline-flex;
+      align-items: center;
+      gap: 2px;
+    }
+    .visiting-dots span {
+      width: 4px;
+      height: 4px;
+      background-color: #2563eb;
+      border-radius: 9999px;
+      animation: dotBounce 0.9s infinite ease-in-out;
+    }
+    .visiting-dots span:nth-child(2) { animation-delay: 0.18s; }
+    .visiting-dots span:nth-child(3) { animation-delay: 0.36s; }
+
+    @keyframes dotBounce {
+      0%, 80%, 100% { transform: scale(0.6); opacity: 0.35; }
+      40% { transform: scale(1.25); opacity: 1; }
+    }
+
+    /* =================================================================
+       3. 3D POP-UP + MOTION-BLUR FLIP CARD
        ================================================================= */
     .flip-card-scene {
       perspective: 1400px;
@@ -161,20 +182,23 @@
       <p class="text-sm text-slate-500 mt-2">Search with Confidence — Sorted by Verified Source Trust</p>
     </div>
 
-    <!-- GOOGLE-STYLE SEARCH BAR -->
+    <!-- DYNAMIC AUTO-EXPANDING GOOGLE-STYLE SEARCH BAR -->
     <form id="search-form" class="w-full max-w-2xl">
-      <div class="flex items-center bg-white border border-slate-200 hover:border-slate-300 focus-within:border-blue-500 focus-within:ring-4 focus-within:ring-blue-100 rounded-full pl-5 pr-2.5 py-2 shadow-sm transition">
-        <svg class="w-5 h-5 text-slate-400 mr-3 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div class="flex items-end bg-white border border-slate-200 hover:border-slate-300 focus-within:border-blue-500 focus-within:ring-4 focus-within:ring-blue-100 rounded-3xl pl-5 pr-2.5 py-2.5 shadow-sm transition-all">
+        <svg class="w-5 h-5 text-slate-400 mr-3 mb-2 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
         </svg>
-        <input
+
+        <!-- Auto-Growing Textarea for Short Queries OR Pasted Paragraphs -->
+        <textarea
           id="query-input"
-          type="text"
-          placeholder="Search anything (e.g., Imran Rasheed JIIT, National Scholarship 2026)..."
-          class="w-full bg-transparent focus:outline-none text-slate-800 text-base py-1"
-        />
+          rows="1"
+          placeholder="Search anything or paste a long paragraph/claim to verify..."
+          class="w-full bg-transparent focus:outline-none text-slate-800 text-base py-1 resize-none max-h-44 overflow-y-auto leading-relaxed"
+        ></textarea>
+
         <!-- File Upload Trigger -->
-        <label for="file-input" class="cursor-pointer text-slate-400 hover:text-blue-600 mx-2.5" title="Upload File (TXT, PDF, DOCX, XML)">
+        <label for="file-input" class="cursor-pointer text-slate-400 hover:text-blue-600 mx-2.5 mb-2 shrink-0" title="Upload File (TXT, PDF, DOCX, XML)">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"/>
           </svg>
@@ -182,7 +206,7 @@
         <input id="file-input" type="file" accept=".txt,.pdf,.docx,.xml" class="hidden" />
 
         <!-- GOOGLE AI MODE CURSOR-FOLLOWING GLOW SEARCH BUTTON -->
-        <button id="search-btn" type="submit" class="ai-glow-btn shrink-0 flex items-center gap-1.5 cursor-pointer">
+        <button id="search-btn" type="submit" class="ai-glow-btn shrink-0 flex items-center gap-1.5 cursor-pointer mb-0.5">
           <svg class="w-3.5 h-3.5 text-sky-300" fill="currentColor" viewBox="0 0 20 20">
             <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
           </svg>
@@ -209,44 +233,71 @@
   <!-- 3. WORKSPACE AREA -->
   <main id="workspace-container" class="hidden max-w-6xl w-full mx-auto px-4 pb-16 pt-4">
     
-    <!-- Processed Query Pill Bar -->
-    <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200/80 mb-3 flex flex-wrap items-center justify-between gap-2 text-xs text-slate-500">
-      <div>
-        <span class="font-semibold text-slate-700">Processed Query:</span>
-        <span id="out-active-query" class="bg-slate-100 px-2.5 py-1 rounded-md text-slate-800 font-medium ml-1"></span>
+    <!-- GOOGLE-STYLE "DID YOU MEAN?" SUGGESTED QUERY BANNER -->
+    <div id="did-you-mean-box" class="hidden mb-3 px-1 text-sm text-slate-600">
+      <span class="text-rose-600 font-medium">Did you mean:</span>
+      <button id="did-you-mean-btn" type="button" class="text-blue-600 font-bold italic hover:underline ml-1 cursor-pointer"></button>
+    </div>
+
+    <!-- Processed Query + Stemming / Lemmatization Breakdown Bar -->
+    <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200/80 mb-3 space-y-2 text-xs text-slate-500">
+      <div class="flex flex-wrap items-center justify-between gap-2">
+        <div>
+          <span class="font-semibold text-slate-700">Formulated Query:</span>
+          <span id="out-active-query" class="bg-slate-100 px-2.5 py-1 rounded-md text-slate-800 font-medium ml-1"></span>
+        </div>
+        <div>
+          <span class="font-semibold text-slate-700">Expanded Terms:</span>
+          <span id="out-expanded-terms" class="text-blue-600 font-medium ml-1"></span>
+        </div>
       </div>
-      <div>
-        <span class="font-semibold text-slate-700">Expanded Terms:</span>
-        <span id="out-expanded-terms" class="text-blue-600 font-medium ml-1"></span>
+
+      <!-- Stemming & Lemmatization Pills -->
+      <div class="flex flex-wrap items-center gap-4 pt-2 border-t border-slate-100">
+        <div>
+          <span class="font-semibold text-slate-700">Lemmatized:</span>
+          <span id="out-lemmas" class="font-mono text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded ml-1"></span>
+        </div>
+        <div>
+          <span class="font-semibold text-slate-700">Stemmed Roots:</span>
+          <span id="out-stems" class="font-mono text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded ml-1"></span>
+        </div>
       </div>
     </div>
 
-    <!-- CLAUDE / GEMINI DEEP RESEARCH LIVE VERIFICATION PANEL -->
+    <!-- SEQUENTIAL 3-DOT SOURCE VISITING PANEL -->
     <div id="deep-research-box" class="bg-white border border-slate-200/90 rounded-2xl p-4 mb-3 shadow-sm transition-all">
       <div class="flex items-center justify-between">
-        <div class="flex items-center gap-2.5">
-          <div id="research-spinner" class="w-4 h-4 border-2 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
-          <span id="research-check" class="hidden text-emerald-600 font-bold text-sm">✓</span>
+        <div class="flex items-center gap-2">
           <span id="research-status-title" class="text-xs font-semibold text-slate-700">
-            Searching web & verifying source reliability...
+            Visiting & verifying sources
           </span>
+          <div id="header-visiting-dots" class="visiting-dots">
+            <span></span><span></span><span></span>
+          </div>
         </div>
         <button onclick="toggleResearchLinks()" class="text-xs text-blue-600 hover:underline font-medium">
           Show/Hide Sources
         </button>
       </div>
+      <!-- Sequential Source Pills Container -->
       <div id="research-links-stream" class="mt-3 flex flex-wrap gap-2"></div>
     </div>
 
     <!-- GOOGLE-STYLE SEARCH STATS LINE -->
-    <div id="google-stats-line" class="hidden text-xs text-slate-500 px-1 mb-4"></div>
+    <div id="google-stats-line" class="hidden text-xs text-slate-500 px-1 mb-4 font-medium"></div>
 
     <!-- ACTUAL RESULTS WRAPPER -->
     <div id="results-content" class="hidden fade-in">
 
-      <!-- Instant Answer Box -->
-      <div class="bg-blue-50/70 border border-blue-100 rounded-2xl p-4 mb-6 shadow-sm">
-        <div class="text-xs font-bold uppercase tracking-wider text-blue-700 mb-1">Instant Verified Answer</div>
+      <!-- Instant Answer Box (Strictly From #1 Most Reliable Source) -->
+      <div class="bg-emerald-50/70 border border-emerald-200 rounded-2xl p-4 mb-6 shadow-sm">
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-1">
+          <span class="text-xs font-bold uppercase tracking-wider text-emerald-800">
+            ★ Top Verified Source Summary (Highest Trust Score)
+          </span>
+          <span id="out-answer-badge" class="text-xs font-semibold bg-emerald-100 text-emerald-800 px-2.5 py-0.5 rounded-full"></span>
+        </div>
         <p id="out-answer" class="text-slate-800 text-sm md:text-base font-medium leading-relaxed"></p>
         <div id="out-answer-meta" class="text-xs text-slate-500 mt-1.5"></div>
       </div>
@@ -254,7 +305,7 @@
       <!-- SHORT CLEAN NAVIGATION TABS -->
       <div class="flex items-center justify-between border-b border-slate-200 mb-6">
         <div class="flex gap-6 text-sm font-medium text-slate-500 overflow-x-auto">
-          <button onclick="switchTab('tab-results')" id="btn-tab-results" class="tab-btn pb-3 border-b-2 border-blue-600 text-blue-600 whitespace-nowrap">Search Results (By Trust)</button>
+          <button onclick="switchTab('tab-results')" id="btn-tab-results" class="tab-btn pb-3 border-b-2 border-blue-600 text-blue-600 whitespace-nowrap">Search Results</button>
           <button onclick="switchTab('tab-trust')" id="btn-tab-trust" class="tab-btn pb-3 border-b-2 border-transparent hover:text-slate-800 whitespace-nowrap">Trust Breakdown</button>
           <button onclick="switchTab('tab-compare')" id="btn-tab-compare" class="tab-btn pb-3 border-b-2 border-transparent hover:text-slate-800 whitespace-nowrap">Keyword Compare</button>
           <button onclick="switchTab('tab-index')" id="btn-tab-index" class="tab-btn pb-3 border-b-2 border-transparent hover:text-slate-800 whitespace-nowrap">Index View</button>
@@ -328,14 +379,26 @@
       }, 500);
     });
 
+    // Auto-expanding Textarea logic + Enter to submit (Shift+Enter for new line)
+    const queryInput = document.getElementById('query-input');
+    function autoResizeTextarea() {
+      queryInput.style.height = 'auto';
+      queryInput.style.height = Math.min(queryInput.scrollHeight, 176) + 'px';
+    }
+    queryInput.addEventListener('input', autoResizeTextarea);
+    queryInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        document.getElementById('search-form').requestSubmit();
+      }
+    });
+
     // Cursor-tracking glow effect on Search Button (Google AI Mode style)
     const searchBtn = document.getElementById('search-btn');
     searchBtn.addEventListener('mousemove', (e) => {
       const rect = searchBtn.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      searchBtn.style.setProperty('--x', `${x}px`);
-      searchBtn.style.setProperty('--y', `${y}px`);
+      searchBtn.style.setProperty('--x', `${e.clientX - rect.left}px`);
+      searchBtn.style.setProperty('--y', `${e.clientY - rect.top}px`);
     });
 
     const alphaSlider = document.getElementById('alpha-slider');
@@ -369,11 +432,19 @@
       document.getElementById('btn-' + tabId).classList.add('border-blue-600', 'text-blue-600');
     }
 
+    // "Did you mean?" click handler
+    document.getElementById('did-you-mean-btn').addEventListener('click', () => {
+      const suggested = document.getElementById('did-you-mean-btn').textContent;
+      queryInput.value = suggested;
+      autoResizeTextarea();
+      document.getElementById('search-form').requestSubmit();
+    });
+
     const sleep = (ms) => new Promise(r => setTimeout(r, ms));
 
     document.getElementById('search-form').addEventListener('submit', async (e) => {
       e.preventDefault();
-      const query = document.getElementById('query-input').value.trim();
+      const query = queryInput.value.trim();
       if (!query && fileInput.files.length === 0) return;
 
       const tStart = performance.now();
@@ -384,23 +455,26 @@
       wrapper.classList.add('pt-6', 'pb-4', 'border-b', 'border-slate-200', 'bg-white');
       document.getElementById('brand-header').classList.add('mb-3');
 
-      // Show workspace & reset Deep Research stream
       const workspace = document.getElementById('workspace-container');
       const resultsContent = document.getElementById('results-content');
       const statsLine = document.getElementById('google-stats-line');
       const streamContainer = document.getElementById('research-links-stream');
+      const didYouMeanBox = document.getElementById('did-you-mean-box');
+      const headerDots = document.getElementById('header-visiting-dots');
 
       workspace.classList.remove('hidden');
       resultsContent.classList.add('hidden');
       statsLine.classList.add('hidden');
+      didYouMeanBox.classList.add('hidden');
       streamContainer.innerHTML = '';
       streamContainer.classList.remove('hidden');
+      headerDots.classList.remove('hidden');
 
-      document.getElementById('out-active-query').textContent = query || 'Uploaded Document';
-      document.getElementById('out-expanded-terms').textContent = 'Analyzing...';
-      document.getElementById('research-spinner').classList.remove('hidden');
-      document.getElementById('research-check').classList.add('hidden');
-      document.getElementById('research-status-title').textContent = 'Searching live web & verifying sources...';
+      document.getElementById('out-active-query').textContent = 'Formulating...';
+      document.getElementById('out-expanded-terms').textContent = '...';
+      document.getElementById('out-lemmas').textContent = '...';
+      document.getElementById('out-stems').textContent = '...';
+      document.getElementById('research-status-title').textContent = 'Visiting web sources';
 
       const formData = new FormData();
       formData.append('query', query);
@@ -414,7 +488,7 @@
         const res = await fetch('/api/search', { method: 'POST', body: formData });
         const data = await res.json();
 
-        // SORT RESULTS IN DESCENDING ORDER OF TRUST (reliability_score)
+        // Sort results in descending order of Trust (reliability_score)
         data.hybrid_results.sort((a, b) => {
           if (b.reliability_score !== a.reliability_score) {
             return b.reliability_score - a.reliability_score;
@@ -422,54 +496,83 @@
           return b.hybrid_score - a.hybrid_score;
         });
 
+        // Show "Did you mean?" if a spelling correction is suggested
+        if (data.suggested_query && data.suggested_query.toLowerCase() !== data.active_query.toLowerCase()) {
+          document.getElementById('did-you-mean-btn').textContent = data.suggested_query;
+          didYouMeanBox.classList.remove('hidden');
+        }
+
+        // Populate Query, Lemmatization & Stemming Info
         document.getElementById('out-active-query').textContent = data.active_query;
         document.getElementById('out-expanded-terms').textContent =
           data.added_terms && data.added_terms.length ? '+' + data.added_terms.join(', +') : 'None';
+        document.getElementById('out-lemmas').textContent =
+          data.lemmatized_tokens && data.lemmatized_tokens.length ? data.lemmatized_tokens.join(' · ') : 'None';
+        document.getElementById('out-stems').textContent =
+          data.stemmed_tokens && data.stemmed_tokens.length ? data.stemmed_tokens.join(' · ') : 'None';
 
-        // Stream each crawled link one by one like Claude / Gemini Deep Research
+        // SEQUENTIAL 3-DOT SOURCE VISITING ANIMATION:
+        // Visit 1st source with 3 pulsing dots -> mark done (✓) -> move to next source
         for (let i = 0; i < data.hybrid_results.length; i++) {
           const item = data.hybrid_results[i];
           const src = item.doc.source;
+
           document.getElementById('research-status-title').textContent =
-            `Verifying source (${i + 1}/${data.hybrid_results.length}): ${src}...`;
+            `Visiting (${i + 1}/${data.hybrid_results.length}) ${src}`;
 
           const pill = document.createElement('div');
-          pill.className = 'fade-in flex items-center gap-1.5 bg-slate-100 border border-slate-200 text-slate-700 text-xs px-2.5 py-1 rounded-full';
+          pill.className = 'fade-in flex items-center gap-1.5 bg-blue-50 border border-blue-200 text-slate-700 text-xs px-2.5 py-1 rounded-full transition-all';
           pill.innerHTML = `
             <img src="https://www.google.com/s2/favicons?domain=${src}&sz=32" class="w-3.5 h-3.5 rounded-sm" onerror="this.style.display='none'" />
-            <span class="truncate max-w-[160px] font-medium">${src}</span>
-            <span class="text-emerald-600 font-bold">✓</span>
+            <span class="truncate max-w-[150px] font-medium">${src}</span>
+            <span class="pill-status visiting-dots ml-0.5">
+              <span></span><span></span><span></span>
+            </span>
           `;
           streamContainer.appendChild(pill);
-          await sleep(150);
+
+          // Wait while the 3 dots pulse on this source
+          await sleep(180);
+
+          // Mark this source done and transition pill to verified state
+          pill.className = 'flex items-center gap-1.5 bg-slate-100 border border-slate-200 text-slate-700 text-xs px-2.5 py-1 rounded-full transition-all';
+          const statusEl = pill.querySelector('.pill-status');
+          if (statusEl) {
+            statusEl.className = 'text-emerald-600 font-bold text-xs';
+            statusEl.textContent = '✓';
+          }
         }
 
         const elapsedSeconds = ((performance.now() - tStart) / 1000).toFixed(2);
         const totalCount = data.hybrid_results.length;
 
-        document.getElementById('research-spinner').classList.add('hidden');
-        document.getElementById('research-check').classList.remove('hidden');
+        // Hide header dots and show final Google-style stats line
+        headerDots.classList.add('hidden');
         document.getElementById('research-status-title').textContent =
-          `Verified & ranked ${totalCount} sources by descending Trust Score`;
+          `Visited & evaluated ${totalCount} sources`;
 
-        // Google-style "Searched about X results in (Y seconds)"
         statsLine.textContent = `Searched about ${totalCount} results in (${elapsedSeconds} seconds)`;
         statsLine.classList.remove('hidden');
 
         renderResults(data);
         resultsContent.classList.remove('hidden');
       } catch (err) {
-        document.getElementById('research-spinner').classList.add('hidden');
+        headerDots.classList.add('hidden');
         document.getElementById('research-status-title').textContent = 'Error connecting to search backend.';
       }
     });
 
     function renderResults(data) {
-      document.getElementById('out-answer').textContent = data.direct_answer.answer;
+      // Top Answer Strictly from #1 Most Reliable Source
+      const ans = data.direct_answer;
+      const topTrustPct = Math.round((ans.reliability_score || 0.85) * 100);
+      document.getElementById('out-answer').textContent = ans.answer;
+      document.getElementById('out-answer-badge').textContent =
+        `Most Reliable Source: ${ans.source_domain} (${topTrustPct}% Trust)`;
       document.getElementById('out-answer-meta').textContent =
-        `Source: ${data.direct_answer.source_domain} | Confidence Score: ${data.direct_answer.confidence}`;
+        `Extracted from "${ans.source_title || ans.source_doc}" (${ans.source_domain})`;
 
-      // Render Tab 1: Split-Half Front + Clean 3-Score Back Vertical Flip Cards (Sorted by Trust Descending)
+      // Render Tab 1: Split-Half Front + Clean 3-Score Back Vertical Flip Cards
       const tabResults = document.getElementById('tab-results');
       tabResults.innerHTML = '';
 
