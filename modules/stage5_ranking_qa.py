@@ -1,5 +1,4 @@
 import re
-import numpy as np
 
 try:
     from modules.stage3_retrieval import RetrievalEngine
@@ -9,17 +8,7 @@ except ImportError:
     from stage4_reliability import ReliabilityAnalyzer
 
 
-# =====================================================================
-# STAGE 5: HYBRID RANKING, QUESTION ANSWERING & IR EVALUATION
-# Syllabus Module 3/5 (Document Ranking & QA Systems)
-# Syllabus Module 4 (Evaluation: Precision, Recall, F1, Average Precision)
-# =====================================================================
 class HybridRankingQAEngine:
-    """
-    Combines IR relevance, reliability mining, hybrid ranking score calculation,
-    extractive question answering, and formal IR evaluation metrics.
-    """
-
     def __init__(self, documents: list, link_graph: dict):
         self.documents = documents
         self.retrieval_engine = RetrievalEngine(documents)
@@ -32,11 +21,6 @@ class HybridRankingQAEngine:
         alpha: float = 0.55,
         use_query_expansion: bool = True
     ) -> dict:
-        """
-        Executes the complete pipeline:
-        Query -> PRF Expansion -> BM25/VSM/Semantic -> PageRank/NB Reliability -> Hybrid Ranking -> QA -> Metrics.
-        """
-        # 1. Stage 3: Retrieval & Query Expansion
         retrieval_results, exp_meta = self.retrieval_engine.retrieve_all_models(
             query=query,
             user_interests=user_interests,
@@ -44,12 +28,9 @@ class HybridRankingQAEngine:
         )
         retrieval_map = {r["doc_id"]: r for r in retrieval_results}
 
-        # 2. Stage 4: Reliability & Authority Mining
         reliability_reports, clusters = self.reliability_analyzer.evaluate_all_documents()
         reliability_map = {r["doc_id"]: r for r in reliability_reports}
 
-        # 3. Stage 5: Hybrid Ranking Formula
-        # Final Score = alpha * (IR Relevance) + (1 - alpha) * (Reliability Score)
         hybrid_ranked_docs = []
         for doc in self.documents:
             doc_id = doc["id"]
@@ -59,11 +40,10 @@ class HybridRankingQAEngine:
             ir_score = float(rel_data["combined_relevance"])
             cred_score = float(cred_data["total_reliability"])
 
-            # Only rank documents that have some baseline relevance
             if ir_score > 0.01:
                 hybrid_score = (alpha * ir_score) + ((1.0 - alpha) * cred_score)
             else:
-                hybrid_score = 0.0
+                hybrid_score = (0.2 * ir_score) + (0.8 * cred_score)
 
             hybrid_ranked_docs.append({
                 "doc": doc,
@@ -74,20 +54,21 @@ class HybridRankingQAEngine:
                 "reliability_details": cred_data
             })
 
-        # Sort descending by hybrid score
-        hybrid_ranked_docs.sort(key=lambda x: x["hybrid_score"], reverse=True)
+        # Sort primarily by Reliability Score (Descending), breaking ties with Hybrid Score
+        hybrid_ranked_docs.sort(
+            key=lambda x: (x["reliability_score"], x["hybrid_score"]),
+            reverse=True
+        )
 
-        # Also sort by BM25 only (for baseline comparison)
         standard_ranked_docs = sorted(
             hybrid_ranked_docs,
             key=lambda x: x["retrieval_details"]["bm25"],
             reverse=True
         )
 
-        # 4. Module 5: Extractive Question Answering (QA) on top result
-        top_answer = self._extract_answer(hybrid_ranked_docs, query)
+        # Extract Answer ONLY from the #1 Most Reliable Source
+        top_answer = self._extract_answer_from_most_reliable(hybrid_ranked_docs, query)
 
-        # 5. Module 4: Performance Evaluation Metrics (Precision, Recall, F1, AP)
         standard_metrics = self._evaluate_metrics(standard_ranked_docs, k=3)
         hybrid_metrics = self._evaluate_metrics(hybrid_ranked_docs, k=3)
 
@@ -104,21 +85,30 @@ class HybridRankingQAEngine:
         }
 
     @staticmethod
-    def _extract_answer(ranked_docs: list, query: str) -> dict:
-        """Module 5: Question Answering System (Extracts sentence answering query from top document)."""
+    def _extract_answer_from_most_reliable(ranked_docs: list, query: str) -> dict:
+        """
+        Extracts the best-matching sentence STRICTLY from the #1 most reliable
+        (highest trust score) document that matches the query.
+        """
         if not ranked_docs:
-            return {"answer": "No relevant documents found.", "source": "None"}
+            return {"answer": "No reliable documents found.", "source": "None"}
 
-        top_item = ranked_docs[0]
-        doc = top_item["doc"]
+        # Filter to the highest reliability tier and pick #1
+        most_reliable_item = max(
+            ranked_docs,
+            key=lambda x: (x["reliability_score"], x["relevance_score"])
+        )
+        doc = most_reliable_item["doc"]
         full_text = f"{doc.get('title', '')}. {doc.get('text', '')}"
         sentences = re.split(r'(?<=[.!?])\s+', full_text)
 
         query_terms = set(re.findall(r'\b[a-z]{3,}\b', query.lower()))
-        best_sentence = sentences[0] if sentences else full_text
+        best_sentence = doc.get("text", full_text)
         max_overlap = -1
 
         for sent in sentences:
+            if len(sent.strip()) < 20:
+                continue
             sent_terms = set(re.findall(r'\b[a-z]{3,}\b', sent.lower()))
             overlap = len(query_terms.intersection(sent_terms))
             if overlap > max_overlap:
@@ -128,14 +118,15 @@ class HybridRankingQAEngine:
         return {
             "answer": best_sentence.strip(),
             "source_doc": doc["id"],
+            "source_title": doc.get("title", "Verified Document"),
             "source_domain": doc.get("source", "unknown"),
             "url": doc.get("url", "#"),
-            "confidence": top_item["hybrid_score"]
+            "reliability_score": most_reliable_item["reliability_score"],
+            "confidence": most_reliable_item["hybrid_score"]
         }
 
     @staticmethod
     def _evaluate_metrics(ranked_docs: list, k: int = 3) -> dict:
-        """Module 4: Evaluation of IR Systems (Precision@K, Recall@K, F1, Average Precision)."""
         top_k = ranked_docs[:k]
         rel_retrieved = sum(1 for item in top_k if item["doc"].get("is_relevant", 0) == 1)
         total_relevant_in_corpus = sum(1 for item in ranked_docs if item["doc"].get("is_relevant", 0) == 1)
@@ -144,7 +135,6 @@ class HybridRankingQAEngine:
         recall = rel_retrieved / total_relevant_in_corpus if total_relevant_in_corpus > 0 else 0.0
         f1 = (2 * precision * recall) / (precision + recall) if (precision + recall) > 0 else 0.0
 
-        # Average Precision (AP)
         hits = 0
         sum_prec = 0.0
         for rank, item in enumerate(ranked_docs, start=1):
@@ -159,47 +149,3 @@ class HybridRankingQAEngine:
             f"F1-Score@{k}": round(f1, 3),
             "Average Precision (AP)": round(ap, 3)
         }
-
-
-# =====================================================================
-# QUICK TEST FOR STAGE 5 (CLI RUNNER)
-# =====================================================================
-if __name__ == "__main__":
-    try:
-        from modules.stage1_ingestion_crawler import WebAndSocialCrawler
-    except ImportError:
-        from stage1_ingestion_crawler import WebAndSocialCrawler
-
-    print("=== STAGE 5: HYBRID RANKING, QA & EVALUATION METRICS TEST ===")
-    crawler = WebAndSocialCrawler()
-    docs, link_graph = crawler.crawl_and_collect("merit scholarship admission")
-
-    engine = HybridRankingQAEngine(docs, link_graph)
-    sample_query = "merit scholarship university admission"
-    user_profile = ["undergraduate", "official", "financial"]
-
-    output = engine.execute_search_pipeline(
-        query=sample_query,
-        user_interests=user_profile,
-        alpha=0.55,
-        use_query_expansion=True
-    )
-
-    print(f"\n[Query Expansion]: Original: '{output['query_metadata']['original_query']}'")
-    print(f"                 Expanded: '{output['query_metadata']['expanded_query']}'")
-    print(f"\n[Question Answering System]:")
-    print(f"  Answer : {output['extracted_answer']['answer']}")
-    print(f"  Source : {output['extracted_answer']['source_domain']} ({output['extracted_answer']['source_doc']})")
-
-    print(f"\n[Evaluation Comparison (Top K=3)]:")
-    print(f"  Standard BM25 Only   : {output['evaluation']['standard_bm25']}")
-    print(f"  Credence Hybrid IR   : {output['evaluation']['credence_hybrid']}")
-
-    print(f"\n--- CREDENCE HYBRID RANKED RESULTS TABLE ---")
-    print(f"{'Rank':<4} | {'ID':<6} | {'Hybrid':<7} | {'Relev.':<7} | {'Reliab.':<8} | {'Source':<20} | {'Title'}")
-    print("-" * 92)
-    for r, item in enumerate(output["hybrid_ranking"], 1):
-        doc = item["doc"]
-        print(f"{r:<4} | {doc['id']:<6} | {item['hybrid_score']:<7} | "
-              f"{item['relevance_score']:<7} | {item['reliability_score']:<8} | "
-              f"{doc['source']:<20} | {doc['title'][:32]}")
