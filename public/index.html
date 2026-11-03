@@ -8,7 +8,69 @@
   <style>
     body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }
     .fade-in { animation: fadeIn 0.35s ease-in-out; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* =================================================================
+       3D POP-UP + MOTION-BLUR FLIP CARD ANIMATION
+       ================================================================= */
+    .flip-card-scene {
+      perspective: 1200px;
+      height: 350px;
+    }
+
+    /* Stage 1: Pop-up lift wrapper */
+    .flip-card-lift {
+      width: 100%;
+      height: 100%;
+      transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1),
+                  box-shadow 0.25s ease;
+      border-radius: 1.5rem;
+    }
+
+    .flip-card-scene:hover .flip-card-lift {
+      transform: translateY(-12px) scale(1.03);
+      box-shadow: 0 22px 40px -12px rgba(30, 64, 175, 0.22);
+    }
+
+    /* Stage 2: 3D Flip inner container (starts right after the pop-up lift) */
+    .flip-card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+      transition: transform 0.65s cubic-bezier(0.22, 1, 0.36, 1) 0.11s;
+      will-change: transform, filter;
+    }
+
+    .flip-card-scene:hover .flip-card-inner {
+      transform: rotateY(180deg);
+      animation: flipMotionBlur 0.65s ease-in-out 0.11s;
+    }
+
+    /* Simulated motion blur peaking at 90-degree mid-spin */
+    @keyframes flipMotionBlur {
+      0%   { filter: blur(0px); }
+      45%  { filter: blur(2.6px) saturate(1.15); }
+      55%  { filter: blur(2.6px) saturate(1.15); }
+      100% { filter: blur(0px); }
+    }
+
+    .flip-card-front,
+    .flip-card-back {
+      position: absolute;
+      inset: 0;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      border-radius: 1.5rem;
+      overflow: hidden;
+    }
+
+    .flip-card-back {
+      transform: rotateY(180deg);
+    }
   </style>
 </head>
 <body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
@@ -28,7 +90,7 @@
       <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900">
         <span class="text-blue-600">Verify</span><span class="text-indigo-600">It</span>
       </h1>
-      <p class="text-sm text-slate-500 mt-2">Search with Confidence — Live Web Retrieval & Reliability Scoring</p>
+      <p class="text-sm text-slate-500 mt-2">Search with Confidence — Hover over any result card to flip & inspect IR diagnostics</p>
     </div>
 
     <!-- GOOGLE-STYLE SEARCH BAR -->
@@ -40,7 +102,7 @@
         <input
           id="query-input"
           type="text"
-          placeholder="Search anything (e.g., Imran Rasheed JIIT, National Scholarship 2026)..."
+          placeholder="Search anything (e.g., Free Money, National Scholarship 2026)..."
           class="w-full bg-transparent focus:outline-none text-slate-800 text-base"
         />
         <!-- File Upload Trigger -->
@@ -80,8 +142,8 @@
     </div>
   </div>
 
-  <!-- 4. RESULTS SECTION (HIDDEN UNTIL FIRST SEARCH) -->
-  <main id="results-container" class="hidden max-w-5xl w-full mx-auto px-4 pb-16 fade-in">
+  <!-- 4. RESULTS SECTION -->
+  <main id="results-container" class="hidden max-w-6xl w-full mx-auto px-4 pb-16 pt-4 fade-in">
     
     <!-- Quick Summary & Direct Answer Box -->
     <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-200/80 mb-6">
@@ -103,16 +165,19 @@
     </div>
 
     <!-- SHORT CLEAN NAVIGATION TABS -->
-    <div class="flex border-b border-slate-200 mb-6 gap-6 text-sm font-medium text-slate-500 overflow-x-auto">
-      <button onclick="switchTab('tab-results')" id="btn-tab-results" class="tab-btn pb-3 border-b-2 border-blue-600 text-blue-600 whitespace-nowrap">Search Results</button>
-      <button onclick="switchTab('tab-trust')" id="btn-tab-trust" class="tab-btn pb-3 border-b-2 border-transparent hover:text-slate-800 whitespace-nowrap">Trust Breakdown</button>
-      <button onclick="switchTab('tab-compare')" id="btn-tab-compare" class="tab-btn pb-3 border-b-2 border-transparent hover:text-slate-800 whitespace-nowrap">Keyword Compare</button>
-      <button onclick="switchTab('tab-index')" id="btn-tab-index" class="tab-btn pb-3 border-b-2 border-transparent hover:text-slate-800 whitespace-nowrap">Index View</button>
-      <button onclick="switchTab('tab-metrics')" id="btn-tab-metrics" class="tab-btn pb-3 border-b-2 border-transparent hover:text-slate-800 whitespace-nowrap">Accuracy Metrics</button>
+    <div class="flex items-center justify-between border-b border-slate-200 mb-6">
+      <div class="flex gap-6 text-sm font-medium text-slate-500 overflow-x-auto">
+        <button onclick="switchTab('tab-results')" id="btn-tab-results" class="tab-btn pb-3 border-b-2 border-blue-600 text-blue-600 whitespace-nowrap">Search Results</button>
+        <button onclick="switchTab('tab-trust')" id="btn-tab-trust" class="tab-btn pb-3 border-b-2 border-transparent hover:text-slate-800 whitespace-nowrap">Trust Breakdown</button>
+        <button onclick="switchTab('tab-compare')" id="btn-tab-compare" class="tab-btn pb-3 border-b-2 border-transparent hover:text-slate-800 whitespace-nowrap">Keyword Compare</button>
+        <button onclick="switchTab('tab-index')" id="btn-tab-index" class="tab-btn pb-3 border-b-2 border-transparent hover:text-slate-800 whitespace-nowrap">Index View</button>
+        <button onclick="switchTab('tab-metrics')" id="btn-tab-metrics" class="tab-btn pb-3 border-b-2 border-transparent hover:text-slate-800 whitespace-nowrap">Accuracy Metrics</button>
+      </div>
+      <span class="hidden md:inline-block text-xs text-slate-400 pb-2">✨ Hover any card to pop-up & flip</span>
     </div>
 
-    <!-- TAB 1: SEARCH RESULTS -->
-    <div id="tab-results" class="tab-pane space-y-4"></div>
+    <!-- TAB 1: VERTICAL 3D FLIP CARDS GRID -->
+    <div id="tab-results" class="tab-pane grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7 pt-2"></div>
 
     <!-- TAB 2: TRUST BREAKDOWN -->
     <div id="tab-trust" class="tab-pane hidden bg-white rounded-2xl p-5 border border-slate-200 overflow-x-auto">
@@ -166,7 +231,6 @@
   </main>
 
   <script>
-    // Hide boot splash after 700ms
     window.addEventListener('DOMContentLoaded', () => {
       setTimeout(() => {
         const boot = document.getElementById('boot-loader');
@@ -207,13 +271,11 @@
       const query = document.getElementById('query-input').value.trim();
       if (!query && fileInput.files.length === 0) return;
 
-      // Dock search bar to top like Google
       const wrapper = document.getElementById('app-wrapper');
       wrapper.classList.remove('flex-1', 'justify-center');
       wrapper.classList.add('pt-6', 'pb-4', 'border-b', 'border-slate-200', 'bg-white');
       document.getElementById('brand-header').classList.add('mb-3');
 
-      // Show animated step loader
       const loader = document.getElementById('search-loader');
       const resultsBox = document.getElementById('results-container');
       resultsBox.classList.add('hidden');
@@ -264,33 +326,150 @@
       document.getElementById('out-answer-meta').textContent =
         `Source: ${data.direct_answer.source_domain} | Confidence Score: ${data.direct_answer.confidence}`;
 
-      // Render Tab 1: Search Results
+      // Render Tab 1: Vertical Rectangular 3D Flip Cards
       const tabResults = document.getElementById('tab-results');
       tabResults.innerHTML = '';
       data.hybrid_results.forEach((item, idx) => {
         const d = item.doc;
+        const ret = item.retrieval_details;
+        const rel = item.reliability_details;
+
         const trustPct = Math.round(item.reliability_score * 100);
+        const relvPct = Math.round(item.relevance_score * 100);
+        const hybridPct = Math.round(item.hybrid_score * 100);
+
         const badgeColor = trustPct >= 70
           ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
           : trustPct >= 45
           ? 'bg-amber-50 text-amber-700 border-amber-200'
           : 'bg-rose-50 text-rose-700 border-rose-200';
-        const badgeLabel = trustPct >= 70 ? 'Verified / High Trust' : trustPct >= 45 ? 'Moderate Trust' : 'Low Trust / Clickbait Risk';
+        const barColor = trustPct >= 70 ? 'bg-emerald-500' : trustPct >= 45 ? 'bg-amber-500' : 'bg-rose-500';
+        const badgeLabel = trustPct >= 70 ? 'Verified Trust' : trustPct >= 45 ? 'Moderate Trust' : 'Clickbait Risk';
 
         tabResults.innerHTML += `
-          <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200/80 hover:border-blue-300 transition">
-            <div class="flex flex-wrap items-center justify-between gap-2 mb-1">
-              <span class="text-xs font-medium text-slate-400">#${idx + 1} • ${d.source} • ${d.date}</span>
-              <span class="text-xs font-semibold px-2.5 py-0.5 rounded-full border ${badgeColor}">
-                ${badgeLabel} (${trustPct}%)
-              </span>
-            </div>
-            <a href="${d.url || '#'}" target="_blank" class="text-lg font-semibold text-blue-600 hover:underline block">${d.title}</a>
-            <p class="text-sm text-slate-600 mt-1.5 leading-relaxed">${d.text}</p>
-            <div class="flex flex-wrap gap-4 mt-3 pt-3 border-t border-slate-100 text-xs text-slate-500">
-              <span><strong>Overall Score:</strong> ${item.hybrid_score}</span>
-              <span><strong>Relevance:</strong> ${item.relevance_score}</span>
-              <span><strong>Trust Score:</strong> ${item.reliability_score}</span>
+          <div class="flip-card-scene">
+            <div class="flip-card-lift">
+              <div class="flip-card-inner">
+                
+                <!-- FRONT FACE: Clean Vertical Content Card -->
+                <div class="flip-card-front bg-white border border-slate-200/90 p-5 flex flex-col justify-between shadow-sm">
+                  <div>
+                    <div class="flex items-center justify-between gap-2 mb-3">
+                      <span class="w-7 h-7 rounded-full bg-blue-600 text-white text-xs font-bold flex items-center justify-center shrink-0">
+                        #${idx + 1}
+                      </span>
+                      <span class="text-[11px] font-semibold px-2.5 py-0.5 rounded-full border ${badgeColor}">
+                        ${badgeLabel} • ${trustPct}%
+                      </span>
+                    </div>
+
+                    <div class="text-xs font-medium text-slate-400 truncate mb-1">
+                      🌐 ${d.source} • ${d.date}
+                    </div>
+
+                    <h3 class="text-base font-bold text-slate-900 line-clamp-2 leading-snug mb-2">
+                      ${d.title}
+                    </h3>
+
+                    <p class="text-xs text-slate-600 line-clamp-5 leading-relaxed">
+                      ${d.text}
+                    </p>
+                  </div>
+
+                  <div class="pt-3 border-t border-slate-100">
+                    <div class="flex items-center justify-between text-xs mb-1.5">
+                      <span class="font-semibold text-slate-700">Hybrid Score</span>
+                      <span class="font-bold text-blue-600">${item.hybrid_score} (${hybridPct}%)</span>
+                    </div>
+                    <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
+                      <div class="${barColor} h-full rounded-full" style="width: ${Math.min(100, Math.max(8, hybridPct))}%"></div>
+                    </div>
+                    <div class="text-[11px] text-slate-400 text-center mt-2">
+                      Hover to flip for IR & Trust metrics ↻
+                    </div>
+                  </div>
+                </div>
+
+                <!-- BACK FACE: Deep IR & Reliability Diagnostics -->
+                <div class="flip-card-back bg-slate-900 text-slate-100 p-5 flex flex-col justify-between border border-slate-700 shadow-xl">
+                  <div>
+                    <div class="flex items-center justify-between border-b border-slate-700/80 pb-2.5 mb-3">
+                      <div>
+                        <span class="text-[10px] uppercase tracking-wider text-blue-400 font-bold block">IR & Trust Diagnostics</span>
+                        <span class="text-xs font-semibold text-white truncate block max-w-[170px]">${d.source}</span>
+                      </div>
+                      <span class="text-xs bg-blue-600/30 text-blue-300 border border-blue-500/40 px-2 py-0.5 rounded-md font-mono">
+                        ${d.id}
+                      </span>
+                    </div>
+
+                    <!-- IR Relevance Metrics -->
+                    <div class="mb-3">
+                      <div class="flex justify-between text-[11px] text-slate-300 mb-1">
+                        <span>IR Relevance (${relvPct}%)</span>
+                        <span class="font-mono text-blue-400">${item.relevance_score}</span>
+                      </div>
+                      <div class="grid grid-cols-3 gap-1.5 text-center bg-slate-800/90 p-2 rounded-xl border border-slate-700/60 text-[11px]">
+                        <div>
+                          <span class="text-slate-400 block text-[10px]">BM25</span>
+                          <span class="font-mono font-semibold text-white">${ret.bm25}</span>
+                        </div>
+                        <div>
+                          <span class="text-slate-400 block text-[10px]">TF-IDF</span>
+                          <span class="font-mono font-semibold text-white">${ret.vsm_tfidf}</span>
+                        </div>
+                        <div>
+                          <span class="text-slate-400 block text-[10px]">Semantic</span>
+                          <span class="font-mono font-semibold text-white">${ret.semantic_score}</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Reliability Breakdown -->
+                    <div>
+                      <div class="flex justify-between text-[11px] text-slate-300 mb-1">
+                        <span>Reliability Indicators (${trustPct}%)</span>
+                        <span class="font-mono text-emerald-400">${item.reliability_score}</span>
+                      </div>
+                      <div class="grid grid-cols-2 gap-1.5 bg-slate-800/90 p-2.5 rounded-xl border border-slate-700/60 text-[11px]">
+                        <div class="flex justify-between">
+                          <span class="text-slate-400">PageRank:</span>
+                          <span class="font-mono text-white">${rel.pagerank}</span>
+                        </div>
+                        <div class="flex justify-between">
+                          <span class="text-slate-400">HITS Auth:</span>
+                          <span class="font-mono text-white">${rel.hits_authority}</span>
+                        </div>
+                        <div class="flex justify-between">
+                          <span class="text-slate-400">NB Spam:</span>
+                          <span class="font-mono text-white">${rel.nb_trust_prob}</span>
+                        </div>
+                        <div class="flex justify-between">
+                          <span class="text-slate-400">Consensus:</span>
+                          <span class="font-mono text-white">${rel.claim_consensus}</span>
+                        </div>
+                        <div class="flex justify-between">
+                          <span class="text-slate-400">Recency:</span>
+                          <span class="font-mono text-white">${rel.recency_score}</span>
+                        </div>
+                        <div class="flex justify-between">
+                          <span class="text-slate-400">Cluster:</span>
+                          <span class="font-mono text-blue-300">#${rel.cluster_id}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <a
+                    href="${d.url || '#'}"
+                    target="_blank"
+                    class="w-full bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold py-2 rounded-xl text-center transition block"
+                  >
+                    Open Source Page ↗
+                  </a>
+                </div>
+
+              </div>
             </div>
           </div>
         `;
