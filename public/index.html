@@ -22,7 +22,7 @@
       background: #0f172a;
       color: #ffffff;
       border-radius: 9999px;
-      padding: 0.55rem 1.4rem;
+      padding: 0.55rem 1.35rem;
       font-size: 0.875rem;
       font-weight: 600;
       isolation: isolate;
@@ -75,7 +75,19 @@
     }
 
     /* =================================================================
-       2. THREE PULSING DOTS FOR SEQUENTIAL SOURCE VISITING
+       2. ROTATING '+' ATTACHMENT BUTTON & POPOVER MENU
+       ================================================================= */
+    .plus-toggle-btn {
+      transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.2s ease, color 0.2s ease;
+    }
+    .plus-toggle-btn.is-open {
+      transform: rotate(45deg);
+      background-color: #eff6ff;
+      color: #2563eb;
+    }
+
+    /* =================================================================
+       3. THREE PULSING DOTS FOR SEQUENTIAL SOURCE VISITING
        ================================================================= */
     .visiting-dots {
       display: inline-flex;
@@ -98,11 +110,13 @@
     }
 
     /* =================================================================
-       3. 3D POP-UP + MOTION-BLUR FLIP CARD
+       4. 3D POP-UP + MOTION-BLUR FLIP CARD (FIXED FOR MOBILE & DESKTOP)
        ================================================================= */
     .flip-card-scene {
       perspective: 1400px;
       height: 360px;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
     }
 
     .flip-card-lift {
@@ -114,10 +128,35 @@
       will-change: transform, filter;
     }
 
-    .flip-card-scene:hover .flip-card-lift {
-      transform: translateY(-12px) scale(1.03);
+    .flip-card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+      -webkit-transform-style: preserve-3d;
+      transition: transform 0.62s cubic-bezier(0.22, 1, 0.36, 1) 0.08s;
+    }
+
+    /* Desktop devices with a real mouse hover automatically */
+    @media (hover: hover) and (pointer: fine) {
+      .flip-card-scene:hover .flip-card-lift {
+        transform: translateY(-12px) scale(1.03);
+        box-shadow: 0 24px 44px -12px rgba(30, 64, 175, 0.24);
+        animation: flipMotionBlur 0.62s ease-in-out 0.08s;
+      }
+      .flip-card-scene:hover .flip-card-inner {
+        transform: rotateY(180deg);
+      }
+    }
+
+    /* Mobile / Touch / Click explicitly controlled via .is-flipped class */
+    .flip-card-scene.is-flipped .flip-card-lift {
+      transform: translateY(-10px) scale(1.02);
       box-shadow: 0 24px 44px -12px rgba(30, 64, 175, 0.24);
-      animation: flipMotionBlur 0.62s ease-in-out 0.10s;
+      animation: flipMotionBlur 0.62s ease-in-out;
+    }
+    .flip-card-scene.is-flipped .flip-card-inner {
+      transform: rotateY(180deg);
     }
 
     @keyframes flipMotionBlur {
@@ -125,19 +164,6 @@
       45%  { filter: blur(2.2px); }
       55%  { filter: blur(2.2px); }
       100% { filter: blur(0px); }
-    }
-
-    .flip-card-inner {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      transform-style: preserve-3d;
-      -webkit-transform-style: preserve-3d;
-      transition: transform 0.62s cubic-bezier(0.22, 1, 0.36, 1) 0.10s;
-    }
-
-    .flip-card-scene:hover .flip-card-inner {
-      transform: rotateY(180deg);
     }
 
     .flip-card-front,
@@ -162,7 +188,7 @@
     }
   </style>
 </head>
-<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
+<body class="bg-slate-50 text-slate-800 min-h-screen flex">
 
   <!-- 1. INITIAL BOOT SPLASH LOADER -->
   <div id="boot-loader" class="fixed inset-0 bg-white z-50 flex flex-col items-center justify-center transition-opacity duration-500">
@@ -171,203 +197,382 @@
     <p class="text-sm text-slate-500 mt-1">Initializing Search & Trust Engine...</p>
   </div>
 
-  <!-- 2. MAIN SEARCH BAR CONTAINER -->
-  <div id="app-wrapper" class="flex-1 flex flex-col justify-center items-center px-4 transition-all duration-300">
-    
-    <!-- BRAND HEADER -->
-    <div id="brand-header" class="text-center mb-6">
-      <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900">
-        <span class="text-blue-600">Verify</span><span class="text-indigo-600">It</span>
-      </h1>
-      <p class="text-sm text-slate-500 mt-2">Search with Confidence — Sorted by Verified Source Trust</p>
-    </div>
+  <!-- MOBILE SIDEBAR BACKDROP -->
+  <div id="sidebar-backdrop" onclick="toggleMobileSidebar()" class="fixed inset-0 bg-slate-900/40 z-30 hidden md:hidden"></div>
 
-    <!-- DYNAMIC AUTO-EXPANDING GOOGLE-STYLE SEARCH BAR -->
-    <form id="search-form" class="w-full max-w-2xl">
-      <div class="flex items-end bg-white border border-slate-200 hover:border-slate-300 focus-within:border-blue-500 focus-within:ring-4 focus-within:ring-blue-100 rounded-3xl pl-5 pr-2.5 py-2.5 shadow-sm transition-all">
-        <svg class="w-5 h-5 text-slate-400 mr-3 mb-2 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-        </svg>
-
-        <!-- Auto-Growing Textarea for Short Queries OR Pasted Paragraphs -->
-        <textarea
-          id="query-input"
-          rows="1"
-          placeholder="Search anything or paste a long paragraph/claim to verify..."
-          class="w-full bg-transparent focus:outline-none text-slate-800 text-base py-1 resize-none max-h-44 overflow-y-auto leading-relaxed"
-        ></textarea>
-
-        <!-- File Upload Trigger -->
-        <label for="file-input" class="cursor-pointer text-slate-400 hover:text-blue-600 mx-2.5 mb-2 shrink-0" title="Upload File (TXT, PDF, DOCX, XML)">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"/>
-          </svg>
-        </label>
-        <input id="file-input" type="file" accept=".txt,.pdf,.docx,.xml" class="hidden" />
-
-        <!-- GOOGLE AI MODE CURSOR-FOLLOWING GLOW SEARCH BUTTON -->
-        <button id="search-btn" type="submit" class="ai-glow-btn shrink-0 flex items-center gap-1.5 cursor-pointer mb-0.5">
-          <svg class="w-3.5 h-3.5 text-sky-300" fill="currentColor" viewBox="0 0 20 20">
-            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-          </svg>
-          <span>Search</span>
-        </button>
-      </div>
-
-      <!-- Subtle Controls Row -->
-      <div class="flex flex-wrap items-center justify-center gap-4 mt-3 text-xs text-slate-500">
-        <span id="file-badge" class="hidden bg-blue-50 text-blue-700 px-2.5 py-1 rounded-full font-medium"></span>
-        <label class="flex items-center gap-1.5 cursor-pointer">
-          <span>Trust Weight:</span>
-          <input id="alpha-slider" type="range" min="0" max="1" step="0.05" value="0.50" class="w-20 accent-blue-600" />
-          <span id="alpha-label" class="font-semibold text-slate-700">50%</span>
-        </label>
-        <label class="flex items-center gap-1 cursor-pointer">
-          <input id="prf-check" type="checkbox" checked class="accent-blue-600 rounded" />
-          <span>Smart Query Expansion</span>
-        </label>
-      </div>
-    </form>
-  </div>
-
-  <!-- 3. WORKSPACE AREA -->
-  <main id="workspace-container" class="hidden max-w-6xl w-full mx-auto px-4 pb-16 pt-4">
-    
-    <!-- GOOGLE-STYLE "DID YOU MEAN?" SUGGESTED QUERY BANNER -->
-    <div id="did-you-mean-box" class="hidden mb-3 px-1 text-sm text-slate-600">
-      <span class="text-rose-600 font-medium">Did you mean:</span>
-      <button id="did-you-mean-btn" type="button" class="text-blue-600 font-bold italic hover:underline ml-1 cursor-pointer"></button>
-    </div>
-
-    <!-- Processed Query + Stemming / Lemmatization Breakdown Bar -->
-    <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200/80 mb-3 space-y-2 text-xs text-slate-500">
-      <div class="flex flex-wrap items-center justify-between gap-2">
-        <div>
-          <span class="font-semibold text-slate-700">Formulated Query:</span>
-          <span id="out-active-query" class="bg-slate-100 px-2.5 py-1 rounded-md text-slate-800 font-medium ml-1"></span>
-        </div>
-        <div>
-          <span class="font-semibold text-slate-700">Expanded Terms:</span>
-          <span id="out-expanded-terms" class="text-blue-600 font-medium ml-1"></span>
-        </div>
-      </div>
-
-      <!-- Stemming & Lemmatization Pills -->
-      <div class="flex flex-wrap items-center gap-4 pt-2 border-t border-slate-100">
-        <div>
-          <span class="font-semibold text-slate-700">Lemmatized:</span>
-          <span id="out-lemmas" class="font-mono text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded ml-1"></span>
-        </div>
-        <div>
-          <span class="font-semibold text-slate-700">Stemmed Roots:</span>
-          <span id="out-stems" class="font-mono text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded ml-1"></span>
-        </div>
-      </div>
-    </div>
-
-    <!-- SEQUENTIAL 3-DOT SOURCE VISITING PANEL -->
-    <div id="deep-research-box" class="bg-white border border-slate-200/90 rounded-2xl p-4 mb-3 shadow-sm transition-all">
-      <div class="flex items-center justify-between">
-        <div class="flex items-center gap-2">
-          <span id="research-status-title" class="text-xs font-semibold text-slate-700">
-            Visiting & verifying sources
+  <!-- 2. GEMINI-STYLE COLLAPSIBLE LEFT SIDEBAR -->
+  <aside id="gemini-sidebar" class="fixed md:static inset-y-0 left-0 z-40 w-64 bg-slate-100/95 backdrop-blur border-r border-slate-200/90 flex flex-col justify-between transition-all duration-300 -translate-x-full md:translate-x-0 shrink-0">
+    <div>
+      <!-- Top Hamburger & Brand -->
+      <div class="flex items-center justify-between px-4 py-4 border-b border-slate-200/70">
+        <div class="flex items-center gap-2.5 overflow-hidden">
+          <button onclick="toggleDesktopSidebar()" class="p-2 rounded-full hover:bg-slate-200/80 text-slate-600 transition shrink-0" title="Collapse/Expand Menu">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+            </svg>
+          </button>
+          <span class="sidebar-label font-extrabold text-lg tracking-tight text-slate-900 whitespace-nowrap">
+            <span class="text-blue-600">Verify</span><span class="text-indigo-600">It</span>
           </span>
-          <div id="header-visiting-dots" class="visiting-dots">
-            <span></span><span></span><span></span>
+        </div>
+        <!-- Mobile Close Button -->
+        <button onclick="toggleMobileSidebar()" class="md:hidden p-1.5 rounded-lg text-slate-500 hover:bg-slate-200">✕</button>
+      </div>
+
+      <!-- Navigation Views (Gemini Style) -->
+      <div class="px-3 py-4">
+        <div class="sidebar-label text-[11px] font-bold uppercase tracking-wider text-slate-400 px-3 mb-2">
+          Workspace Views
+        </div>
+        <nav class="space-y-1">
+          <button onclick="switchTab('tab-results')" id="btn-tab-results" class="tab-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium bg-blue-100/80 text-blue-700 transition">
+            <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>
+            </svg>
+            <span class="sidebar-label whitespace-nowrap">Search Results</span>
+          </button>
+
+          <button onclick="switchTab('tab-trust')" id="btn-tab-trust" class="tab-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-200/70 transition">
+            <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+            </svg>
+            <span class="sidebar-label whitespace-nowrap">Trust Breakdown</span>
+          </button>
+
+          <button onclick="switchTab('tab-compare')" id="btn-tab-compare" class="tab-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-200/70 transition">
+            <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/>
+            </svg>
+            <span class="sidebar-label whitespace-nowrap">Keyword Compare</span>
+          </button>
+
+          <button onclick="switchTab('tab-index')" id="btn-tab-index" class="tab-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-200/70 transition">
+            <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4"/>
+            </svg>
+            <span class="sidebar-label whitespace-nowrap">Index View</span>
+          </button>
+
+          <button onclick="switchTab('tab-metrics')" id="btn-tab-metrics" class="tab-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-200/70 transition">
+            <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+            </svg>
+            <span class="sidebar-label whitespace-nowrap">Accuracy Metrics</span>
+          </button>
+        </nav>
+      </div>
+    </div>
+
+    <div class="p-4 border-t border-slate-200/80 text-xs text-slate-400 sidebar-label">
+      Verify It • Hybrid IR & Trust Engine
+    </div>
+  </aside>
+
+  <!-- 3. RIGHT MAIN CONTENT AREA -->
+  <div class="flex-1 flex flex-col min-w-0 min-h-screen">
+
+    <!-- Mobile Top Bar Trigger -->
+    <div class="md:hidden flex items-center justify-between bg-white px-4 py-3 border-b border-slate-200">
+      <button onclick="toggleMobileSidebar()" class="p-2 rounded-lg text-slate-600 hover:bg-slate-100">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </button>
+      <span class="font-extrabold text-lg"><span class="text-blue-600">Verify</span><span class="text-indigo-600">It</span></span>
+      <div class="w-8"></div>
+    </div>
+
+    <!-- SEARCH BAR WRAPPER -->
+    <div id="app-wrapper" class="flex-1 flex flex-col justify-center items-center px-4 transition-all duration-300">
+      
+      <!-- BRAND HEADER -->
+      <div id="brand-header" class="text-center mb-6">
+        <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900">
+          <span class="text-blue-600">Verify</span><span class="text-indigo-600">It</span>
+        </h1>
+        <p class="text-sm text-slate-500 mt-2">Search with Confidence — Sorted by Verified Source Trust</p>
+      </div>
+
+      <!-- DYNAMIC AUTO-EXPANDING GOOGLE-STYLE SEARCH BAR -->
+      <form id="search-form" class="w-full max-w-2xl relative">
+        <div class="flex items-end bg-white border border-slate-200 hover:border-slate-300 focus-within:border-blue-500 focus-within:ring-4 focus-within:ring-blue-100 rounded-3xl pl-3 pr-2.5 py-2.5 shadow-sm transition-all">
+          
+          <!-- GOOGLE AI MODE '+' ROTATING ATTACHMENT MENU BUTTON -->
+          <div class="relative mr-2 mb-0.5 shrink-0">
+            <button
+              id="plus-menu-btn"
+              type="button"
+              onclick="togglePlusMenu(event)"
+              class="plus-toggle-btn w-9 h-9 rounded-full flex items-center justify-center text-slate-500 hover:bg-slate-100 cursor-pointer"
+              title="Add File or Image"
+            >
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M12 4v16m8-8H4"/>
+              </svg>
+            </button>
+
+            <!-- Popover Menu for '+', Rotates into 'x' when opened -->
+            <div
+              id="plus-dropdown-menu"
+              class="hidden absolute left-0 bottom-12 w-48 bg-white rounded-2xl shadow-xl border border-slate-200/90 py-2 z-50 fade-in"
+            >
+              <button type="button" onclick="triggerFilePicker('.png,.jpg,.jpeg,.webp', 'Image')" class="w-full flex items-center gap-3 px-4 py-2.5 text-xs font-medium text-slate-700 hover:bg-blue-50 hover:text-blue-600 transition">
+                <svg class="w-4 h-4 text-purple-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                </svg>
+                <span>Add Image</span>
+              </button>
+
+              <button type="button" onclick="triggerFilePicker('.txt', 'Text File')" class="w-full flex items-center gap-3 px-4 py-2.5 text-xs font-medium text-slate-700 hover:bg-blue-50 hover:text-blue-600 transition">
+                <svg class="w-4 h-4 text-blue-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                </svg>
+                <span>Add Text File</span>
+              </button>
+
+              <button type="button" onclick="triggerFilePicker('.pdf', 'PDF')" class="w-full flex items-center gap-3 px-4 py-2.5 text-xs font-medium text-slate-700 hover:bg-blue-50 hover:text-blue-600 transition">
+                <svg class="w-4 h-4 text-rose-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                </svg>
+                <span>Add Pdf</span>
+              </button>
+
+              <button type="button" onclick="triggerFilePicker('.docx,.xml,.csv,.md', 'Other File')" class="w-full flex items-center gap-3 px-4 py-2.5 text-xs font-medium text-slate-700 hover:bg-blue-50 hover:text-blue-600 transition">
+                <svg class="w-4 h-4 text-amber-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 19a2 2 0 01-2-2V7a2 2 0 012-2h4l2 2h4a2 2 0 012 2v1M5 19h14a2 2 0 002-2v-5a2 2 0 00-2-2H9a2 2 0 00-2 2v5a2 2 0 01-2 2z"/>
+                </svg>
+                <span>Others</span>
+              </button>
+            </div>
+          </div>
+
+          <input id="file-input" type="file" class="hidden" />
+
+          <!-- Auto-Growing Textarea -->
+          <textarea
+            id="query-input"
+            rows="1"
+            placeholder="Search anything or paste a long paragraph/claim to verify..."
+            class="w-full bg-transparent focus:outline-none text-slate-800 text-base py-1 resize-none max-h-44 overflow-y-auto leading-relaxed"
+          ></textarea>
+
+          <!-- GOOGLE AI MODE CURSOR-FOLLOWING GLOW SEARCH BUTTON -->
+          <button id="search-btn" type="submit" class="ai-glow-btn shrink-0 flex items-center gap-1.5 cursor-pointer ml-2 mb-0.5">
+            <svg class="w-3.5 h-3.5 text-sky-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+            </svg>
+            <span>Search</span>
+          </button>
+        </div>
+
+        <!-- TWO INDEPENDENT SLIDERS: TRUST WEIGHT & RELEVANCE WEIGHT -->
+        <div class="flex flex-wrap items-center justify-center gap-5 mt-3.5 text-xs text-slate-600">
+          <span id="file-badge" class="hidden bg-blue-50 text-blue-700 border border-blue-200 px-2.5 py-1 rounded-full font-medium"></span>
+
+          <label class="flex items-center gap-2 cursor-pointer bg-white px-3 py-1.5 rounded-full border border-slate-200 shadow-2xs">
+            <span class="font-medium text-emerald-700">Trust Weight:</span>
+            <input id="trust-slider" type="range" min="0" max="100" step="5" value="50" class="w-20 accent-emerald-600" />
+            <span id="trust-label" class="font-bold text-slate-800 w-8">50%</span>
+          </label>
+
+          <label class="flex items-center gap-2 cursor-pointer bg-white px-3 py-1.5 rounded-full border border-slate-200 shadow-2xs">
+            <span class="font-medium text-blue-700">Relevance Weight:</span>
+            <input id="relevance-slider" type="range" min="0" max="100" step="5" value="50" class="w-20 accent-blue-600" />
+            <span id="relevance-label" class="font-bold text-slate-800 w-8">50%</span>
+          </label>
+
+          <label class="flex items-center gap-1.5 cursor-pointer">
+            <input id="prf-check" type="checkbox" checked class="accent-blue-600 rounded" />
+            <span>Smart Query Expansion</span>
+          </label>
+        </div>
+      </form>
+    </div>
+
+    <!-- 4. WORKSPACE AREA -->
+    <main id="workspace-container" class="hidden max-w-6xl w-full mx-auto px-4 pb-16 pt-4">
+      
+      <!-- GOOGLE-STYLE "DID YOU MEAN?" SUGGESTED QUERY BANNER -->
+      <div id="did-you-mean-box" class="hidden mb-3 px-1 text-sm text-slate-600">
+        <span class="text-rose-600 font-medium">Did you mean:</span>
+        <button id="did-you-mean-btn" type="button" class="text-blue-600 font-bold italic hover:underline ml-1 cursor-pointer"></button>
+      </div>
+
+      <!-- Processed Query + Stemming / Lemmatization Breakdown Bar -->
+      <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200/80 mb-3 space-y-2 text-xs text-slate-500">
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <div>
+            <span class="font-semibold text-slate-700">Formulated Query:</span>
+            <span id="out-active-query" class="bg-slate-100 px-2.5 py-1 rounded-md text-slate-800 font-medium ml-1"></span>
+          </div>
+          <div>
+            <span class="font-semibold text-slate-700">Expanded Terms:</span>
+            <span id="out-expanded-terms" class="text-blue-600 font-medium ml-1"></span>
           </div>
         </div>
-        <button onclick="toggleResearchLinks()" class="text-xs text-blue-600 hover:underline font-medium">
-          Show/Hide Sources
-        </button>
-      </div>
-      <!-- Sequential Source Pills Container -->
-      <div id="research-links-stream" class="mt-3 flex flex-wrap gap-2"></div>
-    </div>
 
-    <!-- GOOGLE-STYLE SEARCH STATS LINE -->
-    <div id="google-stats-line" class="hidden text-xs text-slate-500 px-1 mb-4 font-medium"></div>
-
-    <!-- ACTUAL RESULTS WRAPPER -->
-    <div id="results-content" class="hidden fade-in">
-
-      <!-- Instant Answer Box (Strictly From #1 Most Reliable Source) -->
-      <div class="bg-emerald-50/70 border border-emerald-200 rounded-2xl p-4 mb-6 shadow-sm">
-        <div class="flex flex-wrap items-center justify-between gap-2 mb-1">
-          <span class="text-xs font-bold uppercase tracking-wider text-emerald-800">
-            ★ Top Verified Source Summary (Highest Trust Score)
-          </span>
-          <span id="out-answer-badge" class="text-xs font-semibold bg-emerald-100 text-emerald-800 px-2.5 py-0.5 rounded-full"></span>
-        </div>
-        <p id="out-answer" class="text-slate-800 text-sm md:text-base font-medium leading-relaxed"></p>
-        <div id="out-answer-meta" class="text-xs text-slate-500 mt-1.5"></div>
-      </div>
-
-      <!-- SHORT CLEAN NAVIGATION TABS -->
-      <div class="flex items-center justify-between border-b border-slate-200 mb-6">
-        <div class="flex gap-6 text-sm font-medium text-slate-500 overflow-x-auto">
-          <button onclick="switchTab('tab-results')" id="btn-tab-results" class="tab-btn pb-3 border-b-2 border-blue-600 text-blue-600 whitespace-nowrap">Search Results</button>
-          <button onclick="switchTab('tab-trust')" id="btn-tab-trust" class="tab-btn pb-3 border-b-2 border-transparent hover:text-slate-800 whitespace-nowrap">Trust Breakdown</button>
-          <button onclick="switchTab('tab-compare')" id="btn-tab-compare" class="tab-btn pb-3 border-b-2 border-transparent hover:text-slate-800 whitespace-nowrap">Keyword Compare</button>
-          <button onclick="switchTab('tab-index')" id="btn-tab-index" class="tab-btn pb-3 border-b-2 border-transparent hover:text-slate-800 whitespace-nowrap">Index View</button>
-          <button onclick="switchTab('tab-metrics')" id="btn-tab-metrics" class="tab-btn pb-3 border-b-2 border-transparent hover:text-slate-800 whitespace-nowrap">Accuracy Metrics</button>
-        </div>
-        <span class="hidden md:inline-block text-xs text-slate-400 pb-2">✨ Sorted by Trust (High → Low) • Hover card to flip</span>
-      </div>
-
-      <!-- TAB 1: VERTICAL 3D FLIP CARDS GRID -->
-      <div id="tab-results" class="tab-pane grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7 pt-2"></div>
-
-      <!-- TAB 2: TRUST BREAKDOWN -->
-      <div id="tab-trust" class="tab-pane hidden bg-white rounded-2xl p-5 border border-slate-200 overflow-x-auto">
-        <h3 class="text-base font-semibold mb-3">Source Trust & Pattern Scores (Descending Order)</h3>
-        <table class="w-full text-left text-sm">
-          <thead class="bg-slate-50 text-slate-600 text-xs uppercase">
-            <tr>
-              <th class="p-3">Source</th>
-              <th class="p-3">PageRank</th>
-              <th class="p-3">Authority</th>
-              <th class="p-3">Spam Filter</th>
-              <th class="p-3">Consensus</th>
-              <th class="p-3">Recency</th>
-              <th class="p-3">Trust Score</th>
-            </tr>
-          </thead>
-          <tbody id="trust-table-body" class="divide-y divide-slate-100"></tbody>
-        </table>
-      </div>
-
-      <!-- TAB 3: SIDE-BY-SIDE KEYWORD COMPARE -->
-      <div id="tab-compare" class="tab-pane hidden grid md:grid-cols-2 gap-6">
-        <div>
-          <h3 class="text-sm font-bold uppercase tracking-wider text-emerald-700 mb-3">Sorted by Trust Score (High → Low)</h3>
-          <div id="compare-hybrid" class="space-y-3"></div>
-        </div>
-        <div>
-          <h3 class="text-sm font-bold uppercase tracking-wider text-amber-700 mb-3">Standard Search (Keywords Only)</h3>
-          <div id="compare-standard" class="space-y-3"></div>
+        <div class="flex flex-wrap items-center gap-4 pt-2 border-t border-slate-100">
+          <div>
+            <span class="font-semibold text-slate-700">Lemmatized:</span>
+            <span id="out-lemmas" class="font-mono text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded ml-1"></span>
+          </div>
+          <div>
+            <span class="font-semibold text-slate-700">Stemmed Roots:</span>
+            <span id="out-stems" class="font-mono text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded ml-1"></span>
+          </div>
         </div>
       </div>
 
-      <!-- TAB 4: INDEX VIEW -->
-      <div id="tab-index" class="tab-pane hidden bg-white rounded-2xl p-5 border border-slate-200 space-y-3 text-sm">
-        <h3 class="text-base font-semibold">Term Index & Compression Preview</h3>
-        <p><strong>Root Term:</strong> <code id="idx-stem" class="bg-slate-100 px-2 py-0.5 rounded"></code></p>
-        <p><strong>Matched Documents:</strong> <code id="idx-inv" class="bg-slate-100 px-2 py-0.5 rounded"></code></p>
-        <p><strong>Compressed Gaps:</strong> <code id="idx-comp" class="bg-slate-100 px-2 py-0.5 rounded"></code></p>
-        <div>
-          <strong>Word Positions:</strong>
-          <pre id="idx-pos" class="bg-slate-900 text-slate-100 p-3 rounded-xl text-xs mt-1 overflow-x-auto"></pre>
+      <!-- SEQUENTIAL 3-DOT SOURCE VISITING PANEL -->
+      <div id="deep-research-box" class="bg-white border border-slate-200/90 rounded-2xl p-4 mb-3 shadow-sm transition-all">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span id="research-status-title" class="text-xs font-semibold text-slate-700">
+              Visiting & verifying sources
+            </span>
+            <div id="header-visiting-dots" class="visiting-dots">
+              <span></span><span></span><span></span>
+            </div>
+          </div>
+          <button onclick="toggleResearchLinks()" class="text-xs text-blue-600 hover:underline font-medium">
+            Show/Hide Sources
+          </button>
         </div>
+        <div id="research-links-stream" class="mt-3 flex flex-wrap gap-2"></div>
       </div>
 
-      <!-- TAB 5: ACCURACY METRICS -->
-      <div id="tab-metrics" class="tab-pane hidden bg-white rounded-2xl p-5 border border-slate-200">
-        <h3 class="text-base font-semibold mb-3">Retrieval Quality Comparison (Top 3 Results)</h3>
-        <div id="metrics-cards" class="grid md:grid-cols-2 gap-4"></div>
-      </div>
+      <!-- GOOGLE-STYLE SEARCH STATS LINE -->
+      <div id="google-stats-line" class="hidden text-xs text-slate-500 px-1 mb-4 font-medium"></div>
 
-    </div>
-  </main>
+      <!-- ACTUAL RESULTS WRAPPER -->
+      <div id="results-content" class="hidden fade-in">
+
+        <!-- TOP VERIFIED SOURCE SUMMARY + "WHY THIS SOURCE IS MOST RELIABLE" -->
+        <div class="bg-emerald-50/75 border border-emerald-200 rounded-2xl p-5 mb-6 shadow-sm">
+          <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+            <span class="text-xs font-bold uppercase tracking-wider text-emerald-800 flex items-center gap-1.5">
+              <span>★ Top Verified Source Summary (Highest Trust Score)</span>
+            </span>
+            <span id="out-answer-badge" class="text-xs font-semibold bg-emerald-100 text-emerald-800 px-3 py-0.5 rounded-full border border-emerald-200"></span>
+          </div>
+
+          <p id="out-answer" class="text-slate-800 text-sm md:text-base font-medium leading-relaxed"></p>
+          <div id="out-answer-meta" class="text-xs text-slate-500 mt-1.5"></div>
+
+          <!-- WHY IT IS MOST RELIABLE BOX -->
+          <div class="mt-3.5 pt-3 border-t border-emerald-200/80">
+            <div class="text-[11px] font-bold uppercase tracking-wider text-emerald-900 mb-1.5">
+              Why this source is ranked #1 most reliable out of all results:
+            </div>
+            <p id="out-why-reliable-text" class="text-xs text-emerald-950/90 leading-relaxed mb-2"></p>
+            <div id="out-why-reliable-pills" class="flex flex-wrap gap-2"></div>
+          </div>
+        </div>
+
+        <!-- ACTIVE VIEW HEADER -->
+        <div class="flex items-center justify-between mb-4 px-1">
+          <h2 id="current-view-title" class="text-base font-bold text-slate-800">Search Results (Sorted by Trust)</h2>
+          <span class="text-xs text-slate-400">✨ Tap or hover any card to flip • Tap outside to flip back</span>
+        </div>
+
+        <!-- TAB 1: VERTICAL 3D FLIP CARDS GRID -->
+        <div id="tab-results" class="tab-pane grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7 pt-1"></div>
+
+        <!-- TAB 2: TRUST BREAKDOWN -->
+        <div id="tab-trust" class="tab-pane hidden bg-white rounded-2xl p-5 border border-slate-200 overflow-x-auto">
+          <h3 class="text-base font-semibold mb-3">Source Trust & Pattern Scores (Descending Order)</h3>
+          <table class="w-full text-left text-sm">
+            <thead class="bg-slate-50 text-slate-600 text-xs uppercase">
+              <tr>
+                <th class="p-3">Source</th>
+                <th class="p-3">PageRank</th>
+                <th class="p-3">Authority</th>
+                <th class="p-3">Spam Filter</th>
+                <th class="p-3">Consensus</th>
+                <th class="p-3">Recency</th>
+                <th class="p-3">Trust Score</th>
+              </tr>
+            </thead>
+            <tbody id="trust-table-body" class="divide-y divide-slate-100"></tbody>
+          </table>
+        </div>
+
+        <!-- TAB 3: SIDE-BY-SIDE KEYWORD COMPARE -->
+        <div id="tab-compare" class="tab-pane hidden grid md:grid-cols-2 gap-6">
+          <div>
+            <h3 class="text-sm font-bold uppercase tracking-wider text-emerald-700 mb-3">Sorted by Trust Score (High → Low)</h3>
+            <div id="compare-hybrid" class="space-y-3"></div>
+          </div>
+          <div>
+            <h3 class="text-sm font-bold uppercase tracking-wider text-amber-700 mb-3">Standard Search (Keywords Only)</h3>
+            <div id="compare-standard" class="space-y-3"></div>
+          </div>
+        </div>
+
+        <!-- TAB 4: INDEX VIEW -->
+        <div id="tab-index" class="tab-pane hidden bg-white rounded-2xl p-5 border border-slate-200 space-y-3 text-sm">
+          <h3 class="text-base font-semibold">Term Index & Compression Preview</h3>
+          <p><strong>Root Term:</strong> <code id="idx-stem" class="bg-slate-100 px-2 py-0.5 rounded"></code></p>
+          <p><strong>Matched Documents:</strong> <code id="idx-inv" class="bg-slate-100 px-2 py-0.5 rounded"></code></p>
+          <p><strong>Compressed Gaps:</strong> <code id="idx-comp" class="bg-slate-100 px-2 py-0.5 rounded"></code></p>
+          <div>
+            <strong>Word Positions:</strong>
+            <pre id="idx-pos" class="bg-slate-900 text-slate-100 p-3 rounded-xl text-xs mt-1 overflow-x-auto"></pre>
+          </div>
+        </div>
+
+        <!-- TAB 5: ACCURACY METRICS -->
+        <div id="tab-metrics" class="tab-pane hidden bg-white rounded-2xl p-5 border border-slate-200">
+          <h3 class="text-base font-semibold mb-3">Retrieval Quality Comparison (Top 3 Results)</h3>
+          <div id="metrics-cards" class="grid md:grid-cols-2 gap-4"></div>
+        </div>
+
+        <!-- 5. GOOGLE GEMINI STYLE FEEDBACK BAR AT BOTTOM OF RESPONSE -->
+        <div class="mt-10 pt-4 border-t border-slate-200/80 flex flex-wrap items-center justify-between gap-3 text-xs text-slate-500">
+          <div class="flex items-center gap-2">
+            <span class="font-medium text-slate-600">Was this search & reliability verification helpful?</span>
+            <button
+              id="fb-up"
+              type="button"
+              onclick="submitGeminiFeedback('up')"
+              class="p-2 rounded-full hover:bg-slate-200/80 text-slate-600 transition cursor-pointer"
+              title="Good response"
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5"/>
+              </svg>
+            </button>
+            <button
+              id="fb-down"
+              type="button"
+              onclick="submitGeminiFeedback('down')"
+              class="p-2 rounded-full hover:bg-slate-200/80 text-slate-600 transition cursor-pointer"
+              title="Bad response"
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14H5.236a2 2 0 01-1.789-2.894l3.5-7A2 2 0 018.736 3h4.018a2 2 0 01.485.06l3.76.94m-7 10v5a2 2 0 002 2h.096c.5 0 .905-.405.905-.904 0-.715.211-1.413.608-2.008L17 13V4m-7 10h2m5-10h2a2 2 0 012 2v6a2 2 0 01-2 2h-2.5"/>
+              </svg>
+            </button>
+            <button
+              type="button"
+              onclick="copyVerifiedSummary()"
+              class="p-2 rounded-full hover:bg-slate-200/80 text-slate-600 transition cursor-pointer"
+              title="Copy verified answer"
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+              </svg>
+            </button>
+            <span id="feedback-toast" class="hidden text-emerald-700 bg-emerald-50 border border-emerald-200 px-3 py-1 rounded-full font-medium fade-in">
+              Thanks for your feedback!
+            </span>
+          </div>
+          <span class="text-[11px] text-slate-400">Verify It AI can make mistakes. Always verify important sources.</span>
+        </div>
+
+      </div>
+    </main>
+  </div>
 
   <script>
     // Hide initial splash loader
@@ -379,7 +584,114 @@
       }, 500);
     });
 
-    // Auto-expanding Textarea logic + Enter to submit (Shift+Enter for new line)
+    // =================================================================
+    // GEMINI SIDEBAR COLLAPSE / EXPAND LOGIC
+    // =================================================================
+    let desktopSidebarCollapsed = false;
+    function toggleDesktopSidebar() {
+      const sb = document.getElementById('gemini-sidebar');
+      const labels = document.querySelectorAll('.sidebar-label');
+      desktopSidebarCollapsed = !desktopSidebarCollapsed;
+      if (desktopSidebarCollapsed) {
+        sb.classList.remove('w-64');
+        sb.classList.add('w-20');
+        labels.forEach(el => el.classList.add('hidden'));
+      } else {
+        sb.classList.remove('w-20');
+        sb.classList.add('w-64');
+        labels.forEach(el => el.classList.remove('hidden'));
+      }
+    }
+
+    function toggleMobileSidebar() {
+      const sb = document.getElementById('gemini-sidebar');
+      const bd = document.getElementById('sidebar-backdrop');
+      sb.classList.toggle('-translate-x-full');
+      bd.classList.toggle('hidden');
+    }
+
+    // =================================================================
+    // GOOGLE AI MODE '+' ROTATING MENU LOGIC
+    // =================================================================
+    const plusBtn = document.getElementById('plus-menu-btn');
+    const plusMenu = document.getElementById('plus-dropdown-menu');
+    const fileInput = document.getElementById('file-input');
+    const fileBadge = document.getElementById('file-badge');
+    let selectedFileCategory = 'File';
+
+    function togglePlusMenu(e) {
+      e.stopPropagation();
+      plusBtn.classList.toggle('is-open');
+      plusMenu.classList.toggle('hidden');
+    }
+
+    function closePlusMenu() {
+      plusBtn.classList.remove('is-open');
+      plusMenu.classList.add('hidden');
+    }
+
+    function triggerFilePicker(acceptTypes, label) {
+      selectedFileCategory = label;
+      fileInput.setAttribute('accept', acceptTypes);
+      closePlusMenu();
+      fileInput.click();
+    }
+
+    fileInput.addEventListener('change', () => {
+      if (fileInput.files.length > 0) {
+        fileBadge.textContent = `${selectedFileCategory}: ${fileInput.files[0].name} ✕`;
+        fileBadge.classList.remove('hidden');
+        fileBadge.onclick = () => {
+          fileInput.value = '';
+          fileBadge.classList.add('hidden');
+        };
+      } else {
+        fileBadge.classList.add('hidden');
+      }
+    });
+
+    // =================================================================
+    // GLOBAL DOCUMENT CLICK LISTENER:
+    // 1. Closes '+' popover menu if clicked outside
+    // 2. Flips any open card back to front when clicking anywhere
+    //    outside a card (and not on the source redirect button)
+    // =================================================================
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('#plus-menu-btn') && !e.target.closest('#plus-dropdown-menu')) {
+        closePlusMenu();
+      }
+
+      // If user clicks the source link button, let it redirect naturally
+      if (e.target.closest('.source-redirect-link')) {
+        return;
+      }
+
+      const clickedCard = e.target.closest('.flip-card-scene');
+      if (!clickedCard) {
+        // Clicked outside all cards -> flip every card back to front
+        document.querySelectorAll('.flip-card-scene.is-flipped').forEach(c => {
+          c.classList.remove('is-flipped');
+        });
+      }
+    });
+
+    function handleCardFlipClick(e, cardEl) {
+      // Do not flip if user tapped the Visit Source button
+      if (e.target.closest('.source-redirect-link')) return;
+      e.stopPropagation();
+
+      const alreadyFlipped = cardEl.classList.contains('is-flipped');
+      // Close any other flipped cards first
+      document.querySelectorAll('.flip-card-scene.is-flipped').forEach(c => {
+        c.classList.remove('is-flipped');
+      });
+      // Toggle current card
+      if (!alreadyFlipped) {
+        cardEl.classList.add('is-flipped');
+      }
+    }
+
+    // Auto-expanding Textarea logic
     const queryInput = document.getElementById('query-input');
     function autoResizeTextarea() {
       queryInput.style.height = 'auto';
@@ -393,7 +705,7 @@
       }
     });
 
-    // Cursor-tracking glow effect on Search Button (Google AI Mode style)
+    // Cursor-tracking glow effect on Search Button
     const searchBtn = document.getElementById('search-btn');
     searchBtn.addEventListener('mousemove', (e) => {
       const rect = searchBtn.getBoundingClientRect();
@@ -401,35 +713,75 @@
       searchBtn.style.setProperty('--y', `${e.clientY - rect.top}px`);
     });
 
-    const alphaSlider = document.getElementById('alpha-slider');
-    const alphaLabel = document.getElementById('alpha-label');
-    alphaSlider.addEventListener('input', () => {
-      alphaLabel.textContent = Math.round((1 - parseFloat(alphaSlider.value)) * 100) + '%';
-    });
+    // Independent Trust & Relevance Sliders
+    const trustSlider = document.getElementById('trust-slider');
+    const trustLabel = document.getElementById('trust-label');
+    const relevanceSlider = document.getElementById('relevance-slider');
+    const relevanceLabel = document.getElementById('relevance-label');
 
-    const fileInput = document.getElementById('file-input');
-    const fileBadge = document.getElementById('file-badge');
-    fileInput.addEventListener('change', () => {
-      if (fileInput.files.length > 0) {
-        fileBadge.textContent = 'Attached: ' + fileInput.files[0].name;
-        fileBadge.classList.remove('hidden');
-      } else {
-        fileBadge.classList.add('hidden');
-      }
+    trustSlider.addEventListener('input', () => {
+      trustLabel.textContent = trustSlider.value + '%';
+    });
+    relevanceSlider.addEventListener('input', () => {
+      relevanceLabel.textContent = relevanceSlider.value + '%';
     });
 
     function toggleResearchLinks() {
       document.getElementById('research-links-stream').classList.toggle('hidden');
     }
 
+    const viewTitles = {
+      'tab-results': 'Search Results (Sorted by Trust)',
+      'tab-trust': 'Source Trust & Pattern Breakdown',
+      'tab-compare': 'Hybrid vs. Keyword Ranking Compare',
+      'tab-index': 'Inverted & Positional Index Inspector',
+      'tab-metrics': 'IR Evaluation Metrics (Top 3)'
+    };
+
     function switchTab(tabId) {
       document.querySelectorAll('.tab-pane').forEach(el => el.classList.add('hidden'));
       document.getElementById(tabId).classList.remove('hidden');
       document.querySelectorAll('.tab-btn').forEach(btn => {
-        btn.classList.remove('border-blue-600', 'text-blue-600');
-        btn.classList.add('border-transparent');
+        btn.classList.remove('bg-blue-100/80', 'text-blue-700');
+        btn.classList.add('text-slate-600');
       });
-      document.getElementById('btn-' + tabId).classList.add('border-blue-600', 'text-blue-600');
+      const activeBtn = document.getElementById('btn-' + tabId);
+      activeBtn.classList.remove('text-slate-600');
+      activeBtn.classList.add('bg-blue-100/80', 'text-blue-700');
+      document.getElementById('current-view-title').textContent = viewTitles[tabId] || 'Search Results';
+
+      // Close mobile drawer if open
+      const sb = document.getElementById('gemini-sidebar');
+      if (!sb.classList.contains('-translate-x-full') && window.innerWidth < 768) {
+        toggleMobileSidebar();
+      }
+    }
+
+    // Gemini Feedback Bar Handler
+    function submitGeminiFeedback(type) {
+      const upBtn = document.getElementById('fb-up');
+      const downBtn = document.getElementById('fb-down');
+      const toast = document.getElementById('feedback-toast');
+
+      upBtn.classList.remove('bg-emerald-100', 'text-emerald-700');
+      downBtn.classList.remove('bg-rose-100', 'text-rose-700');
+
+      if (type === 'up') {
+        upBtn.classList.add('bg-emerald-100', 'text-emerald-700');
+        toast.textContent = 'Glad this verification was helpful!';
+      } else {
+        downBtn.classList.add('bg-rose-100', 'text-rose-700');
+        toast.textContent = 'Feedback noted — we will refine our ranking weights.';
+      }
+      toast.classList.remove('hidden');
+    }
+
+    function copyVerifiedSummary() {
+      const txt = document.getElementById('out-answer').textContent;
+      navigator.clipboard.writeText(txt);
+      const toast = document.getElementById('feedback-toast');
+      toast.textContent = 'Copied summary to clipboard!';
+      toast.classList.remove('hidden');
     }
 
     // "Did you mean?" click handler
@@ -449,7 +801,7 @@
 
       const tStart = performance.now();
 
-      // Dock search bar to top like Google
+      // Dock search bar to top
       const wrapper = document.getElementById('app-wrapper');
       wrapper.classList.remove('flex-1', 'justify-center');
       wrapper.classList.add('pt-6', 'pb-4', 'border-b', 'border-slate-200', 'bg-white');
@@ -461,6 +813,7 @@
       const streamContainer = document.getElementById('research-links-stream');
       const didYouMeanBox = document.getElementById('did-you-mean-box');
       const headerDots = document.getElementById('header-visiting-dots');
+      document.getElementById('feedback-toast').classList.add('hidden');
 
       workspace.classList.remove('hidden');
       resultsContent.classList.add('hidden');
@@ -476,9 +829,13 @@
       document.getElementById('out-stems').textContent = '...';
       document.getElementById('research-status-title').textContent = 'Visiting web sources';
 
+      const tW = parseFloat(trustSlider.value) / 100.0;
+      const rW = parseFloat(relevanceSlider.value) / 100.0;
+
       const formData = new FormData();
       formData.append('query', query);
-      formData.append('alpha', alphaSlider.value);
+      formData.append('trust_weight', tW);
+      formData.append('relevance_weight', rW);
       formData.append('use_prf', document.getElementById('prf-check').checked);
       if (fileInput.files.length > 0) {
         formData.append('file', fileInput.files[0]);
@@ -488,7 +845,12 @@
         const res = await fetch('/api/search', { method: 'POST', body: formData });
         const data = await res.json();
 
-        // Sort results in descending order of Trust (reliability_score)
+        // Recompute custom hybrid score from the two sliders & sort by Trust Descending
+        const sumW = tW + rW || 1.0;
+        data.hybrid_results.forEach(item => {
+          item.hybrid_score = Number((((rW * item.relevance_score) + (tW * item.reliability_score)) / sumW).toFixed(4));
+        });
+
         data.hybrid_results.sort((a, b) => {
           if (b.reliability_score !== a.reliability_score) {
             return b.reliability_score - a.reliability_score;
@@ -496,13 +858,11 @@
           return b.hybrid_score - a.hybrid_score;
         });
 
-        // Show "Did you mean?" if a spelling correction is suggested
         if (data.suggested_query && data.suggested_query.toLowerCase() !== data.active_query.toLowerCase()) {
           document.getElementById('did-you-mean-btn').textContent = data.suggested_query;
           didYouMeanBox.classList.remove('hidden');
         }
 
-        // Populate Query, Lemmatization & Stemming Info
         document.getElementById('out-active-query').textContent = data.active_query;
         document.getElementById('out-expanded-terms').textContent =
           data.added_terms && data.added_terms.length ? '+' + data.added_terms.join(', +') : 'None';
@@ -511,8 +871,7 @@
         document.getElementById('out-stems').textContent =
           data.stemmed_tokens && data.stemmed_tokens.length ? data.stemmed_tokens.join(' · ') : 'None';
 
-        // SEQUENTIAL 3-DOT SOURCE VISITING ANIMATION:
-        // Visit 1st source with 3 pulsing dots -> mark done (✓) -> move to next source
+        // SEQUENTIAL 3-DOT SOURCE VISITING ANIMATION
         for (let i = 0; i < data.hybrid_results.length; i++) {
           const item = data.hybrid_results[i];
           const src = item.doc.source;
@@ -531,10 +890,8 @@
           `;
           streamContainer.appendChild(pill);
 
-          // Wait while the 3 dots pulse on this source
-          await sleep(180);
+          await sleep(140);
 
-          // Mark this source done and transition pill to verified state
           pill.className = 'flex items-center gap-1.5 bg-slate-100 border border-slate-200 text-slate-700 text-xs px-2.5 py-1 rounded-full transition-all';
           const statusEl = pill.querySelector('.pill-status');
           if (statusEl) {
@@ -546,7 +903,6 @@
         const elapsedSeconds = ((performance.now() - tStart) / 1000).toFixed(2);
         const totalCount = data.hybrid_results.length;
 
-        // Hide header dots and show final Google-style stats line
         headerDots.classList.add('hidden');
         document.getElementById('research-status-title').textContent =
           `Visited & evaluated ${totalCount} sources`;
@@ -563,14 +919,47 @@
     });
 
     function renderResults(data) {
-      // Top Answer Strictly from #1 Most Reliable Source
       const ans = data.direct_answer;
-      const topTrustPct = Math.round((ans.reliability_score || 0.85) * 100);
+      const topItem = data.hybrid_results[0];
+      const topRel = topItem ? topItem.reliability_details : {};
+      const topTrustPct = Math.round((topItem ? topItem.reliability_score : (ans.reliability_score || 0.85)) * 100);
+
       document.getElementById('out-answer').textContent = ans.answer;
       document.getElementById('out-answer-badge').textContent =
-        `Most Reliable Source: ${ans.source_domain} (${topTrustPct}% Trust)`;
+        `Most Reliable: ${ans.source_domain} (${topTrustPct}% Trust)`;
       document.getElementById('out-answer-meta').textContent =
         `Extracted from "${ans.source_title || ans.source_doc}" (${ans.source_domain})`;
+
+      // BUILD "WHY THIS SOURCE IS MOST RELIABLE" EXPLANATION & PILLS
+      if (topItem && topRel) {
+        const domain = topItem.doc.source;
+        const isGovOrAc = domain.endsWith('.gov.in') || domain.endsWith('.ac.in') || domain.endsWith('.edu') || domain.endsWith('.org');
+        const tldReason = isGovOrAc
+          ? `verified institutional/authority domain (${domain})`
+          : `established web domain (${domain})`;
+
+        document.getElementById('out-why-reliable-text').textContent =
+          `${domain} achieved the #1 Trust Score (${topItem.reliability_score}) because it combines a ${tldReason}, strong incoming link authority (PageRank ${topRel.pagerank} & HITS Authority ${topRel.hits_authority}), clean non-clickbait language verified by the Naïve Bayes classifier (${Math.round(topRel.nb_trust_prob * 100)}% non-spam probability), and high cross-document factual consensus (${topRel.claim_consensus}).`;
+
+        const pillsBox = document.getElementById('out-why-reliable-pills');
+        pillsBox.innerHTML = `
+          <span class="bg-white border border-emerald-200 text-emerald-800 text-[11px] font-semibold px-2.5 py-1 rounded-full">
+            ✓ PageRank Authority: ${topRel.pagerank}
+          </span>
+          <span class="bg-white border border-emerald-200 text-emerald-800 text-[11px] font-semibold px-2.5 py-1 rounded-full">
+            ✓ HITS Hub/Auth: ${topRel.hits_authority}
+          </span>
+          <span class="bg-white border border-emerald-200 text-emerald-800 text-[11px] font-semibold px-2.5 py-1 rounded-full">
+            ✓ Naïve Bayes Clean Language: ${Math.round(topRel.nb_trust_prob * 100)}%
+          </span>
+          <span class="bg-white border border-emerald-200 text-emerald-800 text-[11px] font-semibold px-2.5 py-1 rounded-full">
+            ✓ Claim Consensus: ${topRel.claim_consensus}
+          </span>
+          <span class="bg-white border border-emerald-200 text-emerald-800 text-[11px] font-semibold px-2.5 py-1 rounded-full">
+            ✓ Recency Score: ${topRel.recency_score}
+          </span>
+        `;
+      }
 
       // Render Tab 1: Split-Half Front + Clean 3-Score Back Vertical Flip Cards
       const tabResults = document.getElementById('tab-results');
@@ -600,7 +989,7 @@
         const badgeText = isTrusted ? 'Verified Source' : isModerate ? 'Moderate Trust' : 'Clickbait Risk';
 
         tabResults.innerHTML += `
-          <div class="flip-card-scene">
+          <div class="flip-card-scene" onclick="handleCardFlipClick(event, this)">
             <div class="flip-card-lift">
               <div class="flip-card-inner">
                 
@@ -662,7 +1051,7 @@
 
                     <div class="flex items-center justify-between pt-2 border-t border-slate-100 text-[11px] text-slate-400">
                       <span>Trust Score: <strong class="text-emerald-700">${item.reliability_score} (${trustPct}%)</strong></span>
-                      <span class="text-blue-600 font-medium">Hover to flip ↻</span>
+                      <span class="text-blue-600 font-medium">Tap / Hover to flip ↻</span>
                     </div>
                   </div>
 
@@ -724,7 +1113,8 @@
                   <a
                     href="${d.url || '#'}"
                     target="_blank"
-                    class="w-full bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold py-2.5 rounded-xl text-center transition block"
+                    rel="noopener noreferrer"
+                    class="source-redirect-link w-full bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold py-2.5 rounded-xl text-center transition block"
                   >
                     Visit ${d.source} ↗
                   </a>
