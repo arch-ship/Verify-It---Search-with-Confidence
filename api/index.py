@@ -35,20 +35,33 @@ async def serve_ui():
 @app.post("/api/search")
 async def search_endpoint(
     query: str = Form(""),
-    alpha: float = Form(0.50),
+    trust_weight: float = Form(0.50),
+    relevance_weight: float = Form(0.50),
     use_prf: bool = Form(True),
     interests: str = Form("official, verified, academic, research"),
     file: UploadFile = File(None)
 ):
     uploaded_doc = None
     if file and file.filename:
-        suffix = os.path.splitext(file.filename)[1]
+        suffix = os.path.splitext(file.filename)[1].lower()
         with tempfile.NamedTemporaryFile(delete=False, suffix=suffix) as tmp:
             content = await file.read()
             tmp.write(content)
             tmp_path = tmp.name
         try:
-            uploaded_doc = DocumentParser.parse_file(tmp_path, original_name=file.filename)
+            if suffix in [".png", ".jpg", ".jpeg", ".webp"]:
+                clean_img_name = re.sub(r'[_-]+', ' ', os.path.splitext(file.filename)[0])
+                uploaded_doc = {
+                    "id": "UPLOAD_IMG",
+                    "title": f"Uploaded Image: {file.filename}",
+                    "url": "#uploaded-image",
+                    "source": "uploaded-media.org",
+                    "date": "2026-03-01",
+                    "text": f"Visual media document uploaded for verification: {clean_img_name}. {query}",
+                    "type": "uploaded_image"
+                }
+            else:
+                uploaded_doc = DocumentParser.parse_file(tmp_path, original_name=file.filename)
         finally:
             if os.path.exists(tmp_path):
                 os.remove(tmp_path)
@@ -58,16 +71,18 @@ async def search_endpoint(
     else:
         active_query = QueryFormulator.formulate_query_from_input(query.strip() or "information retrieval")
 
+    # Normalize independent Relevance and Trust sliders into alpha
+    total_w = float(relevance_weight) + float(trust_weight)
+    alpha = (float(relevance_weight) / total_w) if total_w > 0 else 0.50
+
     crawler = WebAndSocialCrawler()
     docs, link_graph = crawler.crawl_and_collect(active_query, uploaded_doc=uploaded_doc)
 
-    # Build dynamic vocabulary from crawled titles/texts for "Did you mean?" spell suggestion
     dynamic_vocab = set()
     for d in docs:
         dynamic_vocab.update(re.findall(r'\b[a-zA-Z]{4,}\b', f"{d.get('title', '')} {d.get('text', '')}".lower()))
     suggested_query = QueryFormulator.suggest_query_correction(active_query, dynamic_vocab=dynamic_vocab)
 
-    # Compute Lemmatized & Stemmed Tokens for display
     raw_tokens = TextPreprocessor.remove_stopwords(TextPreprocessor.tokenize(active_query))
     lemmatized_tokens = [TextPreprocessor.lemmatize(t) for t in raw_tokens]
     stemmed_tokens = [TextPreprocessor.stem(t) for t in lemmatized_tokens]
@@ -80,7 +95,7 @@ async def search_endpoint(
     pipeline_out = engine.execute_search_pipeline(
         query=active_query,
         user_interests=user_profile,
-        alpha=float(alpha),
+        alpha=alpha,
         use_query_expansion=bool(use_prf)
     )
 
