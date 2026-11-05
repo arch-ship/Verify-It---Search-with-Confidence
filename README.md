@@ -1,4 +1,4 @@
-# 🔍 Verify It — Search with Confidence
+# Verify It — Search with Confidence
 
 **Verify It** is a hybrid **Information Retrieval (IR) and Text Analytics** search engine that retrieves live web documents and uploaded files while estimating their **reliability and source trustworthiness**. 
 
@@ -8,7 +8,7 @@ Standard keyword-based search algorithms (such as TF-IDF and BM25) evaluate rele
 
 ---
 
-## ✨ Key Features & Architecture
+## Key Features & Architecture
 
 The system is architected across **5 modular stages**, covering end-to-end Information Retrieval and Text Mining concepts:
 
@@ -44,7 +44,7 @@ The system is architected across **5 modular stages**, covering end-to-end Infor
 
 ---
 
-## 🎨 Frontend & UI/UX Highlights
+## Frontend & UI/UX Highlights
 * **Google-Style Interface:** Starts with a centered search experience that docks smoothly to the top upon query submission.
 * **Auto-Expanding Textarea:** Dynamically grows vertically as users paste long paragraphs or claims to verify.
 * **Claude/Gemini-Style Source Verification Stream:** Features a sequential 3-dot animation (`• • •`) as the system visits each crawled source, displaying Google's classic *"Searched about X results in (Y.YY seconds)"* statistic upon completion.
@@ -53,7 +53,7 @@ The system is architected across **5 modular stages**, covering end-to-end Infor
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```text
 Verify-It---Search-with-Confidence/
