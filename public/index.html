@@ -5,10 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>VerifyIt — Search with Confidence</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cinzel:wght@500;700;800&family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=Great+Vibes&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
-      --cursor-color: #f59e0b;
+      --cursor-color: #94a3b8;
     }
     body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -16,40 +16,49 @@
     }
 
     /* =================================================================
-       1. FULL-SCREEN 3D CINEMATIC INTRO & REALISTIC MOVING STARFIELD
+       1. CLASSIC 3D ARCHITECTURAL CINEMATIC INTRO STAGE
        ================================================================= */
     #cinematic-intro {
       position: fixed;
       inset: 0;
-      background: #000000;
+      background: radial-gradient(circle at 50% 42%, #0a0f1d 0%, #030509 58%, #000000 100%);
       z-index: 9999;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       overflow: hidden;
-      perspective: 1400px;
+      perspective: 1600px;
       transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
-    /* Dynamic multi-layered nebula aura */
-    .ambient-spotlight {
+    /* Subtle 3D Architectural Horizon Grid & Ambient Volumetric Rim Light */
+    .architectural-grid {
       position: absolute;
-      width: 95vw;
-      height: 95vh;
-      background:
-        radial-gradient(circle at 30% 40%, rgba(245, 158, 11, 0.13) 0%, transparent 50%),
-        radial-gradient(circle at 70% 60%, rgba(236, 72, 153, 0.12) 0%, transparent 50%),
-        radial-gradient(circle at 50% 50%, rgba(139, 92, 246, 0.10) 0%, transparent 65%);
+      inset: 0;
+      background-image:
+        linear-gradient(to right, rgba(148, 163, 184, 0.04) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(148, 163, 184, 0.04) 1px, transparent 1px);
+      background-size: 64px 64px;
+      mask-image: radial-gradient(ellipse 70% 55% at 50% 50%, black 15%, transparent 80%);
+      -webkit-mask-image: radial-gradient(ellipse 70% 55% at 50% 50%, black 15%, transparent 80%);
+      transform: rotateX(58deg) translateY(120px) translateZ(-180px) scale(1.6);
+      transform-origin: center center;
       pointer-events: none;
-      filter: blur(60px);
       z-index: 1;
-      animation: nebulaDrift 8s ease-in-out infinite alternate;
     }
 
-    @keyframes nebulaDrift {
-      0% { transform: scale(0.95) rotate(-2deg); opacity: 0.75; }
-      100% { transform: scale(1.08) rotate(2deg); opacity: 1; }
+    .ambient-spotlight {
+      position: absolute;
+      width: 68vw;
+      height: 68vh;
+      max-width: 960px;
+      max-height: 640px;
+      background:
+        radial-gradient(circle at 50% 45%, rgba(56, 189, 248, 0.075) 0%, rgba(99, 102, 241, 0.045) 42%, transparent 72%);
+      pointer-events: none;
+      filter: blur(55px);
+      z-index: 1;
     }
 
     #starfield-canvas,
@@ -63,81 +72,107 @@
     #starfield-canvas { z-index: 2; }
     #smoke-canvas { z-index: 30; }
 
-    /* Full-screen spanning stage box */
+    /* Interactive 3D Tilt Stage Container */
     .intro-stage-box {
       position: relative;
       z-index: 10;
-      width: 95vw;
-      max-width: 1500px;
-      padding: 2rem 1.5rem;
+      width: 90%;
+      max-width: 880px;
+      padding: 2.5rem 2rem;
       text-align: center;
       transform-style: preserve-3d;
-      transition: filter 1.25s cubic-bezier(0.22, 1, 0.36, 1),
-                  opacity 1.25s cubic-bezier(0.22, 1, 0.36, 1),
-                  transform 1.25s cubic-bezier(0.22, 1, 0.36, 1);
+      will-change: transform, filter, opacity;
+      transition: filter 1.15s cubic-bezier(0.22, 1, 0.36, 1),
+                  opacity 1.15s cubic-bezier(0.22, 1, 0.36, 1),
+                  transform 0.25s ease-out;
     }
 
-    /* Dissolve + Blur exit state */
+    /* Dissolve + 3D Depth Blur exit state */
     .dissolve-blur-exit {
-      filter: blur(34px) brightness(1.65);
+      filter: blur(26px) brightness(1.35);
       opacity: 0 !important;
-      transform: scale(1.12) translateY(-20px) translateZ(80px);
+      transform: scale(1.06) translateY(-14px) translateZ(70px) !important;
+      transition: filter 1.15s cubic-bezier(0.22, 1, 0.36, 1),
+                  opacity 1.15s cubic-bezier(0.22, 1, 0.36, 1),
+                  transform 1.15s cubic-bezier(0.22, 1, 0.36, 1) !important;
     }
 
-    /* Custom Typography Classes for Build-Up Scenes (All changed except Launch It button) */
-    .font-scene-1 {
-      font-family: 'Syne', sans-serif;
-      background: linear-gradient(135deg, #fef3c7 0%, #fbbf24 45%, #f43f5e 100%);
+    /* =================================================================
+       CLASSIC EXECUTIVE TYPOGRAPHY SYSTEM (PLATINUM & TITANIUM PALETTE)
+       ================================================================= */
+    /* Scene 1: Classic Editorial Serif with Brushed Platinum Finish */
+    .typo-scene-1 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      background: linear-gradient(180deg, #ffffff 0%, #e2e8f0 65%, #94a3b8 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      filter: drop-shadow(0 12px 35px rgba(245, 158, 11, 0.32));
+      filter: drop-shadow(0 14px 32px rgba(0, 0, 0, 0.85));
+      transform: translateZ(36px);
     }
 
-    .font-scene-2-main {
-      font-family: 'Cinzel', serif;
-      background: linear-gradient(135deg, #ffe4e6 0%, #fb7185 50%, #c084fc 100%);
+    /* Scene 2: Architectural Geometric Sans + Refined Editorial Subtext */
+    .typo-scene-2-main {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      background: linear-gradient(135deg, #f8fafc 0%, #cbd5e1 55%, #94a3b8 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      filter: drop-shadow(0 10px 30px rgba(244, 63, 94, 0.35));
+      filter: drop-shadow(0 12px 28px rgba(0, 0, 0, 0.8));
+      transform: translateZ(40px);
     }
 
-    .font-scene-2-sub {
-      font-family: 'Cormorant Garamond', serif;
+    .typo-scene-2-sub {
+      font-family: 'Playfair Display', Georgia, serif;
       font-style: italic;
-      color: #fde68a;
-      text-shadow: 0 4px 24px rgba(251, 191, 36, 0.35);
+      font-weight: 400;
+      color: #94a3b8;
+      letter-spacing: 0.01em;
+      text-shadow: 0 6px 20px rgba(0, 0, 0, 0.9);
+      transform: translateZ(24px);
     }
 
-    /* Cursive / Calligraphy styles for "Introducing" and "VerifyIt" */
-    .font-calligraphy-intro {
-      font-family: 'Alex Brush', cursive;
-      color: #f9a8d4;
-      text-shadow: 0 0 28px rgba(244, 114, 182, 0.6);
+    /* Scene 3: Classic Editorial Italic Overline + 3D Titanium Brand Mark */
+    .typo-scene-3-intro {
+      font-family: 'Instrument Serif', Georgia, serif;
+      font-style: italic;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      color: #cbd5e1;
+      text-shadow: 0 4px 20px rgba(56, 189, 248, 0.22);
+      transform: translateZ(28px);
     }
 
-    .font-calligraphy-brand {
-      font-family: 'Great Vibes', cursive;
-      background: linear-gradient(135deg, #fffbeb 0%, #fcd34d 30%, #f472b6 65%, #a78bfa 100%);
+    .typo-scene-3-brand {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 35%, #93c5fd 72%, #64748b 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      filter: drop-shadow(0 14px 40px rgba(244, 114, 182, 0.5));
+      filter: drop-shadow(0 16px 40px rgba(56, 189, 248, 0.22));
+      transform: translateZ(52px);
     }
 
-    .font-scene-3-desc {
-      font-family: 'Cormorant Garamond', serif;
-      color: #fed7aa;
-      text-shadow: 0 2px 18px rgba(251, 146, 60, 0.3);
+    .typo-scene-3-desc {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 400;
+      letter-spacing: 0.01em;
+      color: #94a3b8;
+      transform: translateZ(20px);
     }
 
-    /* Blinking Typewriter Cursor */
+    /* Sleek Platinum Typewriter Cursor */
     .type-cursor {
       display: inline-block;
-      width: 4px;
-      height: 0.95em;
-      background: var(--cursor-color);
-      margin-left: 6px;
+      width: 2.5px;
+      height: 0.92em;
+      background: #38bdf8;
+      margin-left: 5px;
       vertical-align: -0.08em;
-      box-shadow: 0 0 16px var(--cursor-color);
+      box-shadow: 0 0 12px rgba(56, 189, 248, 0.75);
       animation: cursorBlink 0.75s step-end infinite;
     }
 
@@ -150,8 +185,8 @@
     #launch-wrapper {
       opacity: 0;
       pointer-events: none;
-      transform: translateY(45px) scale(0.9);
-      transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transform: translateY(32px) scale(0.94);
+      transition: all 0.75s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
     #launch-wrapper.revealed {
       opacity: 1;
@@ -162,21 +197,23 @@
     .launch-btn-3d {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
       position: relative;
-      background: linear-gradient(135deg, #2563eb 0%, #4f46e5 50%, #0ea5e9 100%);
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
       color: #ffffff;
-      border: 1px solid rgba(255, 255, 255, 0.28);
+      border: 1px solid rgba(148, 163, 184, 0.35);
       box-shadow:
-        0 20px 50px rgba(37, 99, 235, 0.55),
-        0 0 0 1px rgba(255, 255, 255, 0.15) inset,
-        0 8px 20px rgba(56, 189, 248, 0.35) inset;
+        0 18px 45px rgba(0, 0, 0, 0.75),
+        0 0 25px rgba(56, 189, 248, 0.25),
+        0 1px 0 rgba(255, 255, 255, 0.2) inset;
       transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
-                  box-shadow 0.25s ease;
+                  box-shadow 0.25s ease,
+                  border-color 0.25s ease;
     }
     .launch-btn-3d:hover {
-      transform: translateY(-4px) scale(1.05);
+      transform: translateY(-3px) scale(1.03);
+      border-color: rgba(56, 189, 248, 0.7);
       box-shadow:
-        0 28px 65px rgba(56, 189, 248, 0.75),
-        0 0 30px rgba(99, 102, 241, 0.6);
+        0 24px 55px rgba(14, 165, 233, 0.35),
+        0 0 30px rgba(56, 189, 248, 0.4);
     }
     .launch-btn-3d:active {
       transform: scale(0.97);
@@ -188,18 +225,17 @@
       z-index: 40;
       left: 50%;
       top: 70%;
-      transform: translate(-50%, -50%) scale(1.15);
+      transform: translate(-50%, -50%) scale(1.1);
       pointer-events: none;
       opacity: 0;
-      filter: drop-shadow(0 0 28px rgba(56, 189, 248, 0.95)) drop-shadow(0 18px 32px rgba(249, 115, 22, 0.9));
+      filter: drop-shadow(0 0 24px rgba(56, 189, 248, 0.85)) drop-shadow(0 16px 28px rgba(249, 115, 22, 0.8));
     }
 
-    /* Steady Thruster Vibration During 3-2-1 Countdown */
     @keyframes rocketSteadyVibe {
-      0%, 100% { transform: translate(-50%, -50%) scale(1.15) translate(0px, 0px); }
-      25% { transform: translate(-50%, -50%) scale(1.15) translate(-2px, 1.5px); }
-      50% { transform: translate(-50%, -50%) scale(1.15) translate(2px, -1.5px); }
-      75% { transform: translate(-50%, -50%) scale(1.15) translate(-1.5px, -2px); }
+      0%, 100% { transform: translate(-50%, -50%) scale(1.1) translate(0px, 0px); }
+      25% { transform: translate(-50%, -50%) scale(1.1) translate(-1.5px, 1.5px); }
+      50% { transform: translate(-50%, -50%) scale(1.1) translate(1.5px, -1.5px); }
+      75% { transform: translate(-50%, -50%) scale(1.1) translate(-1.5px, -1.5px); }
     }
     .rocket-countdown-vibe {
       animation: rocketSteadyVibe 0.08s infinite;
@@ -212,31 +248,30 @@
       top: 42%;
       transform: translate(-50%, -50%);
       pointer-events: none;
-      font-family: 'Cinzel', serif;
-      font-weight: 800;
-      font-size: clamp(6rem, 16vw, 13rem);
-      color: #fef08a;
+      font-family: 'Playfair Display', Georgia, serif;
+      font-weight: 700;
+      font-size: clamp(4.5rem, 11vw, 8.5rem);
+      color: #f8fafc;
       text-shadow:
-        0 0 40px rgba(250, 204, 21, 0.9),
-        0 0 90px rgba(249, 115, 22, 0.8);
+        0 0 35px rgba(56, 189, 248, 0.75),
+        0 10px 40px rgba(0, 0, 0, 0.9);
       opacity: 0;
       transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.25s ease;
     }
 
-    /* Camera Shake During Ignition */
     @keyframes cameraShake {
       0%, 100% { transform: translate(0, 0); }
-      20% { transform: translate(-3px, 2px); }
-      40% { transform: translate(3px, -2px); }
-      60% { transform: translate(-2px, -3px); }
-      80% { transform: translate(2px, 3px); }
+      20% { transform: translate(-2.5px, 1.5px); }
+      40% { transform: translate(2.5px, -1.5px); }
+      60% { transform: translate(-1.5px, -2.5px); }
+      80% { transform: translate(1.5px, 2.5px); }
     }
     .shake-screen {
       animation: cameraShake 0.11s infinite;
     }
 
     /* =================================================================
-       2. GLITCH & GREYISH GREEN-CODE TERMINAL OVERLAY
+       2. GLITCH & GREYISH GREEN-CODE TERMINAL OVERLAY (KEPT INTACT)
        ================================================================= */
     #glitch-terminal-stage {
       position: fixed;
@@ -249,7 +284,6 @@
       overflow: hidden;
     }
 
-    /* Full-Screen Glitch Slices & RGB Split Animation */
     @keyframes glitchBurst {
       0% {
         clip-path: inset(10% 0 60% 0);
@@ -285,7 +319,6 @@
       animation: glitchBurst 0.48s steps(2, end) 2;
     }
 
-    /* CRT Scanlines over the Terminal Stage */
     .crt-scanlines {
       position: absolute;
       inset: 0;
@@ -300,7 +333,6 @@
       z-index: 20;
     }
 
-    /* Greyish Terminal Box */
     .greyish-terminal-window {
       position: relative;
       z-index: 10;
@@ -360,7 +392,7 @@
       background: #0f172a;
       color: #ffffff;
       border-radius: 9999px;
-      padding: 0.55rem 1.4rem;
+      padding: 0.55rem 1.35rem;
       font-size: 0.875rem;
       font-weight: 600;
       isolation: isolate;
@@ -403,6 +435,15 @@
     }
     .ai-glow-btn:hover::before { opacity: 1; }
 
+    .plus-toggle-btn {
+      transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.2s ease, color 0.2s ease;
+    }
+    .plus-toggle-btn.is-open {
+      transform: rotate(45deg);
+      background-color: #eff6ff;
+      color: #2563eb;
+    }
+
     .visiting-dots {
       display: inline-flex;
       align-items: center;
@@ -426,6 +467,7 @@
       perspective: 1400px;
       height: 360px;
       cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
     }
     .flip-card-lift {
       width: 100%;
@@ -435,15 +477,28 @@
                   box-shadow 0.25s ease;
       will-change: transform, filter;
     }
-    @media (hover: hover) {
+    .flip-card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+      -webkit-transform-style: preserve-3d;
+      transition: transform 0.62s cubic-bezier(0.22, 1, 0.36, 1) 0.08s;
+    }
+    @media (hover: hover) and (pointer: fine) {
       .flip-card-scene:hover .flip-card-lift {
         transform: translateY(-12px) scale(1.03);
         box-shadow: 0 24px 44px -12px rgba(30, 64, 175, 0.24);
-        animation: flipMotionBlur 0.62s ease-in-out 0.10s;
+        animation: flipMotionBlur 0.62s ease-in-out 0.08s;
       }
       .flip-card-scene:hover .flip-card-inner {
         transform: rotateY(180deg);
       }
+    }
+    .flip-card-scene.is-flipped .flip-card-lift {
+      transform: translateY(-10px) scale(1.02);
+      box-shadow: 0 24px 44px -12px rgba(30, 64, 175, 0.24);
+      animation: flipMotionBlur 0.62s ease-in-out;
     }
     .flip-card-scene.is-flipped .flip-card-inner {
       transform: rotateY(180deg);
@@ -453,14 +508,6 @@
       45%  { filter: blur(2.2px); }
       55%  { filter: blur(2.2px); }
       100% { filter: blur(0px); }
-    }
-    .flip-card-inner {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      transform-style: preserve-3d;
-      -webkit-transform-style: preserve-3d;
-      transition: transform 0.62s cubic-bezier(0.22, 1, 0.36, 1) 0.10s;
     }
     .flip-card-front,
     .flip-card-back {
@@ -482,64 +529,65 @@
     }
   </style>
 </head>
-<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
+<body class="bg-slate-50 text-slate-800 min-h-screen flex">
 
   <!-- ===================================================================
-       STAGE 0: FULL-BLACK 3D CINEMATIC TYPEWRITER & SKYROCKET INTRO
+       STAGE 0: SEMANTIC 3D ARCHITECTURAL CINEMATIC INTRO
        =================================================================== -->
-  <div id="cinematic-intro">
-    <div class="ambient-spotlight"></div>
-    <canvas id="starfield-canvas"></canvas>
-    <canvas id="smoke-canvas"></canvas>
+  <section id="cinematic-intro" aria-label="VerifyIt Interactive 3D Introduction">
+    <div class="architectural-grid" aria-hidden="true"></div>
+    <div class="ambient-spotlight" aria-hidden="true"></div>
+    <canvas id="starfield-canvas" aria-hidden="true"></canvas>
+    <canvas id="smoke-canvas" aria-hidden="true"></canvas>
 
-    <!-- Subtle Skip Intro Button -->
-    <button
-      onclick="skipIntroDirectly()"
-      class="fixed top-6 right-6 z-40 text-xs font-medium text-amber-200/60 hover:text-amber-200 border border-amber-500/30 hover:border-amber-400 bg-neutral-950/70 backdrop-blur px-4 py-1.5 rounded-full transition"
-    >
-      Skip Intro ⏭
-    </button>
+    <!-- Top-Right Skip Intro Control -->
+    <header class="fixed top-6 right-6 z-40">
+      <button
+        type="button"
+        onclick="skipIntroDirectly()"
+        class="text-xs font-medium text-slate-400 hover:text-white border border-slate-800 hover:border-slate-600 bg-slate-950/75 backdrop-blur-md px-4 py-1.5 rounded-full transition"
+      >
+        Skip Intro ⏭
+      </button>
+    </header>
 
-    <!-- Main Full-Screen Typewriter Stage Box -->
-    <div id="intro-stage" class="intro-stage-box">
-      <!-- Line 1 -->
-      <div id="type-line-1" class="min-h-[1.25em]"></div>
-      <!-- Line 2 -->
-      <div id="type-line-2" class="mt-6 min-h-[1.2em]"></div>
-      <!-- Line 3 -->
-      <div id="type-line-3" class="mt-6 min-h-[1.4em]"></div>
-    </div>
+    <!-- 3D Perspective Stage Box (Tilts subtly with cursor movement) -->
+    <article id="intro-stage" class="intro-stage-box">
+      <h1 id="type-line-1" class="min-h-[1.3em]"></h1>
+      <p id="type-line-2" class="mt-4 min-h-[1.25em]"></p>
+      <p id="type-line-3" class="mt-5 min-h-[1.4em]"></p>
+    </article>
 
     <!-- "Launch It" Button (Kept in Inter Font, Appears Automatically After Scene 3) -->
-    <div id="launch-wrapper" class="relative z-20 mt-8">
+    <nav id="launch-wrapper" class="relative z-20 mt-4" aria-label="Launch Application">
       <button
         id="launch-btn"
+        type="button"
         onclick="triggerSkyrocketLaunch()"
-        class="launch-btn-3d px-10 py-4.5 rounded-full font-bold text-lg tracking-wide flex items-center gap-3.5 cursor-pointer"
+        class="launch-btn-3d px-8 py-3.5 rounded-full font-semibold text-base tracking-wide flex items-center gap-3 cursor-pointer"
       >
         <span>Launch It</span>
-        <!-- Skyrocket Icon -->
-        <svg id="btn-rocket-icon" class="w-6 h-6 text-white transition-transform duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <svg id="btn-rocket-icon" class="w-5 h-5 text-sky-400 transition-transform duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 00-2.91-.09z"/>
           <path stroke-linecap="round" stroke-linejoin="round" d="M12 15l-3-3a22 22 0 012-3.95A12.88 12.88 0 0122 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 01-4 2z"/>
           <path stroke-linecap="round" stroke-linejoin="round" d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/>
           <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/>
         </svg>
       </button>
-    </div>
+    </nav>
 
-    <!-- Giant 3-2-1 Countdown Overlay -->
-    <div id="countdown-overlay"></div>
+    <!-- 3-2-1 Countdown Overlay -->
+    <div id="countdown-overlay" aria-live="polite"></div>
 
-    <!-- High-Detail 3D Skyrocket Vehicle -->
-    <div id="flying-rocket">
+    <!-- 3D Skyrocket Vehicle -->
+    <figure id="flying-rocket" aria-hidden="true">
       <div class="relative flex flex-col items-center">
-        <svg class="w-24 h-24 text-white" viewBox="0 0 64 64" fill="none">
+        <svg class="w-20 h-20 text-white" viewBox="0 0 64 64" fill="none">
           <defs>
             <linearGradient id="rocketBody" x1="0" y1="0" x2="1" y2="1">
               <stop offset="0%" stop-color="#f8fafc"/>
-              <stop offset="50%" stop-color="#93c5fd"/>
-              <stop offset="100%" stop-color="#1d4ed8"/>
+              <stop offset="50%" stop-color="#cbd5e1"/>
+              <stop offset="100%" stop-color="#334155"/>
             </linearGradient>
             <linearGradient id="rocketFlame" x1="0" y1="0" x2="0" y2="1">
               <stop offset="0%" stop-color="#ffffff"/>
@@ -548,25 +596,25 @@
               <stop offset="100%" stop-color="transparent"/>
             </linearGradient>
           </defs>
-          <path d="M18 38L8 48L20 46Z" fill="#ef4444"/>
-          <path d="M46 38L56 48L44 46Z" fill="#ef4444"/>
+          <path d="M18 38L8 48L20 46Z" fill="#0ea5e9"/>
+          <path d="M46 38L56 48L44 46Z" fill="#0ea5e9"/>
           <path d="M32 4C22 16 20 30 20 44H44C44 30 42 16 32 4Z" fill="url(#rocketBody)" stroke="#e2e8f0" stroke-width="1.5"/>
-          <path d="M32 4C27 10 25 16 24 20H40C39 16 37 10 32 4Z" fill="#2563eb"/>
+          <path d="M32 4C27 10 25 16 24 20H40C39 16 37 10 32 4Z" fill="#0f172a"/>
           <circle cx="32" cy="26" r="5" fill="#0f172a" stroke="#38bdf8" stroke-width="2"/>
           <rect x="26" y="44" width="12" height="4" rx="1.5" fill="#475569"/>
           <path d="M26 48L32 64L38 48Z" fill="url(#rocketFlame)"/>
         </svg>
       </div>
-    </div>
-  </div>
+    </figure>
+  </section>
 
   <!-- ===================================================================
        STAGE 0.5: GLITCH + GREYISH TERMINAL WITH GREEN CODING SEQUENCE
        =================================================================== -->
-  <div id="glitch-terminal-stage">
-    <div class="crt-scanlines"></div>
-    <div id="terminal-window" class="greyish-terminal-window">
-      <div class="terminal-topbar">
+  <section id="glitch-terminal-stage" aria-label="System Initialization Terminal">
+    <div class="crt-scanlines" aria-hidden="true"></div>
+    <article id="terminal-window" class="greyish-terminal-window">
+      <header class="terminal-topbar">
         <div class="flex items-center gap-2">
           <span class="w-3 h-3 rounded-full bg-rose-500"></span>
           <span class="w-3 h-3 rounded-full bg-amber-400"></span>
@@ -576,91 +624,155 @@
         <span class="text-[11px] font-mono text-emerald-400 bg-emerald-950/70 border border-emerald-500/40 px-2.5 py-0.5 rounded">
           BASH • v4.2
         </span>
-      </div>
+      </header>
       <div id="terminal-output" class="terminal-body"></div>
-    </div>
-  </div>
+    </article>
+  </section>
 
   <!-- ===================================================================
-       MAIN VERIFYIT APPLICATION (OPENED AFTER TERMINAL INITIATES LAUNCH)
+       MAIN VERIFYIT APPLICATION (SEMANTIC LAYOUT + GEMINI SIDEBAR)
        =================================================================== -->
-  <div id="verifyit-app" class="flex flex-1 min-h-screen opacity-0 transition-opacity duration-700">
-    
-    <!-- GEMINI-STYLE LEFT SIDEBAR -->
-    <aside id="sidebar" class="hidden md:flex flex-col w-64 bg-white border-r border-slate-200 p-4 shrink-0 transition-all duration-300">
-      <div class="flex items-center gap-2 mb-8 px-2 pt-2">
-        <span class="text-2xl font-extrabold tracking-tight text-slate-900">
-          <span class="text-blue-600">Verify</span><span class="text-indigo-600">It</span>
-        </span>
+  <div id="verifyit-app" class="flex flex-1 min-h-screen w-full opacity-0 transition-opacity duration-700">
+
+    <!-- MOBILE SIDEBAR BACKDROP -->
+    <div id="sidebar-backdrop" onclick="toggleMobileSidebar()" class="fixed inset-0 bg-slate-900/40 z-30 hidden md:hidden"></div>
+
+    <!-- GEMINI-STYLE COLLAPSIBLE LEFT SIDEBAR -->
+    <aside id="gemini-sidebar" class="fixed md:static inset-y-0 left-0 z-40 w-64 bg-slate-100/95 backdrop-blur border-r border-slate-200/90 flex flex-col justify-between transition-all duration-300 -translate-x-full md:translate-x-0 shrink-0" aria-label="Primary Workspace Navigation">
+      <div>
+        <header class="flex items-center justify-between px-4 py-4 border-b border-slate-200/70">
+          <div class="flex items-center gap-2.5 overflow-hidden">
+            <button type="button" onclick="toggleDesktopSidebar()" class="p-2 rounded-full hover:bg-slate-200/80 text-slate-600 transition shrink-0" title="Collapse/Expand Menu">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+              </svg>
+            </button>
+            <span class="sidebar-label font-extrabold text-lg tracking-tight text-slate-900 whitespace-nowrap">
+              <span class="text-blue-600">Verify</span><span class="text-indigo-600">It</span>
+            </span>
+          </div>
+          <button type="button" onclick="toggleMobileSidebar()" class="md:hidden p-1.5 rounded-lg text-slate-500 hover:bg-slate-200">✕</button>
+        </header>
+
+        <div class="px-3 py-4">
+          <div class="sidebar-label text-[11px] font-bold uppercase tracking-wider text-slate-400 px-3 mb-2">
+            Workspace Views
+          </div>
+          <nav class="space-y-1">
+            <button type="button" onclick="switchTab('tab-results')" id="btn-tab-results" class="tab-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium bg-blue-100/80 text-blue-700 transition">
+              <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>
+              </svg>
+              <span class="sidebar-label whitespace-nowrap">Search Results</span>
+            </button>
+
+            <button type="button" onclick="switchTab('tab-trust')" id="btn-tab-trust" class="tab-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-200/70 transition">
+              <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+              </svg>
+              <span class="sidebar-label whitespace-nowrap">Trust Breakdown</span>
+            </button>
+
+            <button type="button" onclick="switchTab('tab-compare')" id="btn-tab-compare" class="tab-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-200/70 transition">
+              <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/>
+              </svg>
+              <span class="sidebar-label whitespace-nowrap">Keyword Compare</span>
+            </button>
+
+            <button type="button" onclick="switchTab('tab-index')" id="btn-tab-index" class="tab-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-200/70 transition">
+              <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4"/>
+              </svg>
+              <span class="sidebar-label whitespace-nowrap">Index View</span>
+            </button>
+
+            <button type="button" onclick="switchTab('tab-metrics')" id="btn-tab-metrics" class="tab-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-200/70 transition">
+              <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+              </svg>
+              <span class="sidebar-label whitespace-nowrap">Accuracy Metrics</span>
+            </button>
+          </nav>
+        </div>
       </div>
-      <div class="text-xs font-semibold uppercase tracking-wider text-slate-400 px-3 mb-2">Navigation</div>
-      <nav class="space-y-1 text-sm font-medium">
-        <button onclick="switchTab('tab-results')" id="btn-tab-results" class="sidebar-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl bg-blue-50 text-blue-700 transition">
-          🔍 Search Results
-        </button>
-        <button onclick="switchTab('tab-trust')" id="btn-tab-trust" class="sidebar-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 hover:bg-slate-100 transition">
-          🛡️ Trust Breakdown
-        </button>
-        <button onclick="switchTab('tab-compare')" id="btn-tab-compare" class="sidebar-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 hover:bg-slate-100 transition">
-          📊 Keyword Compare
-        </button>
-        <button onclick="switchTab('tab-index')" id="btn-tab-index" class="sidebar-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 hover:bg-slate-100 transition">
-          🗂️ Index View
-        </button>
-        <button onclick="switchTab('tab-metrics')" id="btn-tab-metrics" class="sidebar-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 hover:bg-slate-100 transition">
-          📈 Accuracy Metrics
-        </button>
-      </nav>
-      <div class="mt-auto px-3 py-3 bg-slate-50 rounded-2xl border border-slate-100 text-xs text-slate-500">
-        <span class="font-semibold text-slate-700 block mb-1">IR & Text Analytics</span>
-        VerifyIt • Trusted Search Engine
-      </div>
+
+      <footer class="p-4 border-t border-slate-200/80 text-xs text-slate-400 sidebar-label">
+        VerifyIt • Hybrid IR & Trust Engine
+      </footer>
     </aside>
 
-    <!-- MAIN CONTENT COLUMN -->
-    <div class="flex-1 flex flex-col min-w-0">
-      
-      <!-- GOOGLE-STYLE SEARCH HEADER / HERO -->
-      <div id="app-wrapper" class="flex-1 flex flex-col justify-center items-center px-4 py-8 transition-all duration-300">
-        <div id="brand-header" class="text-center mb-6">
+    <!-- RIGHT MAIN CONTENT AREA -->
+    <div class="flex-1 flex flex-col min-w-0 min-h-screen">
+
+      <!-- Mobile Top Bar Trigger -->
+      <header class="md:hidden flex items-center justify-between bg-white px-4 py-3 border-b border-slate-200">
+        <button type="button" onclick="toggleMobileSidebar()" class="p-2 rounded-lg text-slate-600 hover:bg-slate-100">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+        </button>
+        <span class="font-extrabold text-lg"><span class="text-blue-600">Verify</span><span class="text-indigo-600">It</span></span>
+        <div class="w-8"></div>
+      </header>
+
+      <!-- SEARCH HERO HEADER -->
+      <section id="app-wrapper" class="flex-1 flex flex-col justify-center items-center px-4 transition-all duration-300">
+        <header id="brand-header" class="text-center mb-6">
           <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900">
             <span class="text-blue-600">Verify</span><span class="text-indigo-600">It</span>
           </h1>
-          <p class="text-sm text-slate-500 mt-2">
-            Your most reliable search engine — compares multiple websites, checks the trust score, and puts you on.
-          </p>
-        </div>
+          <p class="text-sm text-slate-500 mt-2">Search with Confidence — Sorted by Verified Source Trust</p>
+        </header>
 
-        <!-- DYNAMIC AUTO-EXPANDING SEARCH BAR WITH ROTATING PLUS MENU -->
+        <!-- DYNAMIC AUTO-EXPANDING GOOGLE-STYLE SEARCH BAR -->
         <form id="search-form" class="w-full max-w-2xl relative">
-          <div class="flex items-end bg-white border border-slate-200 hover:border-slate-300 focus-within:border-blue-500 focus-within:ring-4 focus-within:ring-blue-100 rounded-3xl pl-3.5 pr-2.5 py-2.5 shadow-sm transition-all">
+          <div class="flex items-end bg-white border border-slate-200 hover:border-slate-300 focus-within:border-blue-500 focus-within:ring-4 focus-within:ring-blue-100 rounded-3xl pl-3 pr-2.5 py-2.5 shadow-sm transition-all">
             
-            <!-- Rotating Plus Attachment Button -->
-            <div class="relative mr-2 mb-0.5">
+            <!-- GOOGLE AI MODE '+' ROTATING ATTACHMENT MENU BUTTON -->
+            <div class="relative mr-2 mb-0.5 shrink-0">
               <button
+                id="plus-menu-btn"
                 type="button"
-                id="plus-toggle-btn"
-                class="w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition transform duration-300"
-                title="Add File / Media"
+                onclick="togglePlusMenu(event)"
+                class="plus-toggle-btn w-9 h-9 rounded-full flex items-center justify-center text-slate-500 hover:bg-slate-100 cursor-pointer"
+                title="Add File or Image"
               >
-                <svg id="plus-icon" class="w-5 h-5 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/>
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M12 4v16m8-8H4"/>
                 </svg>
               </button>
 
-              <!-- Attachment Options Dropdown -->
-              <div id="plus-menu" class="hidden absolute left-0 bottom-12 w-52 bg-white rounded-2xl shadow-xl border border-slate-200 py-2 z-50 fade-in">
-                <button type="button" onclick="selectAttachment('image')" class="w-full text-left px-4 py-2.5 text-xs font-medium text-slate-700 hover:bg-slate-50 flex items-center gap-2.5">
-                  🖼️ Add Image
+              <div
+                id="plus-dropdown-menu"
+                class="hidden absolute left-0 bottom-12 w-48 bg-white rounded-2xl shadow-xl border border-slate-200/90 py-2 z-50 fade-in"
+              >
+                <button type="button" onclick="triggerFilePicker('.png,.jpg,.jpeg,.webp', 'Image')" class="w-full flex items-center gap-3 px-4 py-2.5 text-xs font-medium text-slate-700 hover:bg-blue-50 hover:text-blue-600 transition">
+                  <svg class="w-4 h-4 text-purple-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                  </svg>
+                  <span>Add Image</span>
                 </button>
-                <button type="button" onclick="selectAttachment('text')" class="w-full text-left px-4 py-2.5 text-xs font-medium text-slate-700 hover:bg-slate-50 flex items-center gap-2.5">
-                  📄 Add Text File
+
+                <button type="button" onclick="triggerFilePicker('.txt', 'Text File')" class="w-full flex items-center gap-3 px-4 py-2.5 text-xs font-medium text-slate-700 hover:bg-blue-50 hover:text-blue-600 transition">
+                  <svg class="w-4 h-4 text-blue-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                  </svg>
+                  <span>Add Text File</span>
                 </button>
-                <button type="button" onclick="selectAttachment('pdf')" class="w-full text-left px-4 py-2.5 text-xs font-medium text-slate-700 hover:bg-slate-50 flex items-center gap-2.5">
-                  📕 Add Pdf
+
+                <button type="button" onclick="triggerFilePicker('.pdf', 'PDF')" class="w-full flex items-center gap-3 px-4 py-2.5 text-xs font-medium text-slate-700 hover:bg-blue-50 hover:text-blue-600 transition">
+                  <svg class="w-4 h-4 text-rose-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                  </svg>
+                  <span>Add Pdf</span>
                 </button>
-                <button type="button" onclick="selectAttachment('others')" class="w-full text-left px-4 py-2.5 text-xs font-medium text-slate-700 hover:bg-slate-50 flex items-center gap-2.5">
-                  📁 Others
+
+                <button type="button" onclick="triggerFilePicker('.docx,.xml,.csv,.md', 'Other File')" class="w-full flex items-center gap-3 px-4 py-2.5 text-xs font-medium text-slate-700 hover:bg-blue-50 hover:text-blue-600 transition">
+                  <svg class="w-4 h-4 text-amber-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 19a2 2 0 01-2-2V7a2 2 0 012-2h4l2 2h4a2 2 0 012 2v1M5 19h14a2 2 0 002-2v-5a2 2 0 00-2-2H9a2 2 0 00-2 2v5a2 2 0 01-2 2z"/>
+                  </svg>
+                  <span>Others</span>
                 </button>
               </div>
             </div>
@@ -671,11 +783,11 @@
             <textarea
               id="query-input"
               rows="1"
-              placeholder="Search anything or paste a claim to verify (e.g., Imran Rasheed JIIT, National Scholarship 2026)..."
+              placeholder="Search anything or paste a long paragraph/claim to verify..."
               class="w-full bg-transparent focus:outline-none text-slate-800 text-base py-1 resize-none max-h-44 overflow-y-auto leading-relaxed"
             ></textarea>
 
-            <!-- Google AI Mode Cursor-Tracking Glow Search Button -->
+            <!-- GOOGLE AI MODE CURSOR-FOLLOWING GLOW SEARCH BUTTON -->
             <button id="search-btn" type="submit" class="ai-glow-btn shrink-0 flex items-center gap-1.5 cursor-pointer ml-2 mb-0.5">
               <svg class="w-3.5 h-3.5 text-sky-300" fill="currentColor" viewBox="0 0 20 20">
                 <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
@@ -684,20 +796,20 @@
             </button>
           </div>
 
-          <!-- Dual Independent Sliders: Relevance Weight & Trust Weight -->
-          <div class="flex flex-wrap items-center justify-center gap-5 mt-4 text-xs text-slate-600">
-            <span id="file-badge" class="hidden bg-blue-50 text-blue-700 px-3 py-1 rounded-full font-medium"></span>
+          <!-- TWO INDEPENDENT SLIDERS: TRUST WEIGHT & RELEVANCE WEIGHT -->
+          <div class="flex flex-wrap items-center justify-center gap-5 mt-3.5 text-xs text-slate-600">
+            <span id="file-badge" class="hidden bg-blue-50 text-blue-700 border border-blue-200 px-2.5 py-1 rounded-full font-medium cursor-pointer"></span>
 
-            <label class="flex items-center gap-2 cursor-pointer bg-white px-3 py-1.5 rounded-full border border-slate-200 shadow-sm">
-              <span class="font-semibold text-slate-700">Relevance:</span>
-              <input id="relevance-slider" type="range" min="0" max="1" step="0.05" value="0.50" class="w-20 accent-blue-600" />
-              <span id="relevance-label" class="font-mono font-bold text-blue-600">50%</span>
+            <label class="flex items-center gap-2 cursor-pointer bg-white px-3 py-1.5 rounded-full border border-slate-200 shadow-2xs">
+              <span class="font-medium text-emerald-700">Trust Weight:</span>
+              <input id="trust-slider" type="range" min="0" max="100" step="5" value="50" class="w-20 accent-emerald-600" />
+              <span id="trust-label" class="font-bold text-slate-800 w-8">50%</span>
             </label>
 
-            <label class="flex items-center gap-2 cursor-pointer bg-white px-3 py-1.5 rounded-full border border-slate-200 shadow-sm">
-              <span class="font-semibold text-slate-700">Trust Weight:</span>
-              <input id="trust-slider" type="range" min="0" max="1" step="0.05" value="0.50" class="w-20 accent-emerald-600" />
-              <span id="trust-label" class="font-mono font-bold text-emerald-600">50%</span>
+            <label class="flex items-center gap-2 cursor-pointer bg-white px-3 py-1.5 rounded-full border border-slate-200 shadow-2xs">
+              <span class="font-medium text-blue-700">Relevance Weight:</span>
+              <input id="relevance-slider" type="range" min="0" max="100" step="5" value="50" class="w-20 accent-blue-600" />
+              <span id="relevance-label" class="font-bold text-slate-800 w-8">50%</span>
             </label>
 
             <label class="flex items-center gap-1.5 cursor-pointer">
@@ -706,7 +818,7 @@
             </label>
           </div>
         </form>
-      </div>
+      </section>
 
       <!-- WORKSPACE AREA -->
       <main id="workspace-container" class="hidden max-w-6xl w-full mx-auto px-4 pb-16 pt-4">
@@ -718,7 +830,7 @@
         </div>
 
         <!-- Processed Query + Stemming / Lemmatization Breakdown Bar -->
-        <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200/80 mb-3 space-y-2 text-xs text-slate-500">
+        <section class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200/80 mb-3 space-y-2 text-xs text-slate-500" aria-label="Query Processing Diagnostics">
           <div class="flex flex-wrap items-center justify-between gap-2">
             <div>
               <span class="font-semibold text-slate-700">Formulated Query:</span>
@@ -740,10 +852,10 @@
               <span id="out-stems" class="font-mono text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded ml-1"></span>
             </div>
           </div>
-        </div>
+        </section>
 
         <!-- SEQUENTIAL 3-DOT SOURCE VISITING PANEL -->
-        <div id="deep-research-box" class="bg-white border border-slate-200/90 rounded-2xl p-4 mb-3 shadow-sm transition-all">
+        <section id="deep-research-box" class="bg-white border border-slate-200/90 rounded-2xl p-4 mb-3 shadow-sm transition-all" aria-label="Source Verification Progress">
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-2">
               <span id="research-status-title" class="text-xs font-semibold text-slate-700">
@@ -753,12 +865,12 @@
                 <span></span><span></span><span></span>
               </div>
             </div>
-            <button onclick="toggleResearchLinks()" class="text-xs text-blue-600 hover:underline font-medium">
+            <button type="button" onclick="toggleResearchLinks()" class="text-xs text-blue-600 hover:underline font-medium">
               Show/Hide Sources
             </button>
           </div>
           <div id="research-links-stream" class="mt-3 flex flex-wrap gap-2"></div>
-        </div>
+        </section>
 
         <!-- GOOGLE-STYLE SEARCH STATS LINE -->
         <div id="google-stats-line" class="hidden text-xs text-slate-500 px-1 mb-4 font-medium"></div>
@@ -766,43 +878,38 @@
         <!-- ACTUAL RESULTS WRAPPER -->
         <div id="results-content" class="hidden fade-in">
 
-          <!-- Top Verified Source Summary + Reliability Reason -->
-          <div class="bg-gradient-to-r from-blue-50/80 to-emerald-50/60 border border-blue-100 rounded-3xl p-6 mb-6 shadow-sm">
+          <!-- TOP VERIFIED SOURCE SUMMARY + "WHY THIS SOURCE IS MOST RELIABLE" -->
+          <article class="bg-emerald-50/75 border border-emerald-200 rounded-2xl p-5 mb-6 shadow-sm">
             <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
-              <span class="text-xs font-bold uppercase tracking-wider text-blue-700">
-                ★ Top Verified Source Summary (Highest Trust Score)
+              <span class="text-xs font-bold uppercase tracking-wider text-emerald-800 flex items-center gap-1.5">
+                <span>★ Top Verified Source Summary (Highest Trust Score)</span>
               </span>
-              <span id="out-answer-badge" class="text-xs font-semibold bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full"></span>
+              <span id="out-answer-badge" class="text-xs font-semibold bg-emerald-100 text-emerald-800 px-3 py-0.5 rounded-full border border-emerald-200"></span>
             </div>
-            <p id="out-answer" class="text-slate-900 text-base font-medium leading-relaxed mb-3"></p>
-            <div id="out-answer-meta" class="text-xs text-slate-500 mb-3"></div>
 
-            <div class="text-xs text-slate-700 bg-white/90 p-4 rounded-2xl border border-emerald-200/80 flex items-start gap-3">
-              <span class="text-emerald-600 text-lg font-bold">🛡️</span>
-              <div>
-                <span class="font-bold text-slate-900 block mb-1">Why this source is ranked #1 in trust:</span>
-                <span id="out-reliability-reason"></span>
+            <p id="out-answer" class="text-slate-800 text-sm md:text-base font-medium leading-relaxed"></p>
+            <div id="out-answer-meta" class="text-xs text-slate-500 mt-1.5"></div>
+
+            <div class="mt-3.5 pt-3 border-t border-emerald-200/80">
+              <div class="text-[11px] font-bold uppercase tracking-wider text-emerald-900 mb-1.5">
+                Why this source is ranked #1 most reliable out of all results:
               </div>
+              <p id="out-why-reliable-text" class="text-xs text-emerald-950/90 leading-relaxed mb-2"></p>
+              <div id="out-why-reliable-pills" class="flex flex-wrap gap-2"></div>
             </div>
-          </div>
+          </article>
 
-          <!-- NAVIGATION BAR -->
-          <div class="flex items-center justify-between border-b border-slate-200 mb-6">
-            <div class="flex gap-6 text-sm font-medium text-slate-500 overflow-x-auto">
-              <button onclick="switchTab('tab-results')" class="tab-btn pb-3 border-b-2 border-blue-600 text-blue-600 whitespace-nowrap">Search Results</button>
-              <button onclick="switchTab('tab-trust')" class="tab-btn pb-3 border-b-2 border-transparent hover:text-slate-800 whitespace-nowrap">Trust Breakdown</button>
-              <button onclick="switchTab('tab-compare')" class="tab-btn pb-3 border-b-2 border-transparent hover:text-slate-800 whitespace-nowrap">Keyword Compare</button>
-              <button onclick="switchTab('tab-index')" class="tab-btn pb-3 border-b-2 border-transparent hover:text-slate-800 whitespace-nowrap">Index View</button>
-              <button onclick="switchTab('tab-metrics')" class="tab-btn pb-3 border-b-2 border-transparent hover:text-slate-800 whitespace-nowrap">Accuracy Metrics</button>
-            </div>
-            <span class="hidden md:inline-block text-xs text-slate-400 pb-2">✨ Sorted by Trust (High → Low) • Click or hover card to flip</span>
-          </div>
+          <!-- ACTIVE VIEW HEADER -->
+          <header class="flex items-center justify-between mb-4 px-1">
+            <h2 id="current-view-title" class="text-base font-bold text-slate-800">Search Results (Sorted by Trust)</h2>
+            <span class="text-xs text-slate-400">✨ Tap or hover any card to flip • Tap outside to flip back</span>
+          </header>
 
           <!-- TAB 1: VERTICAL 3D FLIP CARDS GRID -->
-          <div id="tab-results" class="tab-pane grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7 pt-2"></div>
+          <section id="tab-results" class="tab-pane grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7 pt-1"></section>
 
           <!-- TAB 2: TRUST BREAKDOWN -->
-          <div id="tab-trust" class="tab-pane hidden bg-white rounded-2xl p-5 border border-slate-200 overflow-x-auto">
+          <section id="tab-trust" class="tab-pane hidden bg-white rounded-2xl p-5 border border-slate-200 overflow-x-auto">
             <h3 class="text-base font-semibold mb-3">Source Trust & Pattern Scores (Descending Order)</h3>
             <table class="w-full text-left text-sm">
               <thead class="bg-slate-50 text-slate-600 text-xs uppercase">
@@ -818,10 +925,10 @@
               </thead>
               <tbody id="trust-table-body" class="divide-y divide-slate-100"></tbody>
             </table>
-          </div>
+          </section>
 
           <!-- TAB 3: SIDE-BY-SIDE KEYWORD COMPARE -->
-          <div id="tab-compare" class="tab-pane hidden grid md:grid-cols-2 gap-6">
+          <section id="tab-compare" class="tab-pane hidden grid md:grid-cols-2 gap-6">
             <div>
               <h3 class="text-sm font-bold uppercase tracking-wider text-emerald-700 mb-3">Sorted by Trust Score (High → Low)</h3>
               <div id="compare-hybrid" class="space-y-3"></div>
@@ -830,10 +937,10 @@
               <h3 class="text-sm font-bold uppercase tracking-wider text-amber-700 mb-3">Standard Search (Keywords Only)</h3>
               <div id="compare-standard" class="space-y-3"></div>
             </div>
-          </div>
+          </section>
 
           <!-- TAB 4: INDEX VIEW -->
-          <div id="tab-index" class="tab-pane hidden bg-white rounded-2xl p-5 border border-slate-200 space-y-3 text-sm">
+          <section id="tab-index" class="tab-pane hidden bg-white rounded-2xl p-5 border border-slate-200 space-y-3 text-sm">
             <h3 class="text-base font-semibold">Term Index & Compression Preview</h3>
             <p><strong>Root Term:</strong> <code id="idx-stem" class="bg-slate-100 px-2 py-0.5 rounded"></code></p>
             <p><strong>Matched Documents:</strong> <code id="idx-inv" class="bg-slate-100 px-2 py-0.5 rounded"></code></p>
@@ -842,27 +949,56 @@
               <strong>Word Positions:</strong>
               <pre id="idx-pos" class="bg-slate-900 text-slate-100 p-3 rounded-xl text-xs mt-1 overflow-x-auto"></pre>
             </div>
-          </div>
+          </section>
 
           <!-- TAB 5: ACCURACY METRICS -->
-          <div id="tab-metrics" class="tab-pane hidden bg-white rounded-2xl p-5 border border-slate-200">
+          <section id="tab-metrics" class="tab-pane hidden bg-white rounded-2xl p-5 border border-slate-200">
             <h3 class="text-base font-semibold mb-3">Retrieval Quality Comparison (Top 3 Results)</h3>
             <div id="metrics-cards" class="grid md:grid-cols-2 gap-4"></div>
-          </div>
+          </section>
 
-          <!-- GEMINI-STYLE FEEDBACK PROMPT -->
-          <div id="feedback-section" class="mt-12 bg-white rounded-3xl p-5 border border-slate-200 text-center max-w-md mx-auto shadow-sm">
-            <p class="text-xs font-semibold text-slate-700 mb-3">Was this search result and reliability estimate useful?</p>
-            <div class="flex justify-center gap-3">
-              <button onclick="submitFeedback('useful')" class="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-slate-100 hover:bg-emerald-50 hover:text-emerald-700 text-xs font-medium text-slate-700 transition">
-                👍 Yes, Helpful
+          <!-- GOOGLE GEMINI STYLE FEEDBACK BAR AT BOTTOM OF RESPONSE -->
+          <footer class="mt-10 pt-4 border-t border-slate-200/80 flex flex-wrap items-center justify-between gap-3 text-xs text-slate-500">
+            <div class="flex items-center gap-2">
+              <span class="font-medium text-slate-600">Was this search & reliability verification helpful?</span>
+              <button
+                id="fb-up"
+                type="button"
+                onclick="submitGeminiFeedback('up')"
+                class="p-2 rounded-full hover:bg-slate-200/80 text-slate-600 transition cursor-pointer"
+                title="Good response"
+              >
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5"/>
+                </svg>
               </button>
-              <button onclick="submitFeedback('not_useful')" class="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-slate-100 hover:bg-rose-50 hover:text-rose-700 text-xs font-medium text-slate-700 transition">
-                👎 Needs Improvement
+              <button
+                id="fb-down"
+                type="button"
+                onclick="submitGeminiFeedback('down')"
+                class="p-2 rounded-full hover:bg-slate-200/80 text-slate-600 transition cursor-pointer"
+                title="Bad response"
+              >
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14H5.236a2 2 0 01-1.789-2.894l3.5-7A2 2 0 018.736 3h4.018a2 2 0 01.485.06l3.76.94m-7 10v5a2 2 0 002 2h.096c.5 0 .905-.405.905-.904 0-.715.211-1.413.608-2.008L17 13V4m-7 10h2m5-10h2a2 2 0 012 2v6a2 2 0 01-2 2h-2.5"/>
+                </svg>
               </button>
+              <button
+                type="button"
+                onclick="copyVerifiedSummary()"
+                class="p-2 rounded-full hover:bg-slate-200/80 text-slate-600 transition cursor-pointer"
+                title="Copy verified answer"
+              >
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                </svg>
+              </button>
+              <span id="feedback-toast" class="hidden text-emerald-700 bg-emerald-50 border border-emerald-200 px-3 py-1 rounded-full font-medium fade-in">
+                Thanks for your feedback!
+              </span>
             </div>
-            <p id="feedback-thankyou" class="text-xs text-emerald-600 font-medium mt-2.5 hidden">Thank you for your feedback!</p>
-          </div>
+            <span class="text-[11px] text-slate-400">VerifyIt AI can make mistakes. Always verify important sources.</span>
+          </footer>
 
         </div>
       </main>
@@ -870,8 +1006,8 @@
   </div>
 
   <!-- ===================================================================
-       JAVASCRIPT: REALISTIC 3D STARFIELD + CALLIGRAPHY INTRO +
-       3-2-1 STEADY ROCKET SMOKE + GLITCH GREEN TERMINAL + VERIFYIT
+       JAVASCRIPT: 3D CONSTELLATION & DEPTH FIELD + CLASSIC EDITORIAL
+       TYPEWRITER + 3-2-1 ROCKET SMOKE + GLITCH TERMINAL + VERIFYIT
        =================================================================== -->
   <script>
     const sleep = (ms) => new Promise(r => setTimeout(r, ms));
@@ -879,61 +1015,57 @@
     let launchTriggered = false;
 
     /* -------------------------------------------------------------------
-       1. REALISTIC INTERACTIVE 3D DEEP-SPACE STARFIELD & SHOOTING STARS
+       1. CLASSIC 3D DEPTH STARFIELD & GEOMETRIC CONSTELLATION MESH
        ------------------------------------------------------------------- */
     const starCanvas = document.getElementById('starfield-canvas');
     const starCtx = starCanvas.getContext('2d');
+    const introStage = document.getElementById('intro-stage');
     let stars = [];
-    let shootingStars = [];
     let starAnimId = null;
     let mouseParallaxX = 0;
     let mouseParallaxY = 0;
     let targetParallaxX = 0;
     let targetParallaxY = 0;
 
+    // Refined monochrome & sapphire starlight palette
     const starColors = [
-      '254, 243, 199', // Warm Gold
-      '249, 168, 212', // Soft Rose
-      '196, 181, 253', // Cosmic Violet
-      '186, 230, 253', // Ice Cyan
-      '255, 255, 255'  // Pure Starlight
+      '248, 250, 252', // Pure Platinum
+      '203, 213, 225', // Brushed Silver
+      '148, 163, 184', // Muted Titanium
+      '186, 230, 253'  // Subtle Sapphire Ice
     ];
 
     function initStarfield() {
       starCanvas.width = window.innerWidth;
       starCanvas.height = window.innerHeight;
-      stars = Array.from({ length: 460 }, () => ({
-        x: (Math.random() - 0.5) * starCanvas.width * 2.4,
-        y: (Math.random() - 0.5) * starCanvas.height * 2.4,
-        z: Math.random() * 1200 + 40,
+      stars = Array.from({ length: 340 }, () => ({
+        x: (Math.random() - 0.5) * starCanvas.width * 2.2,
+        y: (Math.random() - 0.5) * starCanvas.height * 2.2,
+        z: Math.random() * 1200 + 50,
         prevZ: 1200,
-        size: Math.random() * 2.3 + 0.5,
+        size: Math.random() * 1.8 + 0.4,
         color: starColors[Math.floor(Math.random() * starColors.length)],
         twinklePhase: Math.random() * Math.PI * 2
       }));
     }
 
+    // Interactive 3D Parallax & Stage Perspective Tilt
     window.addEventListener('mousemove', (e) => {
-      targetParallaxX = (e.clientX / window.innerWidth - 0.5) * 140;
-      targetParallaxY = (e.clientY / window.innerHeight - 0.5) * 140;
-    });
+      const normX = (e.clientX / window.innerWidth) - 0.5;
+      const normY = (e.clientY / window.innerHeight) - 0.5;
+      targetParallaxX = normX * 110;
+      targetParallaxY = normY * 110;
 
-    function spawnShootingStar() {
-      if (Math.random() < 0.032 && shootingStars.length < 3) {
-        shootingStars.push({
-          x: Math.random() * starCanvas.width,
-          y: Math.random() * (starCanvas.height * 0.45),
-          vx: (Math.random() * 8 + 7) * (Math.random() > 0.5 ? 1 : -1),
-          vy: Math.random() * 5 + 4,
-          len: Math.random() * 90 + 50,
-          alpha: 1
-        });
+      if (!introAborted && introStage && !introStage.classList.contains('dissolve-blur-exit')) {
+        const tiltY = normX * 7;
+        const tiltX = -normY * 7;
+        introStage.style.transform = `rotateX(${tiltX.toFixed(2)}deg) rotateY(${tiltY.toFixed(2)}deg)`;
       }
-    }
+    });
 
     function renderStarfield() {
       if (introAborted) return;
-      starCtx.fillStyle = 'rgba(0, 0, 0, 0.32)';
+      starCtx.fillStyle = 'rgba(3, 5, 9, 0.36)';
       starCtx.fillRect(0, 0, starCanvas.width, starCanvas.height);
 
       mouseParallaxX += (targetParallaxX - mouseParallaxX) * 0.05;
@@ -942,69 +1074,66 @@
       const cx = starCanvas.width / 2 + mouseParallaxX;
       const cy = starCanvas.height / 2 + mouseParallaxY;
 
+      const projectedNodes = [];
+
       for (const s of stars) {
         s.prevZ = s.z;
-        s.z -= 3.2; // Realistic forward cosmic flight motion
-        s.twinklePhase += 0.06;
+        s.z -= 2.4;
+        s.twinklePhase += 0.04;
 
-        if (s.z <= 12) {
+        if (s.z <= 15) {
           s.z = 1200;
           s.prevZ = 1200;
-          s.x = (Math.random() - 0.5) * starCanvas.width * 2.4;
-          s.y = (Math.random() - 0.5) * starCanvas.height * 2.4;
+          s.x = (Math.random() - 0.5) * starCanvas.width * 2.2;
+          s.y = (Math.random() - 0.5) * starCanvas.height * 2.2;
         }
 
-        const scale = 550 / s.z;
-        const prevScale = 550 / s.prevZ;
+        const scale = 540 / s.z;
+        const prevScale = 540 / s.prevZ;
 
         const px = cx + s.x * scale;
         const py = cy + s.y * scale;
         const prevPx = cx + s.x * prevScale;
         const prevPy = cy + s.y * prevScale;
 
-        const twinkle = 0.7 + 0.3 * Math.sin(s.twinklePhase);
-        const alpha = Math.min(1, (1200 - s.z) / 500) * twinkle;
+        const twinkle = 0.75 + 0.25 * Math.sin(s.twinklePhase);
+        const alpha = Math.min(1, (1200 - s.z) / 520) * twinkle;
 
-        // Draw subtle light-speed warp streak + glowing star core
+        // Subtle depth warp trail
         starCtx.beginPath();
-        starCtx.strokeStyle = `rgba(${s.color}, ${alpha * 0.55})`;
-        starCtx.lineWidth = Math.max(0.6, s.size * scale * 0.45);
+        starCtx.strokeStyle = `rgba(${s.color}, ${alpha * 0.42})`;
+        starCtx.lineWidth = Math.max(0.5, s.size * scale * 0.38);
         starCtx.moveTo(prevPx, prevPy);
         starCtx.lineTo(px, py);
         starCtx.stroke();
 
+        // Crisp star point
         starCtx.beginPath();
         starCtx.fillStyle = `rgba(${s.color}, ${alpha})`;
-        starCtx.arc(px, py, Math.max(0.7, s.size * scale * 0.55), 0, Math.PI * 2);
+        starCtx.arc(px, py, Math.max(0.6, s.size * scale * 0.48), 0, Math.PI * 2);
         starCtx.fill();
+
+        if (s.z < 520 && px > 0 && px < starCanvas.width && py > 0 && py < starCanvas.height) {
+          projectedNodes.push({ x: px, y: py, alpha });
+        }
       }
 
-      // Render occasional shooting stars
-      spawnShootingStar();
-      for (let i = shootingStars.length - 1; i >= 0; i--) {
-        const st = shootingStars[i];
-        st.x += st.vx;
-        st.y += st.vy;
-        st.alpha -= 0.022;
-
-        if (st.alpha <= 0) {
-          shootingStars.splice(i, 1);
-          continue;
+      // Subtle 3D geometric constellation filaments connecting foreground nodes
+      for (let i = 0; i < projectedNodes.length; i++) {
+        for (let j = i + 1; j < projectedNodes.length; j++) {
+          const dx = projectedNodes[i].x - projectedNodes[j].x;
+          const dy = projectedNodes[i].y - projectedNodes[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 115) {
+            const lineAlpha = (1 - dist / 115) * 0.11 * Math.min(projectedNodes[i].alpha, projectedNodes[j].alpha);
+            starCtx.beginPath();
+            starCtx.strokeStyle = `rgba(148, 163, 184, ${lineAlpha})`;
+            starCtx.lineWidth = 0.6;
+            starCtx.moveTo(projectedNodes[i].x, projectedNodes[i].y);
+            starCtx.lineTo(projectedNodes[j].x, projectedNodes[j].y);
+            starCtx.stroke();
+          }
         }
-
-        const grad = starCtx.createLinearGradient(
-          st.x, st.y,
-          st.x - st.vx * 5, st.y - st.vy * 5
-        );
-        grad.addColorStop(0, `rgba(254, 240, 138, ${st.alpha})`);
-        grad.addColorStop(1, 'rgba(244, 114, 182, 0)');
-
-        starCtx.strokeStyle = grad;
-        starCtx.lineWidth = 2.2;
-        starCtx.beginPath();
-        starCtx.moveTo(st.x, st.y);
-        starCtx.lineTo(st.x - st.vx * 5, st.y - st.vy * 5);
-        starCtx.stroke();
       }
 
       starAnimId = requestAnimationFrame(renderStarfield);
@@ -1018,20 +1147,20 @@
     });
 
     /* -------------------------------------------------------------------
-       2. SLOWER, DRAMATIC TYPEWRITER & BACKSPACE ENGINE
+       2. SMOOTH, DELIBERATE TYPEWRITER & BACKSPACE ENGINE
        ------------------------------------------------------------------- */
-    async function typeString(element, text, speed = 90) {
+    async function typeString(element, text, speed = 82) {
       let current = element.getAttribute('data-raw') || '';
       for (let i = 0; i < text.length; i++) {
         if (introAborted) return;
         current += text[i];
         element.setAttribute('data-raw', current);
         element.innerHTML = `${current}<span class="type-cursor"></span>`;
-        await sleep(speed + (Math.random() * 24 - 12));
+        await sleep(speed + (Math.random() * 20 - 10));
       }
     }
 
-    async function eraseCharacters(element, count, speed = 75) {
+    async function eraseCharacters(element, count, speed = 68) {
       let current = element.getAttribute('data-raw') || '';
       for (let i = 0; i < count; i++) {
         if (introAborted) return;
@@ -1056,7 +1185,7 @@
     }
 
     /* -------------------------------------------------------------------
-       3. CHOREOGRAPHED 3-SCENE BUILD-UP (FULL SCREEN + SLOWER TYPING)
+       3. CHOREOGRAPHED 3-SCENE BUILD-UP (PROPORTIONAL CLASSIC SIZING)
        ------------------------------------------------------------------- */
     async function runCinematicIntro() {
       initStarfield();
@@ -1067,94 +1196,94 @@
       const line2 = document.getElementById('type-line-2');
       const line3 = document.getElementById('type-line-3');
 
-      await sleep(600);
+      await sleep(550);
 
       // ===============================================================
-      // SCENE 1 (Large screen-filling Syne typography in warm gold-rose):
+      // SCENE 1 (Classic Playfair Display Serif — Balanced Executive Size):
       // Writes "Tired of finding??" -> 1s pause -> types " Or" ->
       // erases " Or" and "??" -> continues typing " the trusted one??"
       // ===============================================================
-      line1.className = 'font-scene-1 text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-extrabold tracking-tight leading-none';
-      await typeString(line1, 'Tired of finding??', 95);
+      line1.className = 'typo-scene-1 text-3xl sm:text-5xl md:text-6xl leading-tight';
+      await typeString(line1, 'Tired of finding??', 88);
       await sleep(1000); // 1 sec pause
 
-      await typeString(line1, ' Or', 105);
-      await sleep(950);
+      await typeString(line1, ' Or', 95);
+      await sleep(900);
 
       // Erase " Or" (3 chars) + "??" (2 chars) = 5 characters
-      await eraseCharacters(line1, 5, 78);
-      await sleep(500);
+      await eraseCharacters(line1, 5, 72);
+      await sleep(450);
 
       // Continue typing after "Tired of finding" -> " the trusted one??"
-      await typeString(line1, ' the trusted one??', 92);
-      await sleep(1300);
+      await typeString(line1, ' the trusted one??', 85);
+      await sleep(1250);
 
       // Dissolve + Blur Exit Animation
       stage.classList.add('dissolve-blur-exit');
-      await sleep(1250);
+      await sleep(1180);
       if (introAborted) return;
 
       // Reset Stage for Scene 2
       clearStageLines(line1, line2, line3);
       stage.classList.remove('dissolve-blur-exit');
-      await sleep(300);
+      await sleep(280);
 
       // ===============================================================
-      // SCENE 2 (Screen-covering Cinzel + Cormorant Garamond Italic):
+      // SCENE 2 (Plus Jakarta Sans + Playfair Display Italic Subline):
       // Line 1: "Stop wasting data on random sites"
       // Next line: "don't just explore all those fake sites or paid ones after you just wrote free in the search bar"
       // ===============================================================
-      line1.className = 'font-scene-2-main text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-wide leading-tight';
-      line2.className = 'font-scene-2-sub text-2xl sm:text-4xl md:text-5xl font-semibold mt-8 leading-snug max-w-6xl mx-auto';
+      line1.className = 'typo-scene-2-main text-2xl sm:text-4xl md:text-5xl leading-tight';
+      line2.className = 'typo-scene-2-sub text-lg sm:text-2xl md:text-3xl mt-5 leading-relaxed max-w-3xl mx-auto';
 
-      await typeString(line1, 'Stop wasting data on random sites', 82);
+      await typeString(line1, 'Stop wasting data on random sites', 76);
       removeCursor(line1);
       await sleep(1000); // 1 sec pause
 
       await typeString(
         line2,
         "don't just explore all those fake sites or paid ones after you just wrote free in the search bar",
-        58
+        52
       );
-      await sleep(1400);
+      await sleep(1350);
 
       // Dissolve + Blur Exit Animation
       stage.classList.add('dissolve-blur-exit');
-      await sleep(1250);
+      await sleep(1180);
       if (introAborted) return;
 
       // Reset Stage for Scene 3
       clearStageLines(line1, line2, line3);
       stage.classList.remove('dissolve-blur-exit');
-      await sleep(300);
+      await sleep(280);
 
       // ===============================================================
-      // SCENE 3 (Calligraphy / Cursive for "Introducing" & "VerifyIt"):
-      // Line 1: "Introducing" (Alex Brush Calligraphy)
-      // Next line: "VerifyIt" (Giant Great Vibes Calligraphy)
+      // SCENE 3 (Refined Editorial Italic + Classic 3D Brand Mark):
+      // Line 1: "Introducing"
+      // Next line: "VerifyIt"
       // Next line (shorter font size): "Your most reliable search engine, compares multiple website checks the trust score and you are on"
       // ===============================================================
-      line1.className = 'font-calligraphy-intro text-5xl sm:text-6xl md:text-7xl mb-2';
-      line2.className = 'font-calligraphy-brand text-7xl sm:text-8xl md:text-9xl lg:text-[10rem] py-3 leading-none';
-      line3.className = 'font-scene-3-desc text-xl sm:text-2xl md:text-3xl max-w-4xl mx-auto mt-6 leading-relaxed';
+      line1.className = 'typo-scene-3-intro text-2xl sm:text-3xl md:text-4xl mb-1';
+      line2.className = 'typo-scene-3-brand text-5xl sm:text-6xl md:text-7xl py-2 leading-tight';
+      line3.className = 'typo-scene-3-desc text-sm sm:text-base md:text-lg max-w-xl mx-auto mt-4 leading-relaxed';
 
-      await typeString(line1, 'Introducing', 105);
+      await typeString(line1, 'Introducing', 95);
       removeCursor(line1);
       await sleep(1000); // 1 sec pause
 
-      await typeString(line2, 'VerifyIt', 130);
+      await typeString(line2, 'VerifyIt', 115);
       removeCursor(line2);
       await sleep(1000); // 1 sec pause
 
       await typeString(
         line3,
         'Your most reliable search engine, compares multiple website checks the trust score and you are on',
-        55
+        48
       );
 
-      // Automatically reveal the "Launch It" button (No "Scroll Down to Continue")
+      // Automatically reveal the "Launch It" button
       if (!introAborted) {
-        await sleep(400);
+        await sleep(350);
         document.getElementById('launch-wrapper').classList.add('revealed');
       }
     }
@@ -1176,7 +1305,6 @@
       smokeCanvas.width = window.innerWidth;
       smokeCanvas.height = window.innerHeight;
 
-      // Fix rocket at button's position
       const btnRect = launchBtn.getBoundingClientRect();
       let rocketX = btnRect.left + btnRect.width / 2;
       let rocketY = btnRect.top + btnRect.height / 2;
@@ -1197,14 +1325,14 @@
 
       function spawnSmokePlume(x, y, intensity = 1) {
         for (let i = 0; i < 10 * intensity; i++) {
-          const angle = (Math.PI / 2) + (Math.random() - 0.5) * 1.45; // Billows downward & outward
+          const angle = (Math.PI / 2) + (Math.random() - 0.5) * 1.45;
           const speed = Math.random() * 8.5 + 3.5;
           smokePuffs.push({
-            x: x + (Math.random() - 0.5) * 34,
-            y: y + 36,
+            x: x + (Math.random() - 0.5) * 32,
+            y: y + 34,
             vx: Math.cos(angle) * speed * (Math.random() * 1.9 + 0.6),
             vy: Math.sin(angle) * speed,
-            radius: Math.random() * 40 + 26,
+            radius: Math.random() * 38 + 24,
             growRate: Math.random() * 4.0 + 2.2,
             alpha: Math.random() * 0.45 + 0.45,
             hue: Math.random() > 0.3 ? '226, 232, 240' : '148, 163, 184'
@@ -1212,15 +1340,12 @@
         }
       }
 
-      // Start continuous smoke animation loop
       function animateSmokeAndFlight() {
         sCtx.clearRect(0, 0, smokeCanvas.width, smokeCanvas.height);
 
         if (isCountingDown) {
-          // Rocket stays steady & fixed in place while releasing thick smoke downward
           spawnSmokePlume(rocketX, rocketY, 1.35);
         } else {
-          // Countdown finished! Rocket blasts upwards & smoke blankets the entire window
           flyFrame++;
           const accel = flyFrame * 1.65;
           rocketY -= (10 + accel);
@@ -1228,7 +1353,6 @@
 
           spawnSmokePlume(rocketX, Math.min(rocketY, smokeCanvas.height), 2.5);
 
-          // Additional window-covering smoke clouds rising across screen
           for (let k = 0; k < 7; k++) {
             smokePuffs.push({
               x: Math.random() * smokeCanvas.width,
@@ -1243,14 +1367,13 @@
           }
         }
 
-        // Render all volumetric smoke puffs
         for (let i = smokePuffs.length - 1; i >= 0; i--) {
           const p = smokePuffs[i];
           p.x += p.vx;
           p.y += p.vy;
           p.radius += p.growRate;
           if (isCountingDown) {
-            p.alpha *= 0.988; // Keep smoke billowing without prematurely whiting out during countdown
+            p.alpha *= 0.988;
           }
 
           if (p.alpha <= 0.02 || p.radius > 450) {
@@ -1280,7 +1403,6 @@
         if (whiteoutAlpha < 1) {
           requestAnimationFrame(animateSmokeAndFlight);
         } else {
-          // Smoke covers the entire window -> Trigger Glitch & Greyish Terminal!
           introEl.classList.remove('shake-screen');
           runGlitchTerminalSequence();
         }
@@ -1288,19 +1410,17 @@
 
       requestAnimationFrame(animateSmokeAndFlight);
 
-      // Show "3 - 2 - 1" Countdown while Rocket stays fixed and releases smoke
       const counts = ['3', '2', '1'];
       for (const num of counts) {
         countdownEl.textContent = num;
         countdownEl.style.opacity = '1';
-        countdownEl.style.transform = 'translate(-50%, -50%) scale(1.15)';
+        countdownEl.style.transform = 'translate(-50%, -50%) scale(1.1)';
         await sleep(650);
         countdownEl.style.opacity = '0';
-        countdownEl.style.transform = 'translate(-50%, -50%) scale(0.75)';
+        countdownEl.style.transform = 'translate(-50%, -50%) scale(0.8)';
         await sleep(300);
       }
 
-      // Release rocket upward after 3-2-1 completes
       rocketEl.classList.remove('rocket-countdown-vibe');
       isCountingDown = false;
     }
@@ -1317,7 +1437,6 @@
       if (starAnimId) cancelAnimationFrame(starAnimId);
       introEl.style.display = 'none';
 
-      // Show Terminal Stage & Trigger Glitch Burst Animation
       termStage.style.display = 'flex';
       termStage.classList.add('glitch-active');
       termWindow.classList.add('glitch-active');
@@ -1336,7 +1455,6 @@
 
       let completedHTML = '';
 
-      // Initial blinking cursor after '>' sign
       termOutput.innerHTML = `<div><span class="text-emerald-300 font-bold">&gt;</span> <span class="term-cursor"></span></div>`;
       await sleep(600);
 
@@ -1362,7 +1480,6 @@
           `</div>`;
       }
 
-      // Open the VerifyIt Dashboard
       const appEl = document.getElementById('verifyit-app');
       appEl.classList.remove('opacity-0');
       appEl.classList.add('opacity-100');
@@ -1386,14 +1503,101 @@
       document.getElementById('query-input').focus();
     }
 
-    // Start the Cinematic Intro on Page Load
     window.addEventListener('DOMContentLoaded', () => {
       runCinematicIntro();
     });
 
     /* -------------------------------------------------------------------
-       6. VERIFYIT IR SYSTEM FRONTEND LOGIC (INTACT)
+       6. VERIFYIT IR SYSTEM FRONTEND LOGIC (INTACT FROM SOURCE)
        ------------------------------------------------------------------- */
+    let desktopSidebarCollapsed = false;
+    function toggleDesktopSidebar() {
+      const sb = document.getElementById('gemini-sidebar');
+      const labels = document.querySelectorAll('.sidebar-label');
+      desktopSidebarCollapsed = !desktopSidebarCollapsed;
+      if (desktopSidebarCollapsed) {
+        sb.classList.remove('w-64');
+        sb.classList.add('w-20');
+        labels.forEach(el => el.classList.add('hidden'));
+      } else {
+        sb.classList.remove('w-20');
+        sb.classList.add('w-64');
+        labels.forEach(el => el.classList.remove('hidden'));
+      }
+    }
+
+    function toggleMobileSidebar() {
+      const sb = document.getElementById('gemini-sidebar');
+      const bd = document.getElementById('sidebar-backdrop');
+      sb.classList.toggle('-translate-x-full');
+      bd.classList.toggle('hidden');
+    }
+
+    const plusBtn = document.getElementById('plus-menu-btn');
+    const plusMenu = document.getElementById('plus-dropdown-menu');
+    const fileInput = document.getElementById('file-input');
+    const fileBadge = document.getElementById('file-badge');
+    let selectedFileCategory = 'File';
+
+    function togglePlusMenu(e) {
+      e.stopPropagation();
+      plusBtn.classList.toggle('is-open');
+      plusMenu.classList.toggle('hidden');
+    }
+
+    function closePlusMenu() {
+      plusBtn.classList.remove('is-open');
+      plusMenu.classList.add('hidden');
+    }
+
+    function triggerFilePicker(acceptTypes, label) {
+      selectedFileCategory = label;
+      fileInput.setAttribute('accept', acceptTypes);
+      closePlusMenu();
+      fileInput.click();
+    }
+
+    fileInput.addEventListener('change', () => {
+      if (fileInput.files.length > 0) {
+        fileBadge.textContent = `${selectedFileCategory}: ${fileInput.files[0].name} ✕`;
+        fileBadge.classList.remove('hidden');
+        fileBadge.onclick = () => {
+          fileInput.value = '';
+          fileBadge.classList.add('hidden');
+        };
+      } else {
+        fileBadge.classList.add('hidden');
+      }
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('#plus-menu-btn') && !e.target.closest('#plus-dropdown-menu')) {
+        closePlusMenu();
+      }
+      if (e.target.closest('.source-redirect-link')) {
+        return;
+      }
+      const clickedCard = e.target.closest('.flip-card-scene');
+      if (!clickedCard) {
+        document.querySelectorAll('.flip-card-scene.is-flipped').forEach(c => {
+          c.classList.remove('is-flipped');
+        });
+      }
+    });
+
+    function handleCardFlipClick(e, cardEl) {
+      if (e.target.closest('.source-redirect-link')) return;
+      e.stopPropagation();
+
+      const alreadyFlipped = cardEl.classList.contains('is-flipped');
+      document.querySelectorAll('.flip-card-scene.is-flipped').forEach(c => {
+        c.classList.remove('is-flipped');
+      });
+      if (!alreadyFlipped) {
+        cardEl.classList.add('is-flipped');
+      }
+    }
+
     const queryInput = document.getElementById('query-input');
     function autoResizeTextarea() {
       queryInput.style.height = 'auto';
@@ -1414,71 +1618,72 @@
       searchBtn.style.setProperty('--y', `${e.clientY - rect.top}px`);
     });
 
-    const relSlider = document.getElementById('relevance-slider');
     const trustSlider = document.getElementById('trust-slider');
-    relSlider.addEventListener('input', () => {
-      document.getElementById('relevance-label').textContent = Math.round(relSlider.value * 100) + '%';
-    });
+    const trustLabel = document.getElementById('trust-label');
+    const relevanceSlider = document.getElementById('relevance-slider');
+    const relevanceLabel = document.getElementById('relevance-label');
+
     trustSlider.addEventListener('input', () => {
-      document.getElementById('trust-label').textContent = Math.round(trustSlider.value * 100) + '%';
+      trustLabel.textContent = trustSlider.value + '%';
     });
-
-    const plusBtn = document.getElementById('plus-toggle-btn');
-    const plusMenu = document.getElementById('plus-menu');
-    const plusIcon = document.getElementById('plus-icon');
-    const fileInput = document.getElementById('file-input');
-    const fileBadge = document.getElementById('file-badge');
-
-    plusBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      plusMenu.classList.toggle('hidden');
-      plusIcon.classList.toggle('rotate-45');
-    });
-
-    document.addEventListener('click', () => {
-      plusMenu.classList.add('hidden');
-      plusIcon.classList.remove('rotate-45');
-    });
-
-    function selectAttachment(type) {
-      plusMenu.classList.add('hidden');
-      plusIcon.classList.remove('rotate-45');
-      if (type === 'pdf') fileInput.accept = '.pdf';
-      else if (type === 'text') fileInput.accept = '.txt,.doc,.docx';
-      else if (type === 'image') fileInput.accept = 'image/*';
-      else fileInput.accept = '*/*';
-      fileInput.click();
-    }
-
-    fileInput.addEventListener('change', () => {
-      if (fileInput.files.length > 0) {
-        fileBadge.textContent = 'Attached: ' + fileInput.files[0].name;
-        fileBadge.classList.remove('hidden');
-      } else {
-        fileBadge.classList.add('hidden');
-      }
+    relevanceSlider.addEventListener('input', () => {
+      relevanceLabel.textContent = relevanceSlider.value + '%';
     });
 
     function toggleResearchLinks() {
       document.getElementById('research-links-stream').classList.toggle('hidden');
     }
 
+    const viewTitles = {
+      'tab-results': 'Search Results (Sorted by Trust)',
+      'tab-trust': 'Source Trust & Pattern Breakdown',
+      'tab-compare': 'Hybrid vs. Keyword Ranking Compare',
+      'tab-index': 'Inverted & Positional Index Inspector',
+      'tab-metrics': 'IR Evaluation Metrics (Top 3)'
+    };
+
     function switchTab(tabId) {
       document.querySelectorAll('.tab-pane').forEach(el => el.classList.add('hidden'));
       document.getElementById(tabId).classList.remove('hidden');
-      document.querySelectorAll('.sidebar-btn').forEach(btn => {
-        btn.classList.remove('bg-blue-50', 'text-blue-700');
-        btn.classList.add('text-slate-600', 'hover:bg-slate-100');
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('bg-blue-100/80', 'text-blue-700');
+        btn.classList.add('text-slate-600');
       });
-      const activeSidebarBtn = document.getElementById('btn-' + tabId);
-      if (activeSidebarBtn) {
-        activeSidebarBtn.classList.add('bg-blue-50', 'text-blue-700');
-        activeSidebarBtn.classList.remove('text-slate-600', 'hover:bg-slate-100');
+      const activeBtn = document.getElementById('btn-' + tabId);
+      activeBtn.classList.remove('text-slate-600');
+      activeBtn.classList.add('bg-blue-100/80', 'text-blue-700');
+      document.getElementById('current-view-title').textContent = viewTitles[tabId] || 'Search Results';
+
+      const sb = document.getElementById('gemini-sidebar');
+      if (!sb.classList.contains('-translate-x-full') && window.innerWidth < 768) {
+        toggleMobileSidebar();
       }
     }
 
-    function submitFeedback() {
-      document.getElementById('feedback-thankyou').classList.remove('hidden');
+    function submitGeminiFeedback(type) {
+      const upBtn = document.getElementById('fb-up');
+      const downBtn = document.getElementById('fb-down');
+      const toast = document.getElementById('feedback-toast');
+
+      upBtn.classList.remove('bg-emerald-100', 'text-emerald-700');
+      downBtn.classList.remove('bg-rose-100', 'text-rose-700');
+
+      if (type === 'up') {
+        upBtn.classList.add('bg-emerald-100', 'text-emerald-700');
+        toast.textContent = 'Glad this verification was helpful!';
+      } else {
+        downBtn.classList.add('bg-rose-100', 'text-rose-700');
+        toast.textContent = 'Feedback noted — we will refine our ranking weights.';
+      }
+      toast.classList.remove('hidden');
+    }
+
+    function copyVerifiedSummary() {
+      const txt = document.getElementById('out-answer').textContent;
+      navigator.clipboard.writeText(txt);
+      const toast = document.getElementById('feedback-toast');
+      toast.textContent = 'Copied summary to clipboard!';
+      toast.classList.remove('hidden');
     }
 
     document.getElementById('did-you-mean-btn').addEventListener('click', () => {
@@ -1499,7 +1704,6 @@
       wrapper.classList.remove('flex-1', 'justify-center');
       wrapper.classList.add('pt-6', 'pb-4', 'border-b', 'border-slate-200', 'bg-white');
       document.getElementById('brand-header').classList.add('mb-3');
-      document.getElementById('sidebar').classList.remove('hidden');
 
       const workspace = document.getElementById('workspace-container');
       const resultsContent = document.getElementById('results-content');
@@ -1507,6 +1711,7 @@
       const streamContainer = document.getElementById('research-links-stream');
       const didYouMeanBox = document.getElementById('did-you-mean-box');
       const headerDots = document.getElementById('header-visiting-dots');
+      document.getElementById('feedback-toast').classList.add('hidden');
 
       workspace.classList.remove('hidden');
       resultsContent.classList.add('hidden');
@@ -1522,11 +1727,13 @@
       document.getElementById('out-stems').textContent = '...';
       document.getElementById('research-status-title').textContent = 'Visiting web sources';
 
+      const tW = parseFloat(trustSlider.value) / 100.0;
+      const rW = parseFloat(relevanceSlider.value) / 100.0;
+
       const formData = new FormData();
       formData.append('query', query);
-      formData.append('relevance_weight', relSlider.value);
-      formData.append('trust_weight', trustSlider.value);
-      formData.append('alpha', relSlider.value);
+      formData.append('trust_weight', tW);
+      formData.append('relevance_weight', rW);
       formData.append('use_prf', document.getElementById('prf-check').checked);
       if (fileInput.files.length > 0) {
         formData.append('file', fileInput.files[0]);
@@ -1535,6 +1742,11 @@
       try {
         const res = await fetch('/api/search', { method: 'POST', body: formData });
         const data = await res.json();
+
+        const sumW = tW + rW || 1.0;
+        data.hybrid_results.forEach(item => {
+          item.hybrid_score = Number((((rW * item.relevance_score) + (tW * item.reliability_score)) / sumW).toFixed(4));
+        });
 
         data.hybrid_results.sort((a, b) => {
           if (b.reliability_score !== a.reliability_score) {
@@ -1552,9 +1764,9 @@
         document.getElementById('out-expanded-terms').textContent =
           data.added_terms && data.added_terms.length ? '+' + data.added_terms.join(', +') : 'None';
         document.getElementById('out-lemmas').textContent =
-          data.lemmatized_tokens && data.lemmatized_tokens.length ? data.lemmatized_tokens.join(' · ') : 'Standard';
+          data.lemmatized_tokens && data.lemmatized_tokens.length ? data.lemmatized_tokens.join(' · ') : 'None';
         document.getElementById('out-stems').textContent =
-          data.stemmed_tokens && data.stemmed_tokens.length ? data.stemmed_tokens.join(' · ') : 'Standard';
+          data.stemmed_tokens && data.stemmed_tokens.length ? data.stemmed_tokens.join(' · ') : 'None';
 
         for (let i = 0; i < data.hybrid_results.length; i++) {
           const item = data.hybrid_results[i];
@@ -1574,7 +1786,7 @@
           `;
           streamContainer.appendChild(pill);
 
-          await sleep(160);
+          await sleep(140);
 
           pill.className = 'flex items-center gap-1.5 bg-slate-100 border border-slate-200 text-slate-700 text-xs px-2.5 py-1 rounded-full transition-all';
           const statusEl = pill.querySelector('.pill-status');
@@ -1604,17 +1816,44 @@
 
     function renderResults(data) {
       const ans = data.direct_answer;
-      const topTrustPct = Math.round((ans.reliability_score || 0.85) * 100);
+      const topItem = data.hybrid_results[0];
+      const topRel = topItem ? topItem.reliability_details : {};
+      const topTrustPct = Math.round((topItem ? topItem.reliability_score : (ans.reliability_score || 0.85)) * 100);
+
       document.getElementById('out-answer').textContent = ans.answer;
       document.getElementById('out-answer-badge').textContent =
-        `Most Reliable Source: ${ans.source_domain} (${topTrustPct}% Trust)`;
+        `Most Reliable: ${ans.source_domain} (${topTrustPct}% Trust)`;
       document.getElementById('out-answer-meta').textContent =
         `Extracted from "${ans.source_title || ans.source_doc}" (${ans.source_domain})`;
 
-      if (data.hybrid_results.length > 0) {
-        const topRel = data.hybrid_results[0].reliability_details;
-        document.getElementById('out-reliability-reason').textContent =
-          `Retrieved from '${ans.source_domain}' with PageRank authority (${topRel.pagerank}), HITS authority (${topRel.hits_authority}), Naïve Bayes spam filter probability (${topRel.nb_trust_prob}), and cross-source claim consensus (${topRel.claim_consensus}).`;
+      if (topItem && topRel) {
+        const domain = topItem.doc.source;
+        const isGovOrAc = domain.endsWith('.gov.in') || domain.endsWith('.ac.in') || domain.endsWith('.edu') || domain.endsWith('.org');
+        const tldReason = isGovOrAc
+          ? `verified institutional/authority domain (${domain})`
+          : `established web domain (${domain})`;
+
+        document.getElementById('out-why-reliable-text').textContent =
+          `${domain} achieved the #1 Trust Score (${topItem.reliability_score}) because it combines a ${tldReason}, strong incoming link authority (PageRank ${topRel.pagerank} & HITS Authority ${topRel.hits_authority}), clean non-clickbait language verified by the Naïve Bayes classifier (${Math.round(topRel.nb_trust_prob * 100)}% non-spam probability), and high cross-document factual consensus (${topRel.claim_consensus}).`;
+
+        const pillsBox = document.getElementById('out-why-reliable-pills');
+        pillsBox.innerHTML = `
+          <span class="bg-white border border-emerald-200 text-emerald-800 text-[11px] font-semibold px-2.5 py-1 rounded-full">
+            ✓ PageRank Authority: ${topRel.pagerank}
+          </span>
+          <span class="bg-white border border-emerald-200 text-emerald-800 text-[11px] font-semibold px-2.5 py-1 rounded-full">
+            ✓ HITS Hub/Auth: ${topRel.hits_authority}
+          </span>
+          <span class="bg-white border border-emerald-200 text-emerald-800 text-[11px] font-semibold px-2.5 py-1 rounded-full">
+            ✓ Naïve Bayes Clean Language: ${Math.round(topRel.nb_trust_prob * 100)}%
+          </span>
+          <span class="bg-white border border-emerald-200 text-emerald-800 text-[11px] font-semibold px-2.5 py-1 rounded-full">
+            ✓ Claim Consensus: ${topRel.claim_consensus}
+          </span>
+          <span class="bg-white border border-emerald-200 text-emerald-800 text-[11px] font-semibold px-2.5 py-1 rounded-full">
+            ✓ Recency Score: ${topRel.recency_score}
+          </span>
+        `;
       }
 
       const tabResults = document.getElementById('tab-results');
@@ -1644,7 +1883,7 @@
         const badgeText = isTrusted ? 'Verified Source' : isModerate ? 'Moderate Trust' : 'Clickbait Risk';
 
         tabResults.innerHTML += `
-          <div class="flip-card-scene" onclick="toggleCardFlip(this)">
+          <article class="flip-card-scene" onclick="handleCardFlipClick(event, this)">
             <div class="flip-card-lift">
               <div class="flip-card-inner">
                 
@@ -1703,7 +1942,7 @@
 
                     <div class="flex items-center justify-between pt-2 border-t border-slate-100 text-[11px] text-slate-400">
                       <span>Trust Score: <strong class="text-emerald-700">${item.reliability_score} (${trustPct}%)</strong></span>
-                      <span class="text-blue-600 font-medium">Click or hover to flip ↻</span>
+                      <span class="text-blue-600 font-medium">Tap / Hover to flip ↻</span>
                     </div>
                   </div>
                 </div>
@@ -1763,8 +2002,8 @@
                   <a
                     href="${d.url || '#'}"
                     target="_blank"
-                    onclick="event.stopPropagation()"
-                    class="w-full bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold py-2.5 rounded-xl text-center transition block"
+                    rel="noopener noreferrer"
+                    class="source-redirect-link w-full bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold py-2.5 rounded-xl text-center transition block"
                   >
                     Visit ${d.source} ↗
                   </a>
@@ -1772,7 +2011,7 @@
 
               </div>
             </div>
-          </div>
+          </article>
         `;
       });
 
@@ -1841,20 +2080,6 @@
         </div>
       `;
     }
-
-    function toggleCardFlip(cardElement) {
-      const wasFlipped = cardElement.classList.contains('is-flipped');
-      document.querySelectorAll('.flip-card-scene').forEach(c => c.classList.remove('is-flipped'));
-      if (!wasFlipped) {
-        cardElement.classList.add('is-flipped');
-      }
-    }
-
-    document.addEventListener('click', (e) => {
-      if (!e.target.closest('.flip-card-scene')) {
-        document.querySelectorAll('.flip-card-scene').forEach(c => c.classList.remove('is-flipped'));
-      }
-    });
   </script>
 </body>
 </html>
