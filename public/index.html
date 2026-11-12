@@ -11,12 +11,14 @@
       --cursor-color: #94a3b8;
     }
     body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       overflow-x: hidden;
+      background-color: #f8fafc;
+      color: #0f172a;
     }
 
     /* =================================================================
-       1. CLASSIC 3D ARCHITECTURAL CINEMATIC INTRO STAGE
+       1. CLASSIC 3D ARCHITECTURAL CINEMATIC INTRO STAGE (KEPT INTACT)
        ================================================================= */
     #cinematic-intro {
       position: fixed;
@@ -32,7 +34,6 @@
       transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
-    /* Subtle 3D Architectural Horizon Grid & Ambient Volumetric Rim Light */
     .architectural-grid {
       position: absolute;
       inset: 0;
@@ -72,7 +73,6 @@
     #starfield-canvas { z-index: 2; }
     #smoke-canvas { z-index: 30; }
 
-    /* Interactive 3D Tilt Stage Container */
     .intro-stage-box {
       position: relative;
       z-index: 10;
@@ -87,7 +87,6 @@
                   transform 0.25s ease-out;
     }
 
-    /* Dissolve + 3D Depth Blur exit state */
     .dissolve-blur-exit {
       filter: blur(26px) brightness(1.35);
       opacity: 0 !important;
@@ -97,10 +96,6 @@
                   transform 1.15s cubic-bezier(0.22, 1, 0.36, 1) !important;
     }
 
-    /* =================================================================
-       CLASSIC EXECUTIVE TYPOGRAPHY SYSTEM (PLATINUM & TITANIUM PALETTE)
-       ================================================================= */
-    /* Scene 1: Classic Editorial Serif with Brushed Platinum Finish */
     .typo-scene-1 {
       font-family: 'Playfair Display', Georgia, serif;
       font-weight: 600;
@@ -112,7 +107,6 @@
       transform: translateZ(36px);
     }
 
-    /* Scene 2: Architectural Geometric Sans + Refined Editorial Subtext */
     .typo-scene-2-main {
       font-family: 'Plus Jakarta Sans', sans-serif;
       font-weight: 700;
@@ -134,7 +128,6 @@
       transform: translateZ(24px);
     }
 
-    /* Scene 3: Classic Editorial Italic Overline + 3D Titanium Brand Mark */
     .typo-scene-3-intro {
       font-family: 'Instrument Serif', Georgia, serif;
       font-style: italic;
@@ -164,7 +157,6 @@
       transform: translateZ(20px);
     }
 
-    /* Sleek Platinum Typewriter Cursor */
     .type-cursor {
       display: inline-block;
       width: 2.5px;
@@ -181,7 +173,6 @@
       50% { opacity: 0; }
     }
 
-    /* Launch Button 3D Styling (Explicitly keeps Inter font unchanged) */
     #launch-wrapper {
       opacity: 0;
       pointer-events: none;
@@ -219,7 +210,6 @@
       transform: scale(0.97);
     }
 
-    /* Rocket Flying Element & 3-2-1 Countdown Display */
     #flying-rocket {
       position: fixed;
       z-index: 40;
@@ -378,29 +368,65 @@
     }
 
     /* =================================================================
-       3. MAIN VERIFYIT INTERFACE STYLES (GEMINI SIDEBAR + 3D FLIP CARDS)
+       3. UPGRADED INTERNAL VERIFYIT WORKSPACE UI (POST-TERMINAL)
        ================================================================= */
-    .fade-in { animation: fadeIn 0.35s ease-in-out; }
+    .workspace-bg-mesh {
+      background-color: #f8fafc;
+      background-image:
+        radial-gradient(at 20% 0%, rgba(56, 189, 248, 0.08) 0px, transparent 50%),
+        radial-gradient(at 80% 0%, rgba(99, 102, 241, 0.07) 0px, transparent 50%),
+        radial-gradient(rgba(148, 163, 184, 0.22) 1px, transparent 1px);
+      background-size: 100% 100%, 100% 100%, 24px 24px;
+    }
+
+    .fade-in { animation: fadeIn 0.4s cubic-bezier(0.22, 1, 0.36, 1); }
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(6px); }
+      from { opacity: 0; transform: translateY(8px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
+    /* Executive Brand Serif Accent inside Main App */
+    .brand-editorial-serif {
+      font-family: 'Playfair Display', Georgia, serif;
+      letter-spacing: -0.02em;
+    }
+
+    /* Glassmorphic Search Console Card */
+    .search-console-shell {
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(203, 213, 225, 0.85);
+      box-shadow:
+        0 20px 50px -15px rgba(15, 23, 42, 0.08),
+        0 0 0 1px rgba(255, 255, 255, 0.8) inset;
+      transition: all 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .search-console-shell:focus-within {
+      border-color: #3b82f6;
+      box-shadow:
+        0 25px 60px -15px rgba(37, 99, 235, 0.16),
+        0 0 0 4px rgba(59, 130, 246, 0.12);
+      transform: translateY(-1px);
+    }
+
+    /* Google AI Mode Cursor-Following Glow Button */
     .ai-glow-btn {
       position: relative;
       overflow: hidden;
       background: #0f172a;
       color: #ffffff;
       border-radius: 9999px;
-      padding: 0.55rem 1.35rem;
+      padding: 0.6rem 1.45rem;
       font-size: 0.875rem;
       font-weight: 600;
       isolation: isolate;
       transition: transform 0.2s ease, box-shadow 0.25s ease;
-      box-shadow: 0 2px 10px rgba(37, 99, 235, 0.18);
+      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.22);
     }
     .ai-glow-btn:hover {
-      box-shadow: 0 0 22px rgba(99, 102, 241, 0.45), 0 0 8px rgba(56, 189, 248, 0.35);
+      box-shadow: 0 0 24px rgba(99, 102, 241, 0.5), 0 0 10px rgba(56, 189, 248, 0.4);
+      transform: translateY(-1px);
     }
     .ai-glow-btn:active { transform: scale(0.97); }
     .ai-glow-btn::before {
@@ -435,6 +461,7 @@
     }
     .ai-glow-btn:hover::before { opacity: 1; }
 
+    /* Rotating '+' Attachment Button */
     .plus-toggle-btn {
       transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.2s ease, color 0.2s ease;
     }
@@ -444,14 +471,15 @@
       color: #2563eb;
     }
 
+    /* Three Pulsing Dots for Sequential Source Visiting */
     .visiting-dots {
       display: inline-flex;
       align-items: center;
-      gap: 2px;
+      gap: 2.5px;
     }
     .visiting-dots span {
-      width: 4px;
-      height: 4px;
+      width: 4.5px;
+      height: 4.5px;
       background-color: #2563eb;
       border-radius: 9999px;
       animation: dotBounce 0.9s infinite ease-in-out;
@@ -463,9 +491,28 @@
       40% { transform: scale(1.25); opacity: 1; }
     }
 
+    /* 5-Stage Pipeline Stepper Pill */
+    .stage-step {
+      transition: all 0.3s ease;
+    }
+    .stage-step.active {
+      background: #eff6ff;
+      border-color: #93c5fd;
+      color: #1d4ed8;
+      box-shadow: 0 0 12px rgba(59, 130, 246, 0.18);
+    }
+    .stage-step.done {
+      background: #ecfdf5;
+      border-color: #a7f3d0;
+      color: #047857;
+    }
+
+    /* =================================================================
+       4. UPGRADED 3D POP-UP + MOTION-BLUR VERTICAL FLIP CARDS
+       ================================================================= */
     .flip-card-scene {
-      perspective: 1400px;
-      height: 360px;
+      perspective: 1500px;
+      height: 380px;
       cursor: pointer;
       -webkit-tap-highlight-color: transparent;
     }
@@ -473,8 +520,8 @@
       width: 100%;
       height: 100%;
       border-radius: 1.5rem;
-      transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1),
-                  box-shadow 0.25s ease;
+      transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
+                  box-shadow 0.28s ease;
       will-change: transform, filter;
     }
     .flip-card-inner {
@@ -483,13 +530,13 @@
       height: 100%;
       transform-style: preserve-3d;
       -webkit-transform-style: preserve-3d;
-      transition: transform 0.62s cubic-bezier(0.22, 1, 0.36, 1) 0.08s;
+      transition: transform 0.64s cubic-bezier(0.22, 1, 0.36, 1) 0.08s;
     }
     @media (hover: hover) and (pointer: fine) {
       .flip-card-scene:hover .flip-card-lift {
-        transform: translateY(-12px) scale(1.03);
-        box-shadow: 0 24px 44px -12px rgba(30, 64, 175, 0.24);
-        animation: flipMotionBlur 0.62s ease-in-out 0.08s;
+        transform: translateY(-12px) scale(1.025);
+        box-shadow: 0 28px 50px -12px rgba(15, 23, 42, 0.2);
+        animation: flipMotionBlur 0.64s ease-in-out 0.08s;
       }
       .flip-card-scene:hover .flip-card-inner {
         transform: rotateY(180deg);
@@ -497,8 +544,8 @@
     }
     .flip-card-scene.is-flipped .flip-card-lift {
       transform: translateY(-10px) scale(1.02);
-      box-shadow: 0 24px 44px -12px rgba(30, 64, 175, 0.24);
-      animation: flipMotionBlur 0.62s ease-in-out;
+      box-shadow: 0 28px 50px -12px rgba(15, 23, 42, 0.22);
+      animation: flipMotionBlur 0.64s ease-in-out;
     }
     .flip-card-scene.is-flipped .flip-card-inner {
       transform: rotateY(180deg);
@@ -527,12 +574,19 @@
     .flip-card-back {
       transform: rotateY(180deg) translateZ(1px);
     }
+
+    /* Custom Range Slider Styling */
+    input[type="range"] {
+      height: 5px;
+      border-radius: 999px;
+      cursor: pointer;
+    }
   </style>
 </head>
-<body class="bg-slate-50 text-slate-800 min-h-screen flex">
+<body class="workspace-bg-mesh text-slate-800 min-h-screen flex">
 
   <!-- ===================================================================
-       STAGE 0: SEMANTIC 3D ARCHITECTURAL CINEMATIC INTRO
+       STAGE 0: SEMANTIC 3D ARCHITECTURAL CINEMATIC INTRO (KEPT INTACT)
        =================================================================== -->
   <section id="cinematic-intro" aria-label="VerifyIt Interactive 3D Introduction">
     <div class="architectural-grid" aria-hidden="true"></div>
@@ -540,25 +594,22 @@
     <canvas id="starfield-canvas" aria-hidden="true"></canvas>
     <canvas id="smoke-canvas" aria-hidden="true"></canvas>
 
-    <!-- Top-Right Skip Intro Control -->
     <header class="fixed top-6 right-6 z-40">
       <button
         type="button"
         onclick="skipIntroDirectly()"
-        class="text-xs font-medium text-slate-400 hover:text-white border border-slate-800 hover:border-slate-600 bg-slate-950/75 backdrop-blur-md px-4 py-1.5 rounded-full transition"
+        class="text-xs font-medium text-slate-400 hover:text-white border border-slate-800 hover:border-slate-600 bg-slate-950/75 backdrop-blur-md px-4 py-1.5 rounded-full transition cursor-pointer"
       >
         Skip Intro ⏭
       </button>
     </header>
 
-    <!-- 3D Perspective Stage Box (Tilts subtly with cursor movement) -->
     <article id="intro-stage" class="intro-stage-box">
       <h1 id="type-line-1" class="min-h-[1.3em]"></h1>
       <p id="type-line-2" class="mt-4 min-h-[1.25em]"></p>
       <p id="type-line-3" class="mt-5 min-h-[1.4em]"></p>
     </article>
 
-    <!-- "Launch It" Button (Kept in Inter Font, Appears Automatically After Scene 3) -->
     <nav id="launch-wrapper" class="relative z-20 mt-4" aria-label="Launch Application">
       <button
         id="launch-btn"
@@ -576,10 +627,8 @@
       </button>
     </nav>
 
-    <!-- 3-2-1 Countdown Overlay -->
     <div id="countdown-overlay" aria-live="polite"></div>
 
-    <!-- 3D Skyrocket Vehicle -->
     <figure id="flying-rocket" aria-hidden="true">
       <div class="relative flex flex-col items-center">
         <svg class="w-20 h-20 text-white" viewBox="0 0 64 64" fill="none">
@@ -630,75 +679,147 @@
   </section>
 
   <!-- ===================================================================
-       MAIN VERIFYIT APPLICATION (SEMANTIC LAYOUT + GEMINI SIDEBAR)
+       MAIN VERIFYIT APPLICATION (REFINED EXECUTIVE POST-TERMINAL UI)
        =================================================================== -->
   <div id="verifyit-app" class="flex flex-1 min-h-screen w-full opacity-0 transition-opacity duration-700">
 
     <!-- MOBILE SIDEBAR BACKDROP -->
-    <div id="sidebar-backdrop" onclick="toggleMobileSidebar()" class="fixed inset-0 bg-slate-900/40 z-30 hidden md:hidden"></div>
+    <div id="sidebar-backdrop" onclick="toggleMobileSidebar()" class="fixed inset-0 bg-slate-950/50 backdrop-blur-xs z-30 hidden md:hidden"></div>
 
-    <!-- GEMINI-STYLE COLLAPSIBLE LEFT SIDEBAR -->
-    <aside id="gemini-sidebar" class="fixed md:static inset-y-0 left-0 z-40 w-64 bg-slate-100/95 backdrop-blur border-r border-slate-200/90 flex flex-col justify-between transition-all duration-300 -translate-x-full md:translate-x-0 shrink-0" aria-label="Primary Workspace Navigation">
+    <!-- GEMINI-STYLE COLLAPSIBLE LEFT SIDEBAR (DARK OBSIDIAN EXECUTIVE RAIL) -->
+    <aside
+      id="gemini-sidebar"
+      class="fixed md:sticky md:top-0 md:h-screen inset-y-0 left-0 z-40 w-68 bg-slate-950 text-slate-300 border-r border-slate-800/90 flex flex-col justify-between transition-all duration-300 -translate-x-full md:translate-x-0 shrink-0 shadow-2xl md:shadow-none"
+      aria-label="Primary Workspace Navigation"
+    >
       <div>
-        <header class="flex items-center justify-between px-4 py-4 border-b border-slate-200/70">
-          <div class="flex items-center gap-2.5 overflow-hidden">
-            <button type="button" onclick="toggleDesktopSidebar()" class="p-2 rounded-full hover:bg-slate-200/80 text-slate-600 transition shrink-0" title="Collapse/Expand Menu">
+        <!-- Brand Header & Collapse Button -->
+        <header class="flex items-center justify-between px-4 py-4 border-b border-slate-800/80">
+          <div class="flex items-center gap-3 overflow-hidden">
+            <button
+              type="button"
+              onclick="toggleDesktopSidebar()"
+              class="p-2 rounded-xl hover:bg-slate-800/80 text-slate-400 hover:text-white transition shrink-0 cursor-pointer"
+              title="Collapse/Expand Navigation"
+            >
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
               </svg>
             </button>
-            <span class="sidebar-label font-extrabold text-lg tracking-tight text-slate-900 whitespace-nowrap">
-              <span class="text-blue-600">Verify</span><span class="text-indigo-600">It</span>
-            </span>
+            <div class="sidebar-label flex items-center gap-2 whitespace-nowrap">
+              <span class="brand-editorial-serif font-bold text-xl text-white tracking-tight">
+                Verify<span class="text-sky-400 italic">It</span>
+              </span>
+              <span class="text-[10px] font-mono uppercase tracking-wider bg-sky-500/15 text-sky-300 border border-sky-500/30 px-2 py-0.5 rounded-full">
+                IR v2.6
+              </span>
+            </div>
           </div>
-          <button type="button" onclick="toggleMobileSidebar()" class="md:hidden p-1.5 rounded-lg text-slate-500 hover:bg-slate-200">✕</button>
+          <button type="button" onclick="toggleMobileSidebar()" class="md:hidden p-1.5 rounded-lg text-slate-400 hover:bg-slate-800">✕</button>
         </header>
 
-        <div class="px-3 py-4">
-          <div class="sidebar-label text-[11px] font-bold uppercase tracking-wider text-slate-400 px-3 mb-2">
+        <!-- New Search / Reset Action -->
+        <div class="px-3 pt-4 pb-2">
+          <button
+            type="button"
+            onclick="resetToHeroSearch()"
+            class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold bg-gradient-to-r from-blue-600/20 to-indigo-600/20 hover:from-blue-600/30 hover:to-indigo-600/30 text-sky-300 border border-sky-500/30 transition cursor-pointer"
+          >
+            <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M12 4v16m8-8H4"/>
+            </svg>
+            <span class="sidebar-label whitespace-nowrap">New Verification Query</span>
+          </button>
+        </div>
+
+        <!-- Workspace Views Navigation -->
+        <div class="px-3 py-3">
+          <div class="sidebar-label text-[10px] font-mono uppercase tracking-[0.18em] text-slate-500 px-3 mb-2">
             Workspace Views
           </div>
           <nav class="space-y-1">
-            <button type="button" onclick="switchTab('tab-results')" id="btn-tab-results" class="tab-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium bg-blue-100/80 text-blue-700 transition">
-              <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>
-              </svg>
-              <span class="sidebar-label whitespace-nowrap">Search Results</span>
+            <button type="button" onclick="switchTab('tab-results')" id="btn-tab-results" class="tab-btn w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-semibold bg-sky-500/15 text-sky-300 border border-sky-500/30 transition cursor-pointer">
+              <div class="flex items-center gap-3">
+                <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>
+                </svg>
+                <span class="sidebar-label whitespace-nowrap">Search Results</span>
+              </div>
+              <span id="nav-Badge-results" class="sidebar-label hidden text-[10px] font-mono bg-sky-500/20 text-sky-300 px-2 py-0.5 rounded-full">0</span>
             </button>
 
-            <button type="button" onclick="switchTab('tab-trust')" id="btn-tab-trust" class="tab-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-200/70 transition">
-              <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
-              </svg>
-              <span class="sidebar-label whitespace-nowrap">Trust Breakdown</span>
+            <button type="button" onclick="switchTab('tab-trust')" id="btn-tab-trust" class="tab-btn w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-medium text-slate-400 hover:bg-slate-900 hover:text-slate-200 border border-transparent transition cursor-pointer">
+              <div class="flex items-center gap-3">
+                <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                </svg>
+                <span class="sidebar-label whitespace-nowrap">Trust Breakdown</span>
+              </div>
+              <span class="sidebar-label text-[10px] font-mono text-slate-600">Stage 4</span>
             </button>
 
-            <button type="button" onclick="switchTab('tab-compare')" id="btn-tab-compare" class="tab-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-200/70 transition">
-              <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/>
-              </svg>
-              <span class="sidebar-label whitespace-nowrap">Keyword Compare</span>
+            <button type="button" onclick="switchTab('tab-compare')" id="btn-tab-compare" class="tab-btn w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-medium text-slate-400 hover:bg-slate-900 hover:text-slate-200 border border-transparent transition cursor-pointer">
+              <div class="flex items-center gap-3">
+                <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/>
+                </svg>
+                <span class="sidebar-label whitespace-nowrap">Keyword Compare</span>
+              </div>
+              <span class="sidebar-label text-[10px] font-mono text-slate-600">BM25 vs Hyb</span>
             </button>
 
-            <button type="button" onclick="switchTab('tab-index')" id="btn-tab-index" class="tab-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-200/70 transition">
-              <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4"/>
-              </svg>
-              <span class="sidebar-label whitespace-nowrap">Index View</span>
+            <button type="button" onclick="switchTab('tab-index')" id="btn-tab-index" class="tab-btn w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-medium text-slate-400 hover:bg-slate-900 hover:text-slate-200 border border-transparent transition cursor-pointer">
+              <div class="flex items-center gap-3">
+                <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4"/>
+                </svg>
+                <span class="sidebar-label whitespace-nowrap">Index View</span>
+              </div>
+              <span class="sidebar-label text-[10px] font-mono text-slate-600">Stage 2</span>
             </button>
 
-            <button type="button" onclick="switchTab('tab-metrics')" id="btn-tab-metrics" class="tab-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-200/70 transition">
-              <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
-              </svg>
-              <span class="sidebar-label whitespace-nowrap">Accuracy Metrics</span>
+            <button type="button" onclick="switchTab('tab-metrics')" id="btn-tab-metrics" class="tab-btn w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-medium text-slate-400 hover:bg-slate-900 hover:text-slate-200 border border-transparent transition cursor-pointer">
+              <div class="flex items-center gap-3">
+                <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                </svg>
+                <span class="sidebar-label whitespace-nowrap">Accuracy Metrics</span>
+              </div>
+              <span class="sidebar-label text-[10px] font-mono text-slate-600">P@3 / MAP</span>
             </button>
           </nav>
         </div>
+
+        <!-- Live Hybrid Formula Balance Meter inside Sidebar -->
+        <div class="sidebar-label px-4 py-3 mx-3 mt-2 bg-slate-900/90 rounded-2xl border border-slate-800/80">
+          <div class="flex items-center justify-between text-[11px] font-semibold text-slate-300 mb-1.5">
+            <span>Active Ranking Ratio</span>
+            <span id="sidebar-ratio-text" class="font-mono text-sky-400">50T : 50R</span>
+          </div>
+          <div class="w-full h-2 bg-slate-800 rounded-full overflow-hidden flex">
+            <div id="sidebar-trust-bar" class="bg-emerald-500 h-full transition-all duration-300" style="width: 50%"></div>
+            <div id="sidebar-rel-bar" class="bg-blue-500 h-full transition-all duration-300" style="width: 50%"></div>
+          </div>
+          <div class="flex justify-between text-[10px] text-slate-500 mt-1 font-mono">
+            <span class="text-emerald-400">● Trust</span>
+            <span class="text-blue-400">● Relevance</span>
+          </div>
+        </div>
       </div>
 
-      <footer class="p-4 border-t border-slate-200/80 text-xs text-slate-400 sidebar-label">
-        VerifyIt • Hybrid IR & Trust Engine
+      <!-- Sidebar Footer: System Status & Replay Intro -->
+      <footer class="p-4 border-t border-slate-800/80 space-y-2.5">
+        <div class="flex items-center gap-2.5 text-xs text-slate-400">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shrink-0"></span>
+          <span class="sidebar-label truncate font-mono text-[11px]">5-Stage IR Engine Ready</span>
+        </div>
+        <button
+          type="button"
+          onclick="replayCinematicIntro()"
+          class="sidebar-label w-full text-left text-[11px] font-mono text-slate-500 hover:text-sky-400 transition flex items-center gap-1.5 cursor-pointer"
+        >
+          <span>↺ Replay 3D Intro & Terminal</span>
+        </button>
       </footer>
     </aside>
 
@@ -706,255 +827,425 @@
     <div class="flex-1 flex flex-col min-w-0 min-h-screen">
 
       <!-- Mobile Top Bar Trigger -->
-      <header class="md:hidden flex items-center justify-between bg-white px-4 py-3 border-b border-slate-200">
-        <button type="button" onclick="toggleMobileSidebar()" class="p-2 rounded-lg text-slate-600 hover:bg-slate-100">
+      <header class="md:hidden flex items-center justify-between bg-slate-950 text-white px-4 py-3 border-b border-slate-800">
+        <button type="button" onclick="toggleMobileSidebar()" class="p-2 rounded-lg text-slate-300 hover:bg-slate-800">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
           </svg>
         </button>
-        <span class="font-extrabold text-lg"><span class="text-blue-600">Verify</span><span class="text-indigo-600">It</span></span>
+        <span class="brand-editorial-serif font-bold text-lg">Verify<span class="text-sky-400 italic">It</span></span>
         <div class="w-8"></div>
       </header>
 
-      <!-- SEARCH HERO HEADER -->
-      <section id="app-wrapper" class="flex-1 flex flex-col justify-center items-center px-4 transition-all duration-300">
-        <header id="brand-header" class="text-center mb-6">
-          <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900">
-            <span class="text-blue-600">Verify</span><span class="text-indigo-600">It</span>
-          </h1>
-          <p class="text-sm text-slate-500 mt-2">Search with Confidence — Sorted by Verified Source Trust</p>
-        </header>
-
-        <!-- DYNAMIC AUTO-EXPANDING GOOGLE-STYLE SEARCH BAR -->
-        <form id="search-form" class="w-full max-w-2xl relative">
-          <div class="flex items-end bg-white border border-slate-200 hover:border-slate-300 focus-within:border-blue-500 focus-within:ring-4 focus-within:ring-blue-100 rounded-3xl pl-3 pr-2.5 py-2.5 shadow-sm transition-all">
-            
-            <!-- GOOGLE AI MODE '+' ROTATING ATTACHMENT MENU BUTTON -->
-            <div class="relative mr-2 mb-0.5 shrink-0">
-              <button
-                id="plus-menu-btn"
-                type="button"
-                onclick="togglePlusMenu(event)"
-                class="plus-toggle-btn w-9 h-9 rounded-full flex items-center justify-center text-slate-500 hover:bg-slate-100 cursor-pointer"
-                title="Add File or Image"
-              >
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M12 4v16m8-8H4"/>
-                </svg>
-              </button>
-
-              <div
-                id="plus-dropdown-menu"
-                class="hidden absolute left-0 bottom-12 w-48 bg-white rounded-2xl shadow-xl border border-slate-200/90 py-2 z-50 fade-in"
-              >
-                <button type="button" onclick="triggerFilePicker('.png,.jpg,.jpeg,.webp', 'Image')" class="w-full flex items-center gap-3 px-4 py-2.5 text-xs font-medium text-slate-700 hover:bg-blue-50 hover:text-blue-600 transition">
-                  <svg class="w-4 h-4 text-purple-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                  </svg>
-                  <span>Add Image</span>
-                </button>
-
-                <button type="button" onclick="triggerFilePicker('.txt', 'Text File')" class="w-full flex items-center gap-3 px-4 py-2.5 text-xs font-medium text-slate-700 hover:bg-blue-50 hover:text-blue-600 transition">
-                  <svg class="w-4 h-4 text-blue-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-                  </svg>
-                  <span>Add Text File</span>
-                </button>
-
-                <button type="button" onclick="triggerFilePicker('.pdf', 'PDF')" class="w-full flex items-center gap-3 px-4 py-2.5 text-xs font-medium text-slate-700 hover:bg-blue-50 hover:text-blue-600 transition">
-                  <svg class="w-4 h-4 text-rose-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
-                  </svg>
-                  <span>Add Pdf</span>
-                </button>
-
-                <button type="button" onclick="triggerFilePicker('.docx,.xml,.csv,.md', 'Other File')" class="w-full flex items-center gap-3 px-4 py-2.5 text-xs font-medium text-slate-700 hover:bg-blue-50 hover:text-blue-600 transition">
-                  <svg class="w-4 h-4 text-amber-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 19a2 2 0 01-2-2V7a2 2 0 012-2h4l2 2h4a2 2 0 012 2v1M5 19h14a2 2 0 002-2v-5a2 2 0 00-2-2H9a2 2 0 00-2 2v5a2 2 0 01-2 2z"/>
-                  </svg>
-                  <span>Others</span>
-                </button>
-              </div>
-            </div>
-
-            <input id="file-input" type="file" class="hidden" />
-
-            <!-- Auto-Growing Textarea -->
-            <textarea
-              id="query-input"
-              rows="1"
-              placeholder="Search anything or paste a long paragraph/claim to verify..."
-              class="w-full bg-transparent focus:outline-none text-slate-800 text-base py-1 resize-none max-h-44 overflow-y-auto leading-relaxed"
-            ></textarea>
-
-            <!-- GOOGLE AI MODE CURSOR-FOLLOWING GLOW SEARCH BUTTON -->
-            <button id="search-btn" type="submit" class="ai-glow-btn shrink-0 flex items-center gap-1.5 cursor-pointer ml-2 mb-0.5">
-              <svg class="w-3.5 h-3.5 text-sky-300" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-              </svg>
-              <span>Search</span>
-            </button>
+      <!-- ===============================================================
+           HERO / DOCKED SEARCH CONSOLE SECTION
+           =============================================================== -->
+      <section id="app-wrapper" class="flex-1 flex flex-col justify-center items-center px-4 py-10 transition-all duration-300">
+        
+        <!-- EXECUTIVE BRAND HEADER -->
+        <header id="brand-header" class="text-center max-w-2xl mx-auto mb-7">
+          <div id="hero-status-pills" class="inline-flex flex-wrap items-center justify-center gap-2 mb-4">
+            <span class="text-[11px] font-mono uppercase tracking-wider bg-slate-900 text-sky-300 border border-slate-700 px-3 py-1 rounded-full shadow-2xs">
+              ● Live Web + Wikipedia Crawler
+            </span>
+            <span class="text-[11px] font-mono uppercase tracking-wider bg-emerald-50 text-emerald-800 border border-emerald-200 px-3 py-1 rounded-full">
+              🛡️ PageRank • HITS • Naïve Bayes
+            </span>
           </div>
 
-          <!-- TWO INDEPENDENT SLIDERS: TRUST WEIGHT & RELEVANCE WEIGHT -->
-          <div class="flex flex-wrap items-center justify-center gap-5 mt-3.5 text-xs text-slate-600">
-            <span id="file-badge" class="hidden bg-blue-50 text-blue-700 border border-blue-200 px-2.5 py-1 rounded-full font-medium cursor-pointer"></span>
+          <h1 id="hero-title" class="text-5xl md:text-6xl font-extrabold tracking-tight text-slate-900">
+            <span class="brand-editorial-serif font-bold">Verify</span><span class="brand-editorial-serif italic text-blue-600">It</span>
+          </h1>
+          <p id="hero-subtitle" class="text-sm md:text-base text-slate-500 mt-2.5 leading-relaxed">
+             Credibility-Aware Information Retrieval — Compares multi-source consensus, filters clickbait spam, and ranks results by verified authority.
+          </p>
+        </header>
 
-            <label class="flex items-center gap-2 cursor-pointer bg-white px-3 py-1.5 rounded-full border border-slate-200 shadow-2xs">
-              <span class="font-medium text-emerald-700">Trust Weight:</span>
+        <!-- DYNAMIC AUTO-EXPANDING GLASSMORPHIC SEARCH CONSOLE -->
+        <form id="search-form" class="w-full max-w-3xl relative">
+          <div class="search-console-shell rounded-3xl pl-3.5 pr-3 py-3">
+            <div class="flex items-end gap-2">
+              
+              <!-- GOOGLE AI MODE '+' ROTATING ATTACHMENT MENU BUTTON -->
+              <div class="relative mb-0.5 shrink-0">
+                <button
+                  id="plus-menu-btn"
+                  type="button"
+                  onclick="togglePlusMenu(event)"
+                  class="plus-toggle-btn w-10 h-10 rounded-2xl flex items-center justify-center text-slate-500 bg-slate-100/80 hover:bg-slate-200/70 cursor-pointer"
+                  title="Attach Document or Image for Verification"
+                >
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M12 4v16m8-8H4"/>
+                  </svg>
+                </button>
+
+                <div
+                  id="plus-dropdown-menu"
+                  class="hidden absolute left-0 bottom-13 w-52 bg-white rounded-2xl shadow-2xl border border-slate-200/90 py-2 z-50 fade-in"
+                >
+                  <div class="px-3.5 py-1 text-[10px] font-mono uppercase tracking-wider text-slate-400">
+                    Ingest & Verify Media
+                  </div>
+                  <button type="button" onclick="triggerFilePicker('.png,.jpg,.jpeg,.webp', 'Image')" class="w-full flex items-center gap-3 px-4 py-2.5 text-xs font-semibold text-slate-700 hover:bg-blue-50 hover:text-blue-600 transition cursor-pointer">
+                    <svg class="w-4 h-4 text-purple-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                    </svg>
+                    <span>Add Image</span>
+                  </button>
+
+                  <button type="button" onclick="triggerFilePicker('.txt', 'Text File')" class="w-full flex items-center gap-3 px-4 py-2.5 text-xs font-semibold text-slate-700 hover:bg-blue-50 hover:text-blue-600 transition cursor-pointer">
+                    <svg class="w-4 h-4 text-blue-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                    </svg>
+                    <span>Add Text File</span>
+                  </button>
+
+                  <button type="button" onclick="triggerFilePicker('.pdf', 'PDF')" class="w-full flex items-center gap-3 px-4 py-2.5 text-xs font-semibold text-slate-700 hover:bg-blue-50 hover:text-blue-600 transition cursor-pointer">
+                    <svg class="w-4 h-4 text-rose-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                    </svg>
+                    <span>Add Pdf</span>
+                  </button>
+
+                  <button type="button" onclick="triggerFilePicker('.docx,.xml,.csv,.md', 'Other File')" class="w-full flex items-center gap-3 px-4 py-2.5 text-xs font-semibold text-slate-700 hover:bg-blue-50 hover:text-blue-600 transition cursor-pointer">
+                    <svg class="w-4 h-4 text-amber-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 19a2 2 0 01-2-2V7a2 2 0 012-2h4l2 2h4a2 2 0 012 2v1M5 19h14a2 2 0 002-2v-5a2 2 0 00-2-2H9a2 2 0 00-2 2v5a2 2 0 01-2 2z"/>
+                    </svg>
+                    <span>Others</span>
+                  </button>
+                </div>
+              </div>
+
+              <input id="file-input" type="file" class="hidden" />
+
+              <!-- Auto-Growing Textarea -->
+              <textarea
+                id="query-input"
+                rows="1"
+                placeholder="Enter a search query, claim, or paste an article paragraph to verify..."
+                class="w-full bg-transparent focus:outline-none text-slate-900 text-base py-1.5 px-1 resize-none max-h-44 overflow-y-auto leading-relaxed placeholder:text-slate-400"
+              ></textarea>
+
+              <!-- GOOGLE AI MODE CURSOR-FOLLOWING GLOW SEARCH BUTTON -->
+              <button id="search-btn" type="submit" class="ai-glow-btn shrink-0 flex items-center gap-2 cursor-pointer mb-0.5">
+                <svg class="w-4 h-4 text-sky-300" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                </svg>
+                <span>Verify & Search</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- DUAL INDEPENDENT SLIDERS + SMART PRF CONTROL BAR -->
+          <div class="flex flex-wrap items-center justify-center gap-3 mt-3.5 text-xs text-slate-600">
+            <span id="file-badge" class="hidden bg-blue-50 text-blue-700 border border-blue-200 px-3 py-1 rounded-full font-semibold cursor-pointer"></span>
+
+            <!-- Trust Weight Slider -->
+            <div class="flex items-center gap-2.5 bg-white/90 backdrop-blur px-3.5 py-1.5 rounded-full border border-slate-200/90 shadow-2xs">
+              <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+              <span class="font-semibold text-slate-700">Trust Weight:</span>
               <input id="trust-slider" type="range" min="0" max="100" step="5" value="50" class="w-20 accent-emerald-600" />
-              <span id="trust-label" class="font-bold text-slate-800 w-8">50%</span>
-            </label>
+              <span id="trust-label" class="font-mono font-bold text-emerald-700 w-9 text-right">50%</span>
+            </div>
 
-            <label class="flex items-center gap-2 cursor-pointer bg-white px-3 py-1.5 rounded-full border border-slate-200 shadow-2xs">
-              <span class="font-medium text-blue-700">Relevance Weight:</span>
+            <!-- Relevance Weight Slider -->
+            <div class="flex items-center gap-2.5 bg-white/90 backdrop-blur px-3.5 py-1.5 rounded-full border border-slate-200/90 shadow-2xs">
+              <span class="w-2 h-2 rounded-full bg-blue-600"></span>
+              <span class="font-semibold text-slate-700">Relevance Weight:</span>
               <input id="relevance-slider" type="range" min="0" max="100" step="5" value="50" class="w-20 accent-blue-600" />
-              <span id="relevance-label" class="font-bold text-slate-800 w-8">50%</span>
-            </label>
+              <span id="relevance-label" class="font-mono font-bold text-blue-700 w-9 text-right">50%</span>
+            </div>
 
-            <label class="flex items-center gap-1.5 cursor-pointer">
+            <!-- Pseudo-Relevance Feedback Toggle -->
+            <label class="flex items-center gap-2 bg-white/90 backdrop-blur px-3.5 py-1.5 rounded-full border border-slate-200/90 shadow-2xs cursor-pointer">
               <input id="prf-check" type="checkbox" checked class="accent-blue-600 rounded" />
-              <span>Smart Query Expansion</span>
+              <span class="font-medium text-slate-700">PRF Query Expansion</span>
             </label>
+          </div>
+
+          <!-- QUICK SAMPLE QUERIES FOR ONE-CLICK DEMO TESTING -->
+          <div id="quick-queries-row" class="flex flex-wrap items-center justify-center gap-2 mt-5">
+            <span class="text-[11px] font-mono uppercase tracking-wider text-slate-400 mr-1">Try Sample:</span>
+            <button type="button" onclick="runQuickSample('National Scholarship Portal 2026 official eligibility')" class="text-xs bg-white hover:bg-blue-50 text-slate-600 hover:text-blue-700 border border-slate-200 hover:border-blue-300 px-3 py-1 rounded-full transition cursor-pointer">
+              🎓 National Scholarship 2026
+            </button>
+            <button type="button" onclick="runQuickSample('Imran Rasheed JIIT Noida research publications')" class="text-xs bg-white hover:bg-blue-50 text-slate-600 hover:text-blue-700 border border-slate-200 hover:border-blue-300 px-3 py-1 rounded-full transition cursor-pointer">
+              🏛️ Imran Rasheed JIIT
+            </button>
+            <button type="button" onclick="runQuickSample('scholrship admision unversity portal')" class="text-xs bg-white hover:bg-rose-50 text-slate-600 hover:text-rose-700 border border-slate-200 hover:border-rose-300 px-3 py-1 rounded-full transition cursor-pointer" title="Tests 'Did you mean?' spell correction">
+              ✨ Typo Test ("scholrship admision")
+            </button>
           </div>
         </form>
       </section>
 
-      <!-- WORKSPACE AREA -->
-      <main id="workspace-container" class="hidden max-w-6xl w-full mx-auto px-4 pb-16 pt-4">
+      <!-- ===============================================================
+           WORKSPACE AREA (5-STAGE PIPELINE + DIAGNOSTICS + RESULTS)
+           =============================================================== -->
+      <main id="workspace-container" class="hidden max-w-6xl w-full mx-auto px-4 md:px-6 pb-20 pt-5">
         
-        <!-- GOOGLE-STYLE "DID YOU MEAN?" SUGGESTED QUERY BANNER -->
-        <div id="did-you-mean-box" class="hidden mb-3 px-1 text-sm text-slate-600">
-          <span class="text-rose-600 font-medium">Did you mean:</span>
-          <button id="did-you-mean-btn" type="button" class="text-blue-600 font-bold italic hover:underline ml-1 cursor-pointer"></button>
+        <!-- 5-STAGE IR PIPELINE PROGRESS RIBBON -->
+        <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 mb-4 text-[11px] font-semibold">
+          <div id="p-stage-1" class="stage-step bg-white border border-slate-200 rounded-xl px-3 py-2 flex items-center gap-2 text-slate-500">
+            <span class="font-mono text-[10px] px-1.5 py-0.5 rounded bg-slate-100">S1</span>
+            <span class="truncate">Web & Wiki Crawl</span>
+          </div>
+          <div id="p-stage-2" class="stage-step bg-white border border-slate-200 rounded-xl px-3 py-2 flex items-center gap-2 text-slate-500">
+            <span class="font-mono text-[10px] px-1.5 py-0.5 rounded bg-slate-100">S2</span>
+            <span class="truncate">Stem & Positional Idx</span>
+          </div>
+          <div id="p-stage-3" class="stage-step bg-white border border-slate-200 rounded-xl px-3 py-2 flex items-center gap-2 text-slate-500">
+            <span class="font-mono text-[10px] px-1.5 py-0.5 rounded bg-slate-100">S3</span>
+            <span class="truncate">BM25 • TF-IDF • SVD</span>
+          </div>
+          <div id="p-stage-4" class="stage-step bg-white border border-slate-200 rounded-xl px-3 py-2 flex items-center gap-2 text-slate-500">
+            <span class="font-mono text-[10px] px-1.5 py-0.5 rounded bg-slate-100">S4</span>
+            <span class="truncate">PageRank & NB Spam</span>
+          </div>
+          <div id="p-stage-5" class="stage-step bg-white border border-slate-200 rounded-xl px-3 py-2 flex items-center gap-2 text-slate-500 col-span-2 sm:col-span-1">
+            <span class="font-mono text-[10px] px-1.5 py-0.5 rounded bg-slate-100">S5</span>
+            <span class="truncate">Hybrid Rank & QA</span>
+          </div>
         </div>
 
-        <!-- Processed Query + Stemming / Lemmatization Breakdown Bar -->
-        <section class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200/80 mb-3 space-y-2 text-xs text-slate-500" aria-label="Query Processing Diagnostics">
-          <div class="flex flex-wrap items-center justify-between gap-2">
-            <div>
-              <span class="font-semibold text-slate-700">Formulated Query:</span>
-              <span id="out-active-query" class="bg-slate-100 px-2.5 py-1 rounded-md text-slate-800 font-medium ml-1"></span>
+        <!-- GOOGLE-STYLE "DID YOU MEAN?" SUGGESTED QUERY BANNER -->
+        <div id="did-you-mean-box" class="hidden mb-3.5 bg-amber-50/90 border border-amber-200 rounded-2xl px-4 py-2.5 text-sm text-slate-700 flex items-center gap-2 shadow-2xs">
+          <span class="text-amber-600 font-bold">✦ Did you mean:</span>
+          <button id="did-you-mean-btn" type="button" class="text-blue-600 font-bold italic hover:underline cursor-pointer"></button>
+          <span class="text-xs text-slate-400 ml-auto font-mono">3-gram Jaccard Spell Check</span>
+        </div>
+
+        <!-- PROCESSED QUERY + STEMMING / LEMMATIZATION DIAGNOSTIC CARD -->
+        <section class="bg-white/95 backdrop-blur rounded-2xl p-4 shadow-2xs border border-slate-200/90 mb-3.5 text-xs" aria-label="Query Processing Diagnostics">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 pb-3 border-b border-slate-100">
+            <div class="flex items-center gap-2 flex-wrap">
+              <span class="text-[10px] font-mono uppercase tracking-wider text-slate-400">Formulated Query</span>
+              <span id="out-active-query" class="bg-slate-900 text-white px-2.5 py-1 rounded-lg font-medium"></span>
             </div>
-            <div>
-              <span class="font-semibold text-slate-700">Expanded Terms:</span>
-              <span id="out-expanded-terms" class="text-blue-600 font-medium ml-1"></span>
+            <div class="flex items-center gap-2 flex-wrap md:justify-end">
+              <span class="text-[10px] font-mono uppercase tracking-wider text-slate-400">PRF Expanded Terms</span>
+              <span id="out-expanded-terms" class="font-mono text-blue-700 bg-blue-50 border border-blue-200 px-2.5 py-0.5 rounded-lg font-semibold"></span>
             </div>
           </div>
 
-          <div class="flex flex-wrap items-center gap-4 pt-2 border-t border-slate-100">
-            <div>
-              <span class="font-semibold text-slate-700">Lemmatized:</span>
-              <span id="out-lemmas" class="font-mono text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded ml-1"></span>
+          <div class="flex flex-wrap items-center justify-between gap-3 pt-2.5">
+            <div class="flex items-center gap-2 flex-wrap">
+              <span class="text-[10px] font-mono uppercase tracking-wider text-slate-400">Lemmatized Tokens:</span>
+              <span id="out-lemmas" class="font-mono text-indigo-700 bg-indigo-50/80 border border-indigo-200/70 px-2.5 py-0.5 rounded-md"></span>
             </div>
-            <div>
-              <span class="font-semibold text-slate-700">Stemmed Roots:</span>
-              <span id="out-stems" class="font-mono text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded ml-1"></span>
+            <div class="flex items-center gap-2 flex-wrap">
+              <span class="text-[10px] font-mono uppercase tracking-wider text-slate-400">Porter Stemmed Roots:</span>
+              <span id="out-stems" class="font-mono text-emerald-800 bg-emerald-50/80 border border-emerald-200/70 px-2.5 py-0.5 rounded-md"></span>
             </div>
           </div>
         </section>
 
         <!-- SEQUENTIAL 3-DOT SOURCE VISITING PANEL -->
-        <section id="deep-research-box" class="bg-white border border-slate-200/90 rounded-2xl p-4 mb-3 shadow-sm transition-all" aria-label="Source Verification Progress">
+        <section id="deep-research-box" class="bg-white/95 backdrop-blur border border-slate-200/90 rounded-2xl p-4 mb-3.5 shadow-2xs transition-all" aria-label="Source Verification Progress">
           <div class="flex items-center justify-between">
-            <div class="flex items-center gap-2">
-              <span id="research-status-title" class="text-xs font-semibold text-slate-700">
+            <div class="flex items-center gap-2.5">
+              <span class="w-2 h-2 rounded-full bg-blue-600"></span>
+              <span id="research-status-title" class="text-xs font-bold text-slate-800">
                 Visiting & verifying sources
               </span>
               <div id="header-visiting-dots" class="visiting-dots">
                 <span></span><span></span><span></span>
               </div>
             </div>
-            <button type="button" onclick="toggleResearchLinks()" class="text-xs text-blue-600 hover:underline font-medium">
-              Show/Hide Sources
+            <button type="button" onclick="toggleResearchLinks()" class="text-xs text-blue-600 hover:underline font-semibold cursor-pointer">
+              Toggle Source Stream
             </button>
           </div>
           <div id="research-links-stream" class="mt-3 flex flex-wrap gap-2"></div>
         </section>
 
-        <!-- GOOGLE-STYLE SEARCH STATS LINE -->
-        <div id="google-stats-line" class="hidden text-xs text-slate-500 px-1 mb-4 font-medium"></div>
+        <!-- GOOGLE-STYLE SEARCH STATS LINE + LIVE TRUST FILTER PILLS -->
+        <div id="stats-and-filters-bar" class="hidden flex flex-wrap items-center justify-between gap-3 px-1 mb-5">
+          <div id="google-stats-line" class="text-xs text-slate-500 font-medium"></div>
+          <div class="flex items-center gap-1.5 text-xs">
+            <span class="text-[11px] font-mono text-slate-400 mr-1">Filter Tier:</span>
+            <button type="button" onclick="filterResultCards('all')" id="flt-all" class="flt-btn px-3 py-1 rounded-full font-semibold bg-slate-900 text-white transition cursor-pointer">All</button>
+            <button type="button" onclick="filterResultCards('verified')" id="flt-verified" class="flt-btn px-3 py-1 rounded-full font-medium bg-white border border-slate-200 text-emerald-700 hover:bg-emerald-50 transition cursor-pointer">Verified (≥70%)</button>
+            <button type="button" onclick="filterResultCards('moderate')" id="flt-moderate" class="flt-btn px-3 py-1 rounded-full font-medium bg-white border border-slate-200 text-amber-700 hover:bg-amber-50 transition cursor-pointer">Moderate</button>
+            <button type="button" onclick="filterResultCards('risk')" id="flt-risk" class="flt-btn px-3 py-1 rounded-full font-medium bg-white border border-slate-200 text-rose-700 hover:bg-rose-50 transition cursor-pointer">Clickbait Risk</button>
+          </div>
+        </div>
 
         <!-- ACTUAL RESULTS WRAPPER -->
         <div id="results-content" class="hidden fade-in">
 
-          <!-- TOP VERIFIED SOURCE SUMMARY + "WHY THIS SOURCE IS MOST RELIABLE" -->
-          <article class="bg-emerald-50/75 border border-emerald-200 rounded-2xl p-5 mb-6 shadow-sm">
-            <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
-              <span class="text-xs font-bold uppercase tracking-wider text-emerald-800 flex items-center gap-1.5">
-                <span>★ Top Verified Source Summary (Highest Trust Score)</span>
-              </span>
-              <span id="out-answer-badge" class="text-xs font-semibold bg-emerald-100 text-emerald-800 px-3 py-0.5 rounded-full border border-emerald-200"></span>
+          <!-- =============================================================
+               EXECUTIVE TOP VERIFIED SOURCE SUMMARY + TRUST GAUGE & REASONING
+               ============================================================= -->
+          <article class="relative overflow-hidden bg-gradient-to-br from-slate-900 via-slate-900 to-emerald-950 text-white rounded-3xl p-6 mb-7 shadow-xl border border-emerald-500/30">
+            <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+              
+              <!-- Left Column: Extracted Answer & Source Metadata -->
+              <div class="flex-1">
+                <div class="flex flex-wrap items-center gap-2.5 mb-3">
+                  <span class="text-[11px] font-mono font-bold uppercase tracking-wider bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 px-3 py-1 rounded-full">
+                    ★ Top Verified Source Summary (#1 Trust Rank)
+                  </span>
+                  <span id="out-answer-badge" class="text-xs font-mono text-sky-300 bg-sky-500/15 border border-sky-400/25 px-3 py-1 rounded-full"></span>
+                </div>
+
+                <p id="out-answer" class="text-white text-base md:text-lg font-medium leading-relaxed"></p>
+                <div id="out-answer-meta" class="text-xs text-slate-400 mt-2 font-mono"></div>
+              </div>
+
+              <!-- Right Column: Circular SVG Trust Score Ring -->
+              <div class="flex items-center gap-4 bg-slate-950/65 border border-slate-800 px-5 py-4 rounded-2xl shrink-0">
+                <div class="relative w-16 h-16 flex items-center justify-center">
+                  <svg class="w-16 h-16 -rotate-90" viewBox="0 0 64 64">
+                    <circle cx="32" cy="32" r="27" stroke="#1e293b" stroke-width="6" fill="none"/>
+                    <circle
+                      id="top-trust-ring"
+                      cx="32" cy="32" r="27"
+                      stroke="#10b981"
+                      stroke-width="6"
+                      stroke-dasharray="169.6"
+                      stroke-dashoffset="20"
+                      stroke-linecap="round"
+                      fill="none"
+                      class="transition-all duration-700"
+                    />
+                  </svg>
+                  <span id="top-trust-ring-pct" class="absolute font-mono font-bold text-sm text-emerald-400">88%</span>
+                </div>
+                <div>
+                  <div class="text-[10px] font-mono uppercase tracking-wider text-slate-400">Verified Authority</div>
+                  <div id="top-trust-domain-label" class="text-sm font-bold text-white truncate max-w-[160px]">domain.org</div>
+                  <div class="text-[11px] text-emerald-400 font-medium mt-0.5"> Consensus Confirmed</div>
+                </div>
+              </div>
             </div>
 
-            <p id="out-answer" class="text-slate-800 text-sm md:text-base font-medium leading-relaxed"></p>
-            <div id="out-answer-meta" class="text-xs text-slate-500 mt-1.5"></div>
-
-            <div class="mt-3.5 pt-3 border-t border-emerald-200/80">
-              <div class="text-[11px] font-bold uppercase tracking-wider text-emerald-900 mb-1.5">
-                Why this source is ranked #1 most reliable out of all results:
+            <!-- Why this source is ranked #1 most reliable out of all results -->
+            <div class="mt-5 pt-4 border-t border-slate-800/90">
+              <div class="text-[11px] font-mono uppercase tracking-wider text-emerald-400 mb-1.5 flex items-center gap-1.5">
+                <span>🛡️ Why this source is ranked #1 most reliable out of all results:</span>
               </div>
-              <p id="out-why-reliable-text" class="text-xs text-emerald-950/90 leading-relaxed mb-2"></p>
+              <p id="out-why-reliable-text" class="text-xs text-slate-300 leading-relaxed mb-3"></p>
               <div id="out-why-reliable-pills" class="flex flex-wrap gap-2"></div>
             </div>
           </article>
 
           <!-- ACTIVE VIEW HEADER -->
-          <header class="flex items-center justify-between mb-4 px-1">
-            <h2 id="current-view-title" class="text-base font-bold text-slate-800">Search Results (Sorted by Trust)</h2>
-            <span class="text-xs text-slate-400">✨ Tap or hover any card to flip • Tap outside to flip back</span>
+          <header class="flex flex-wrap items-center justify-between gap-2 mb-5 px-1">
+            <div>
+              <h2 id="current-view-title" class="text-lg font-extrabold text-slate-900 tracking-tight">
+                Search Results (Sorted by Descending Trust Score)
+              </h2>
+              <p class="text-xs text-slate-500">
+                Adjusting the Trust or Relevance sliders above dynamically re-calculates hybrid scores in real time.
+              </p>
+            </div>
+            <span class="text-xs font-medium bg-white border border-slate-200 px-3 py-1.5 rounded-full text-slate-600 shadow-2xs">
+              ✨ Tap or hover any card to flip • Tap outside to flip back
+            </span>
           </header>
 
           <!-- TAB 1: VERTICAL 3D FLIP CARDS GRID -->
           <section id="tab-results" class="tab-pane grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7 pt-1"></section>
 
-          <!-- TAB 2: TRUST BREAKDOWN -->
-          <section id="tab-trust" class="tab-pane hidden bg-white rounded-2xl p-5 border border-slate-200 overflow-x-auto">
-            <h3 class="text-base font-semibold mb-3">Source Trust & Pattern Scores (Descending Order)</h3>
+          <!-- TAB 2: TRUST BREAKDOWN (WITH VISUAL PROGRESS BARS) -->
+          <section id="tab-trust" class="tab-pane hidden bg-white rounded-3xl p-6 border border-slate-200/90 shadow-xs overflow-x-auto">
+            <div class="flex items-center justify-between mb-4">
+              <div>
+                <h3 class="text-base font-bold text-slate-900">Stage 4: Source Trust & Pattern Matrix</h3>
+                <p class="text-xs text-slate-500">Multi-factor credibility breakdown across link graph analysis and Naïve Bayes spam detection</p>
+              </div>
+              <span class="text-xs font-mono bg-emerald-50 text-emerald-700 border border-emerald-200 px-3 py-1 rounded-full">
+                Sorted High → Low Trust
+              </span>
+            </div>
             <table class="w-full text-left text-sm">
-              <thead class="bg-slate-50 text-slate-600 text-xs uppercase">
+              <thead class="bg-slate-50 text-slate-500 text-[11px] font-mono uppercase border-y border-slate-200">
                 <tr>
-                  <th class="p-3">Source</th>
-                  <th class="p-3">PageRank</th>
-                  <th class="p-3">Authority</th>
-                  <th class="p-3">Spam Filter</th>
-                  <th class="p-3">Consensus</th>
-                  <th class="p-3">Recency</th>
-                  <th class="p-3">Trust Score</th>
+                  <th class="p-3.5">Source Domain</th>
+                  <th class="p-3.5">PageRank</th>
+                  <th class="p-3.5">HITS Authority</th>
+                  <th class="p-3.5">NB Clean Prob</th>
+                  <th class="p-3.5">Consensus</th>
+                  <th class="p-3.5">Recency</th>
+                  <th class="p-3.5">Total Trust</th>
                 </tr>
               </thead>
-              <tbody id="trust-table-body" class="divide-y divide-slate-100"></tbody>
+              <tbody id="trust-table-body" class="divide-y divide-slate-100 text-xs"></tbody>
             </table>
           </section>
 
-          <!-- TAB 3: SIDE-BY-SIDE KEYWORD COMPARE -->
+          <!-- TAB 3: SIDE-BY-SIDE KEYWORD COMPARE (WITH RANK SHIFT DELTAS) -->
           <section id="tab-compare" class="tab-pane hidden grid md:grid-cols-2 gap-6">
-            <div>
-              <h3 class="text-sm font-bold uppercase tracking-wider text-emerald-700 mb-3">Sorted by Trust Score (High → Low)</h3>
+            <div class="bg-white rounded-3xl p-5 border border-emerald-200/90 shadow-xs">
+              <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-100">
+                <div>
+                  <h3 class="text-sm font-bold uppercase tracking-wider text-emerald-800">VerifyIt Trust-Prioritized Ranking</h3>
+                  <p class="text-xs text-slate-500 mt-0.5">Promotes authoritative domains & demotes clickbait</p>
+                </div>
+                <span class="text-[11px] font-mono bg-emerald-50 text-emerald-700 px-2.5 py-1 rounded-full font-bold">Stage 5 Hybrid</span>
+              </div>
               <div id="compare-hybrid" class="space-y-3"></div>
             </div>
-            <div>
-              <h3 class="text-sm font-bold uppercase tracking-wider text-amber-700 mb-3">Standard Search (Keywords Only)</h3>
+
+            <div class="bg-white rounded-3xl p-5 border border-amber-200/90 shadow-xs">
+              <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-100">
+                <div>
+                  <h3 class="text-sm font-bold uppercase tracking-wider text-amber-800">Standard Keyword Search (BM25 Only)</h3>
+                  <p class="text-xs text-slate-500 mt-0.5">Vulnerable to keyword-stuffed spam & unverified claims</p>
+                </div>
+                <span class="text-[11px] font-mono bg-amber-50 text-amber-700 px-2.5 py-1 rounded-full font-bold">Stage 3 Baseline</span>
+              </div>
               <div id="compare-standard" class="space-y-3"></div>
             </div>
           </section>
 
-          <!-- TAB 4: INDEX VIEW -->
-          <section id="tab-index" class="tab-pane hidden bg-white rounded-2xl p-5 border border-slate-200 space-y-3 text-sm">
-            <h3 class="text-base font-semibold">Term Index & Compression Preview</h3>
-            <p><strong>Root Term:</strong> <code id="idx-stem" class="bg-slate-100 px-2 py-0.5 rounded"></code></p>
-            <p><strong>Matched Documents:</strong> <code id="idx-inv" class="bg-slate-100 px-2 py-0.5 rounded"></code></p>
-            <p><strong>Compressed Gaps:</strong> <code id="idx-comp" class="bg-slate-100 px-2 py-0.5 rounded"></code></p>
+          <!-- TAB 4: INDEX VIEW (TERMINAL-STYLED STAGE 2 INSPECTOR) -->
+          <section id="tab-index" class="tab-pane hidden bg-slate-950 text-slate-200 rounded-3xl p-6 border border-slate-800 shadow-xl space-y-4 text-sm">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+              <div>
+                <h3 class="text-base font-bold text-white font-mono">Stage 2: Inverted, Positional & Delta-Compressed Index</h3>
+                <p class="text-xs text-slate-400">Inspects how the primary query stem is stored and gap-compressed in memory</p>
+              </div>
+              <span class="text-xs font-mono text-sky-400 bg-sky-500/10 border border-sky-500/30 px-3 py-1 rounded-full">
+                Porter Stemmer + Gamma/Gap Compression
+              </span>
+            </div>
+
+            <div class="grid sm:grid-cols-3 gap-4">
+              <div class="bg-slate-900/90 border border-slate-800 p-4 rounded-2xl">
+                <span class="text-[10px] font-mono uppercase tracking-wider text-slate-400 block mb-1">Indexed Root Stem</span>
+                <code id="idx-stem" class="text-lg font-mono font-bold text-sky-400"></code>
+              </div>
+              <div class="bg-slate-900/90 border border-slate-800 p-4 rounded-2xl">
+                <span class="text-[10px] font-mono uppercase tracking-wider text-slate-400 block mb-1">Inverted Posting List</span>
+                <code id="idx-inv" class="text-xs font-mono text-emerald-400 break-all"></code>
+              </div>
+              <div class="bg-slate-900/90 border border-slate-800 p-4 rounded-2xl">
+                <span class="text-[10px] font-mono uppercase tracking-wider text-slate-400 block mb-1">Delta-Compressed Gaps</span>
+                <code id="idx-comp" class="text-xs font-mono text-amber-300 break-all"></code>
+              </div>
+            </div>
+
             <div>
-              <strong>Word Positions:</strong>
-              <pre id="idx-pos" class="bg-slate-900 text-slate-100 p-3 rounded-xl text-xs mt-1 overflow-x-auto"></pre>
+              <span class="text-xs font-mono uppercase tracking-wider text-slate-400 block mb-2">Positional Index Offsets (DocID → Word Positions):</span>
+              <pre id="idx-pos" class="bg-black/60 text-emerald-400 border border-slate-800 p-4 rounded-2xl text-xs font-mono overflow-x-auto"></pre>
             </div>
           </section>
 
-          <!-- TAB 5: ACCURACY METRICS -->
-          <section id="tab-metrics" class="tab-pane hidden bg-white rounded-2xl p-5 border border-slate-200">
-            <h3 class="text-base font-semibold mb-3">Retrieval Quality Comparison (Top 3 Results)</h3>
-            <div id="metrics-cards" class="grid md:grid-cols-2 gap-4"></div>
+          <!-- TAB 5: ACCURACY METRICS (WITH VISUAL BARS) -->
+          <section id="tab-metrics" class="tab-pane hidden bg-white rounded-3xl p-6 border border-slate-200/90 shadow-xs">
+            <div class="flex items-center justify-between mb-5">
+              <div>
+                <h3 class="text-base font-bold text-slate-900">Stage 5: Retrieval Quality & Credibility Evaluation (Top-3 Cut)</h3>
+                <p class="text-xs text-slate-500">Measures how effectively Hybrid Trust Ranking filters out unverified/spam documents in top results</p>
+              </div>
+              <span class="text-xs font-mono bg-blue-50 text-blue-700 border border-blue-200 px-3 py-1 rounded-full">
+                Ground-Truth Verified Relevance
+              </span>
+            </div>
+            <div id="metrics-cards" class="grid md:grid-cols-2 gap-6"></div>
           </section>
 
           <!-- GOOGLE GEMINI STYLE FEEDBACK BAR AT BOTTOM OF RESPONSE -->
@@ -997,7 +1288,7 @@
                 Thanks for your feedback!
               </span>
             </div>
-            <span class="text-[11px] text-slate-400">VerifyIt AI can make mistakes. Always verify important sources.</span>
+            <span class="text-[11px] text-slate-400">VerifyIt Hybrid IR Engine • Always cross-check critical institutional notices.</span>
           </footer>
 
         </div>
@@ -1006,13 +1297,14 @@
   </div>
 
   <!-- ===================================================================
-       JAVASCRIPT: 3D CONSTELLATION & DEPTH FIELD + CLASSIC EDITORIAL
-       TYPEWRITER + 3-2-1 ROCKET SMOKE + GLITCH TERMINAL + VERIFYIT
+       JAVASCRIPT: 3D INTRO + GLITCH TERMINAL + UPGRADED VERIFYIT ENGINE
        =================================================================== -->
   <script>
     const sleep = (ms) => new Promise(r => setTimeout(r, ms));
     let introAborted = false;
     let launchTriggered = false;
+    let lastSearchData = null;
+    let activeTierFilter = 'all';
 
     /* -------------------------------------------------------------------
        1. CLASSIC 3D DEPTH STARFIELD & GEOMETRIC CONSTELLATION MESH
@@ -1027,12 +1319,11 @@
     let targetParallaxX = 0;
     let targetParallaxY = 0;
 
-    // Refined monochrome & sapphire starlight palette
     const starColors = [
-      '248, 250, 252', // Pure Platinum
-      '203, 213, 225', // Brushed Silver
-      '148, 163, 184', // Muted Titanium
-      '186, 230, 253'  // Subtle Sapphire Ice
+      '248, 250, 252',
+      '203, 213, 225',
+      '148, 163, 184',
+      '186, 230, 253'
     ];
 
     function initStarfield() {
@@ -1049,7 +1340,6 @@
       }));
     }
 
-    // Interactive 3D Parallax & Stage Perspective Tilt
     window.addEventListener('mousemove', (e) => {
       const normX = (e.clientX / window.innerWidth) - 0.5;
       const normY = (e.clientY / window.innerHeight) - 0.5;
@@ -1073,7 +1363,6 @@
 
       const cx = starCanvas.width / 2 + mouseParallaxX;
       const cy = starCanvas.height / 2 + mouseParallaxY;
-
       const projectedNodes = [];
 
       for (const s of stars) {
@@ -1099,7 +1388,6 @@
         const twinkle = 0.75 + 0.25 * Math.sin(s.twinklePhase);
         const alpha = Math.min(1, (1200 - s.z) / 520) * twinkle;
 
-        // Subtle depth warp trail
         starCtx.beginPath();
         starCtx.strokeStyle = `rgba(${s.color}, ${alpha * 0.42})`;
         starCtx.lineWidth = Math.max(0.5, s.size * scale * 0.38);
@@ -1107,7 +1395,6 @@
         starCtx.lineTo(px, py);
         starCtx.stroke();
 
-        // Crisp star point
         starCtx.beginPath();
         starCtx.fillStyle = `rgba(${s.color}, ${alpha})`;
         starCtx.arc(px, py, Math.max(0.6, s.size * scale * 0.48), 0, Math.PI * 2);
@@ -1118,7 +1405,6 @@
         }
       }
 
-      // Subtle 3D geometric constellation filaments connecting foreground nodes
       for (let i = 0; i < projectedNodes.length; i++) {
         for (let j = i + 1; j < projectedNodes.length; j++) {
           const dx = projectedNodes[i].x - projectedNodes[j].x;
@@ -1188,6 +1474,8 @@
        3. CHOREOGRAPHED 3-SCENE BUILD-UP (PROPORTIONAL CLASSIC SIZING)
        ------------------------------------------------------------------- */
     async function runCinematicIntro() {
+      introAborted = false;
+      launchTriggered = false;
       initStarfield();
       renderStarfield();
 
@@ -1195,50 +1483,48 @@
       const line1 = document.getElementById('type-line-1');
       const line2 = document.getElementById('type-line-2');
       const line3 = document.getElementById('type-line-3');
+      const launchWrap = document.getElementById('launch-wrapper');
+      const launchBtn = document.getElementById('launch-btn');
+      const rocketEl = document.getElementById('flying-rocket');
+
+      clearStageLines(line1, line2, line3);
+      stage.classList.remove('dissolve-blur-exit');
+      launchWrap.classList.remove('revealed');
+      launchBtn.style.opacity = '1';
+      launchBtn.style.pointerEvents = 'auto';
+      rocketEl.style.opacity = '0';
 
       await sleep(550);
 
-      // ===============================================================
-      // SCENE 1 (Classic Playfair Display Serif — Balanced Executive Size):
-      // Writes "Tired of finding??" -> 1s pause -> types " Or" ->
-      // erases " Or" and "??" -> continues typing " the trusted one??"
-      // ===============================================================
+      // SCENE 1
       line1.className = 'typo-scene-1 text-3xl sm:text-5xl md:text-6xl leading-tight';
       await typeString(line1, 'Tired of finding??', 88);
-      await sleep(1000); // 1 sec pause
+      await sleep(1000);
 
       await typeString(line1, ' Or', 95);
       await sleep(900);
 
-      // Erase " Or" (3 chars) + "??" (2 chars) = 5 characters
       await eraseCharacters(line1, 5, 72);
       await sleep(450);
 
-      // Continue typing after "Tired of finding" -> " the trusted one??"
       await typeString(line1, ' the trusted one??', 85);
       await sleep(1250);
 
-      // Dissolve + Blur Exit Animation
       stage.classList.add('dissolve-blur-exit');
       await sleep(1180);
       if (introAborted) return;
 
-      // Reset Stage for Scene 2
       clearStageLines(line1, line2, line3);
       stage.classList.remove('dissolve-blur-exit');
       await sleep(280);
 
-      // ===============================================================
-      // SCENE 2 (Plus Jakarta Sans + Playfair Display Italic Subline):
-      // Line 1: "Stop wasting data on random sites"
-      // Next line: "don't just explore all those fake sites or paid ones after you just wrote free in the search bar"
-      // ===============================================================
+      // SCENE 2
       line1.className = 'typo-scene-2-main text-2xl sm:text-4xl md:text-5xl leading-tight';
       line2.className = 'typo-scene-2-sub text-lg sm:text-2xl md:text-3xl mt-5 leading-relaxed max-w-3xl mx-auto';
 
       await typeString(line1, 'Stop wasting data on random sites', 76);
       removeCursor(line1);
-      await sleep(1000); // 1 sec pause
+      await sleep(1000);
 
       await typeString(
         line2,
@@ -1247,33 +1533,26 @@
       );
       await sleep(1350);
 
-      // Dissolve + Blur Exit Animation
       stage.classList.add('dissolve-blur-exit');
       await sleep(1180);
       if (introAborted) return;
 
-      // Reset Stage for Scene 3
       clearStageLines(line1, line2, line3);
       stage.classList.remove('dissolve-blur-exit');
       await sleep(280);
 
-      // ===============================================================
-      // SCENE 3 (Refined Editorial Italic + Classic 3D Brand Mark):
-      // Line 1: "Introducing"
-      // Next line: "VerifyIt"
-      // Next line (shorter font size): "Your most reliable search engine, compares multiple website checks the trust score and you are on"
-      // ===============================================================
+      // SCENE 3
       line1.className = 'typo-scene-3-intro text-2xl sm:text-3xl md:text-4xl mb-1';
       line2.className = 'typo-scene-3-brand text-5xl sm:text-6xl md:text-7xl py-2 leading-tight';
       line3.className = 'typo-scene-3-desc text-sm sm:text-base md:text-lg max-w-xl mx-auto mt-4 leading-relaxed';
 
       await typeString(line1, 'Introducing', 95);
       removeCursor(line1);
-      await sleep(1000); // 1 sec pause
+      await sleep(1000);
 
       await typeString(line2, 'VerifyIt', 115);
       removeCursor(line2);
-      await sleep(1000); // 1 sec pause
+      await sleep(1000);
 
       await typeString(
         line3,
@@ -1281,10 +1560,9 @@
         48
       );
 
-      // Automatically reveal the "Launch It" button
       if (!introAborted) {
         await sleep(350);
-        document.getElementById('launch-wrapper').classList.add('revealed');
+        launchWrap.classList.add('revealed');
       }
     }
 
@@ -1438,6 +1716,7 @@
       introEl.style.display = 'none';
 
       termStage.style.display = 'flex';
+      termStage.style.opacity = '1';
       termStage.classList.add('glitch-active');
       termWindow.classList.add('glitch-active');
 
@@ -1503,12 +1782,25 @@
       document.getElementById('query-input').focus();
     }
 
+    function replayCinematicIntro() {
+      const introEl = document.getElementById('cinematic-intro');
+      const appEl = document.getElementById('verifyit-app');
+      const smokeCanvas = document.getElementById('smoke-canvas');
+      smokeCanvas.getContext('2d').clearRect(0, 0, smokeCanvas.width, smokeCanvas.height);
+
+      appEl.classList.remove('opacity-100');
+      appEl.classList.add('opacity-0');
+      introEl.style.display = 'flex';
+      introEl.style.opacity = '1';
+      runCinematicIntro();
+    }
+
     window.addEventListener('DOMContentLoaded', () => {
       runCinematicIntro();
     });
 
     /* -------------------------------------------------------------------
-       6. VERIFYIT IR SYSTEM FRONTEND LOGIC (INTACT FROM SOURCE)
+       6. UPGRADED VERIFYIT IR WORKSPACE LOGIC
        ------------------------------------------------------------------- */
     let desktopSidebarCollapsed = false;
     function toggleDesktopSidebar() {
@@ -1516,12 +1808,12 @@
       const labels = document.querySelectorAll('.sidebar-label');
       desktopSidebarCollapsed = !desktopSidebarCollapsed;
       if (desktopSidebarCollapsed) {
-        sb.classList.remove('w-64');
+        sb.classList.remove('w-68');
         sb.classList.add('w-20');
         labels.forEach(el => el.classList.add('hidden'));
       } else {
         sb.classList.remove('w-20');
-        sb.classList.add('w-64');
+        sb.classList.add('w-68');
         labels.forEach(el => el.classList.remove('hidden'));
       }
     }
@@ -1531,6 +1823,27 @@
       const bd = document.getElementById('sidebar-backdrop');
       sb.classList.toggle('-translate-x-full');
       bd.classList.toggle('hidden');
+    }
+
+    function resetToHeroSearch() {
+      const wrapper = document.getElementById('app-wrapper');
+      wrapper.classList.add('flex-1', 'justify-center', 'py-10');
+      wrapper.classList.remove('pt-5', 'pb-4', 'border-b', 'border-slate-200/80', 'bg-white/80', 'backdrop-blur-md');
+      document.getElementById('hero-status-pills').classList.remove('hidden');
+      document.getElementById('hero-subtitle').classList.remove('hidden');
+      document.getElementById('quick-queries-row').classList.remove('hidden');
+      document.getElementById('workspace-container').classList.add('hidden');
+      const qInput = document.getElementById('query-input');
+      qInput.value = '';
+      autoResizeTextarea();
+      qInput.focus();
+    }
+
+    function runQuickSample(sampleText) {
+      const qInput = document.getElementById('query-input');
+      qInput.value = sampleText;
+      autoResizeTextarea();
+      document.getElementById('search-form').requestSubmit();
     }
 
     const plusBtn = document.getElementById('plus-menu-btn');
@@ -1559,7 +1872,7 @@
 
     fileInput.addEventListener('change', () => {
       if (fileInput.files.length > 0) {
-        fileBadge.textContent = `${selectedFileCategory}: ${fileInput.files[0].name} ✕`;
+        fileBadge.textContent = `📎 ${selectedFileCategory}: ${fileInput.files[0].name} ✕`;
         fileBadge.classList.remove('hidden');
         fileBadge.onclick = () => {
           fileInput.value = '';
@@ -1618,40 +1931,96 @@
       searchBtn.style.setProperty('--y', `${e.clientY - rect.top}px`);
     });
 
+    // Dual Sliders with Live Ratio Bar & Instant Re-Ranking
     const trustSlider = document.getElementById('trust-slider');
     const trustLabel = document.getElementById('trust-label');
     const relevanceSlider = document.getElementById('relevance-slider');
     const relevanceLabel = document.getElementById('relevance-label');
 
-    trustSlider.addEventListener('input', () => {
-      trustLabel.textContent = trustSlider.value + '%';
-    });
-    relevanceSlider.addEventListener('input', () => {
-      relevanceLabel.textContent = relevanceSlider.value + '%';
-    });
+    function updateWeightVisualsAndReRank() {
+      const tVal = parseInt(trustSlider.value, 10);
+      const rVal = parseInt(relevanceSlider.value, 10);
+      trustLabel.textContent = tVal + '%';
+      relevanceLabel.textContent = rVal + '%';
+
+      const total = (tVal + rVal) || 1;
+      const tPct = Math.round((tVal / total) * 100);
+      const rPct = 100 - tPct;
+
+      document.getElementById('sidebar-ratio-text').textContent = `${tPct}T : ${rPct}R`;
+      document.getElementById('sidebar-trust-bar').style.width = `${tPct}%`;
+      document.getElementById('sidebar-rel-bar').style.width = `${rPct}%`;
+
+      // If results are already loaded, dynamically recompute Hybrid Scores & re-render!
+      if (lastSearchData && lastSearchData.hybrid_results) {
+        const tW = tVal / 100.0;
+        const rW = rVal / 100.0;
+        const sumW = (tW + rW) || 1.0;
+
+        lastSearchData.hybrid_results.forEach(item => {
+          item.hybrid_score = Number((((rW * item.relevance_score) + (tW * item.reliability_score)) / sumW).toFixed(4));
+        });
+
+        lastSearchData.hybrid_results.sort((a, b) => {
+          if (b.reliability_score !== a.reliability_score) {
+            return b.reliability_score - a.reliability_score;
+          }
+          return b.hybrid_score - a.hybrid_score;
+        });
+
+        renderResults(lastSearchData);
+      }
+    }
+
+    trustSlider.addEventListener('input', updateWeightVisualsAndReRank);
+    relevanceSlider.addEventListener('input', updateWeightVisualsAndReRank);
 
     function toggleResearchLinks() {
       document.getElementById('research-links-stream').classList.toggle('hidden');
     }
 
+    function setPipelineStep(stageNum, status) {
+      const el = document.getElementById(`p-stage-${stageNum}`);
+      if (!el) return;
+      el.classList.remove('active', 'done');
+      if (status === 'active') el.classList.add('active');
+      if (status === 'done') el.classList.add('done');
+    }
+
+    function filterResultCards(tier) {
+      activeTierFilter = tier;
+      document.querySelectorAll('.flt-btn').forEach(btn => {
+        btn.classList.remove('bg-slate-900', 'text-white');
+        btn.classList.add('bg-white');
+      });
+      const activeBtn = document.getElementById('flt-' + tier);
+      if (activeBtn) {
+        activeBtn.classList.remove('bg-white');
+        activeBtn.classList.add('bg-slate-900', 'text-white');
+      }
+      if (lastSearchData) renderResults(lastSearchData);
+    }
+
     const viewTitles = {
-      'tab-results': 'Search Results (Sorted by Trust)',
-      'tab-trust': 'Source Trust & Pattern Breakdown',
-      'tab-compare': 'Hybrid vs. Keyword Ranking Compare',
-      'tab-index': 'Inverted & Positional Index Inspector',
-      'tab-metrics': 'IR Evaluation Metrics (Top 3)'
+      'tab-results': 'Search Results (Sorted by Descending Trust Score)',
+      'tab-trust': 'Stage 4: Source Trust & Pattern Matrix',
+      'tab-compare': 'Stage 5: Hybrid Trust vs. Keyword BM25 Comparison',
+      'tab-index': 'Stage 2: Inverted, Positional & Compressed Index Inspector',
+      'tab-metrics': 'Stage 5: Retrieval Quality & Credibility Metrics (Top 3)'
     };
 
     function switchTab(tabId) {
       document.querySelectorAll('.tab-pane').forEach(el => el.classList.add('hidden'));
       document.getElementById(tabId).classList.remove('hidden');
       document.querySelectorAll('.tab-btn').forEach(btn => {
-        btn.classList.remove('bg-blue-100/80', 'text-blue-700');
-        btn.classList.add('text-slate-600');
+        btn.classList.remove('bg-sky-500/15', 'text-sky-300', 'border-sky-500/30', 'font-semibold');
+        btn.classList.add('text-slate-400', 'border-transparent', 'font-medium');
       });
       const activeBtn = document.getElementById('btn-' + tabId);
-      activeBtn.classList.remove('text-slate-600');
-      activeBtn.classList.add('bg-blue-100/80', 'text-blue-700');
+      if (activeBtn) {
+        activeBtn.classList.remove('text-slate-400', 'border-transparent', 'font-medium');
+        activeBtn.classList.add('bg-sky-500/15', 'text-sky-300', 'border-sky-500/30', 'font-semibold');
+      }
       document.getElementById('current-view-title').textContent = viewTitles[tabId] || 'Search Results';
 
       const sb = document.getElementById('gemini-sidebar');
@@ -1673,7 +2042,7 @@
         toast.textContent = 'Glad this verification was helpful!';
       } else {
         downBtn.classList.add('bg-rose-100', 'text-rose-700');
-        toast.textContent = 'Feedback noted — we will refine our ranking weights.';
+        toast.textContent = 'Feedback noted — adjust the Trust/Relevance sliders above to fine-tune.';
       }
       toast.classList.remove('hidden');
     }
@@ -1682,7 +2051,7 @@
       const txt = document.getElementById('out-answer').textContent;
       navigator.clipboard.writeText(txt);
       const toast = document.getElementById('feedback-toast');
-      toast.textContent = 'Copied summary to clipboard!';
+      toast.textContent = 'Copied verified summary to clipboard!';
       toast.classList.remove('hidden');
     }
 
@@ -1700,14 +2069,19 @@
 
       const tStart = performance.now();
 
+      // Dock search console cleanly to top bar
       const wrapper = document.getElementById('app-wrapper');
-      wrapper.classList.remove('flex-1', 'justify-center');
-      wrapper.classList.add('pt-6', 'pb-4', 'border-b', 'border-slate-200', 'bg-white');
-      document.getElementById('brand-header').classList.add('mb-3');
+      wrapper.classList.remove('flex-1', 'justify-center', 'py-10');
+      wrapper.classList.add('pt-5', 'pb-4', 'border-b', 'border-slate-200/80', 'bg-white/80', 'backdrop-blur-md');
+      document.getElementById('hero-status-pills').classList.add('hidden');
+      document.getElementById('hero-subtitle').classList.add('hidden');
+      document.getElementById('quick-queries-row').classList.add('hidden');
+      document.getElementById('hero-title').className = 'text-2xl md:text-3xl font-extrabold tracking-tight text-slate-900';
+      document.getElementById('brand-header').classList.replace('mb-7', 'mb-3');
 
       const workspace = document.getElementById('workspace-container');
       const resultsContent = document.getElementById('results-content');
-      const statsLine = document.getElementById('google-stats-line');
+      const statsFilterBar = document.getElementById('stats-and-filters-bar');
       const streamContainer = document.getElementById('research-links-stream');
       const didYouMeanBox = document.getElementById('did-you-mean-box');
       const headerDots = document.getElementById('header-visiting-dots');
@@ -1715,17 +2089,21 @@
 
       workspace.classList.remove('hidden');
       resultsContent.classList.add('hidden');
-      statsLine.classList.add('hidden');
+      statsFilterBar.classList.add('hidden');
       didYouMeanBox.classList.add('hidden');
       streamContainer.innerHTML = '';
       streamContainer.classList.remove('hidden');
       headerDots.classList.remove('hidden');
 
+      // Reset & animate 5-stage pipeline ribbon
+      for (let s = 1; s <= 5; s++) setPipelineStep(s, '');
+      setPipelineStep(1, 'active');
+
       document.getElementById('out-active-query').textContent = 'Formulating...';
       document.getElementById('out-expanded-terms').textContent = '...';
       document.getElementById('out-lemmas').textContent = '...';
       document.getElementById('out-stems').textContent = '...';
-      document.getElementById('research-status-title').textContent = 'Visiting web sources';
+      document.getElementById('research-status-title').textContent = 'Crawling live web & Wikipedia sources';
 
       const tW = parseFloat(trustSlider.value) / 100.0;
       const rW = parseFloat(relevanceSlider.value) / 100.0;
@@ -1743,6 +2121,10 @@
         const res = await fetch('/api/search', { method: 'POST', body: formData });
         const data = await res.json();
 
+        setPipelineStep(1, 'done');
+        setPipelineStep(2, 'done');
+        setPipelineStep(3, 'active');
+
         const sumW = tW + rW || 1.0;
         data.hybrid_results.forEach(item => {
           item.hybrid_score = Number((((rW * item.relevance_score) + (tW * item.reliability_score)) / sumW).toFixed(4));
@@ -1754,6 +2136,12 @@
           }
           return b.hybrid_score - a.hybrid_score;
         });
+
+        lastSearchData = data;
+
+        const navBadge = document.getElementById('nav-Badge-results');
+        navBadge.textContent = data.hybrid_results.length;
+        navBadge.classList.remove('hidden');
 
         if (data.suggested_query && data.suggested_query.toLowerCase() !== data.active_query.toLowerCase()) {
           document.getElementById('did-you-mean-btn').textContent = data.suggested_query;
@@ -1768,12 +2156,15 @@
         document.getElementById('out-stems').textContent =
           data.stemmed_tokens && data.stemmed_tokens.length ? data.stemmed_tokens.join(' · ') : 'None';
 
+        setPipelineStep(3, 'done');
+        setPipelineStep(4, 'active');
+
         for (let i = 0; i < data.hybrid_results.length; i++) {
           const item = data.hybrid_results[i];
           const src = item.doc.source;
 
           document.getElementById('research-status-title').textContent =
-            `Visiting (${i + 1}/${data.hybrid_results.length}) ${src}`;
+            `Visiting & scoring authority (${i + 1}/${data.hybrid_results.length}): ${src}`;
 
           const pill = document.createElement('div');
           pill.className = 'fade-in flex items-center gap-1.5 bg-blue-50 border border-blue-200 text-slate-700 text-xs px-2.5 py-1 rounded-full transition-all';
@@ -1786,25 +2177,31 @@
           `;
           streamContainer.appendChild(pill);
 
-          await sleep(140);
+          await sleep(110);
 
-          pill.className = 'flex items-center gap-1.5 bg-slate-100 border border-slate-200 text-slate-700 text-xs px-2.5 py-1 rounded-full transition-all';
+          const trustPct = Math.round(item.reliability_score * 100);
+          const doneBorder = trustPct >= 70 ? 'border-emerald-200 bg-emerald-50/60' : trustPct >= 45 ? 'border-slate-200 bg-slate-100' : 'border-rose-200 bg-rose-50/60';
+          pill.className = `flex items-center gap-1.5 border ${doneBorder} text-slate-700 text-xs px-2.5 py-1 rounded-full transition-all`;
           const statusEl = pill.querySelector('.pill-status');
           if (statusEl) {
-            statusEl.className = 'text-emerald-600 font-bold text-xs';
-            statusEl.textContent = '✓';
+            statusEl.className = trustPct >= 70 ? 'text-emerald-600 font-bold text-xs' : 'text-slate-500 font-bold text-xs';
+            statusEl.textContent = `${trustPct}% ✓`;
           }
         }
+
+        setPipelineStep(4, 'done');
+        setPipelineStep(5, 'done');
 
         const elapsedSeconds = ((performance.now() - tStart) / 1000).toFixed(2);
         const totalCount = data.hybrid_results.length;
 
         headerDots.classList.add('hidden');
         document.getElementById('research-status-title').textContent =
-          `Visited & evaluated ${totalCount} sources`;
+          `Verified ${totalCount} sources via PageRank, HITS & Naïve Bayes Spam Classifier`;
 
-        statsLine.textContent = `Searched about ${totalCount} results in (${elapsedSeconds} seconds)`;
-        statsLine.classList.remove('hidden');
+        document.getElementById('google-stats-line').textContent =
+          `Searched about ${totalCount} results in (${elapsedSeconds} seconds)`;
+        statsFilterBar.classList.remove('hidden');
 
         renderResults(data);
         resultsContent.classList.remove('hidden');
@@ -1822,9 +2219,16 @@
 
       document.getElementById('out-answer').textContent = ans.answer;
       document.getElementById('out-answer-badge').textContent =
-        `Most Reliable: ${ans.source_domain} (${topTrustPct}% Trust)`;
+        `Source: ${ans.source_domain} • ${topTrustPct}% Trust`;
       document.getElementById('out-answer-meta').textContent =
         `Extracted from "${ans.source_title || ans.source_doc}" (${ans.source_domain})`;
+
+      // Update Circular SVG Trust Gauge
+      const circumference = 169.6;
+      const offset = circumference - (Math.min(100, Math.max(5, topTrustPct)) / 100) * circumference;
+      document.getElementById('top-trust-ring').setAttribute('stroke-dashoffset', offset.toFixed(1));
+      document.getElementById('top-trust-ring-pct').textContent = `${topTrustPct}%`;
+      document.getElementById('top-trust-domain-label').textContent = ans.source_domain;
 
       if (topItem && topRel) {
         const domain = topItem.doc.source;
@@ -1838,29 +2242,40 @@
 
         const pillsBox = document.getElementById('out-why-reliable-pills');
         pillsBox.innerHTML = `
-          <span class="bg-white border border-emerald-200 text-emerald-800 text-[11px] font-semibold px-2.5 py-1 rounded-full">
-            ✓ PageRank Authority: ${topRel.pagerank}
+          <span class="bg-slate-800/90 border border-emerald-500/30 text-emerald-300 text-[11px] font-mono px-3 py-1 rounded-full">
+            ✓ PageRank: ${topRel.pagerank}
           </span>
-          <span class="bg-white border border-emerald-200 text-emerald-800 text-[11px] font-semibold px-2.5 py-1 rounded-full">
-            ✓ HITS Hub/Auth: ${topRel.hits_authority}
+          <span class="bg-slate-800/90 border border-emerald-500/30 text-emerald-300 text-[11px] font-mono px-3 py-1 rounded-full">
+            ✓ HITS Auth: ${topRel.hits_authority}
           </span>
-          <span class="bg-white border border-emerald-200 text-emerald-800 text-[11px] font-semibold px-2.5 py-1 rounded-full">
-            ✓ Naïve Bayes Clean Language: ${Math.round(topRel.nb_trust_prob * 100)}%
+          <span class="bg-slate-800/90 border border-emerald-500/30 text-emerald-300 text-[11px] font-mono px-3 py-1 rounded-full">
+            ✓ NB Clean Language: ${Math.round(topRel.nb_trust_prob * 100)}%
           </span>
-          <span class="bg-white border border-emerald-200 text-emerald-800 text-[11px] font-semibold px-2.5 py-1 rounded-full">
+          <span class="bg-slate-800/90 border border-emerald-500/30 text-emerald-300 text-[11px] font-mono px-3 py-1 rounded-full">
             ✓ Claim Consensus: ${topRel.claim_consensus}
           </span>
-          <span class="bg-white border border-emerald-200 text-emerald-800 text-[11px] font-semibold px-2.5 py-1 rounded-full">
-            ✓ Recency Score: ${topRel.recency_score}
+          <span class="bg-slate-800/90 border border-emerald-500/30 text-emerald-300 text-[11px] font-mono px-3 py-1 rounded-full">
+            ✓ Recency: ${topRel.recency_score}
           </span>
         `;
       }
 
+      // Render Tab 1: Filtered & Sorted 3D Flip Cards
       const tabResults = document.getElementById('tab-results');
       tabResults.innerHTML = '';
 
-      data.hybrid_results.forEach((item, idx) => {
+      const filteredResults = data.hybrid_results.filter(item => {
+        const pct = Math.round(item.reliability_score * 100);
+        if (activeTierFilter === 'verified') return pct >= 70;
+        if (activeTierFilter === 'moderate') return pct >= 45 && pct < 70;
+        if (activeTierFilter === 'risk') return pct < 45;
+        return true;
+      });
+
+      filteredResults.forEach((item, idx) => {
         const d = item.doc;
+        const ret = item.retrieval_details || {};
+        const rel = item.reliability_details || {};
         const trustPct = Math.round(item.reliability_score * 100);
         const relvPct = Math.round(item.relevance_score * 100);
         const hybridPct = Math.round(item.hybrid_score * 100);
@@ -1869,10 +2284,10 @@
         const isModerate = trustPct >= 45 && trustPct < 70;
 
         const previewGradient = isTrusted
-          ? 'from-blue-600/10 via-indigo-500/5 to-slate-100'
+          ? 'from-emerald-500/10 via-sky-500/5 to-slate-100'
           : isModerate
           ? 'from-amber-500/10 via-orange-500/5 to-slate-100'
-          : 'from-rose-500/10 via-red-500/5 to-slate-100';
+          : 'from-rose-500/15 via-red-500/5 to-slate-100';
 
         const badgeStyle = isTrusted
           ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
@@ -1880,48 +2295,52 @@
           ? 'bg-amber-50 text-amber-700 border-amber-200'
           : 'bg-rose-50 text-rose-700 border-rose-200';
 
-        const badgeText = isTrusted ? 'Verified Source' : isModerate ? 'Moderate Trust' : 'Clickbait Risk';
+        const barColor = isTrusted ? 'bg-emerald-500' : isModerate ? 'bg-amber-500' : 'bg-rose-500';
+        const badgeText = isTrusted ? 'Verified Trust' : isModerate ? 'Moderate Trust' : 'Clickbait Risk';
 
         tabResults.innerHTML += `
           <article class="flip-card-scene" onclick="handleCardFlipClick(event, this)">
             <div class="flip-card-lift">
               <div class="flip-card-inner">
                 
-                <!-- FRONT FACE -->
+                <!-- FRONT FACE: DIVIDED INTO TWO HALVES -->
                 <div class="flip-card-front bg-white border border-slate-200/90 flex flex-col shadow-sm">
+                  
+                  <!-- UPPER HALF (55% Height): Mini Browser Preview Window -->
                   <div class="h-[55%] bg-gradient-to-br ${previewGradient} p-3.5 flex flex-col justify-between border-b border-slate-200/80 relative">
-                    <div class="flex items-center justify-between bg-white/90 backdrop-blur px-2.5 py-1.5 rounded-xl border border-slate-200/70 shadow-2xs">
+                    <div class="flex items-center justify-between bg-white/95 backdrop-blur px-2.5 py-1.5 rounded-xl border border-slate-200/80 shadow-2xs">
                       <div class="flex items-center gap-1.5 truncate">
                         <span class="w-2 h-2 rounded-full bg-rose-400"></span>
                         <span class="w-2 h-2 rounded-full bg-amber-400"></span>
                         <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
-                        <span class="text-[11px] text-slate-500 font-mono truncate ml-1">${d.source}</span>
+                        <span class="text-[11px] text-slate-600 font-mono truncate ml-1">🔒 ${d.source}</span>
                       </div>
-                      <span class="text-[10px] font-bold px-2 py-0.5 rounded-full border ${badgeStyle}">
+                      <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full border ${badgeStyle}">
                         ${trustPct}% Trust
                       </span>
                     </div>
 
-                    <div class="bg-white/95 rounded-xl p-3 border border-slate-200/60 shadow-2xs my-auto">
+                    <div class="bg-white/95 rounded-xl p-3 border border-slate-200/70 shadow-2xs my-auto">
                       <div class="flex items-center gap-2 mb-1.5">
                         <img
                           src="https://www.google.com/s2/favicons?domain=${d.source}&sz=64"
                           class="w-4 h-4 rounded-sm shrink-0"
                           onerror="this.style.display='none'"
                         />
-                        <span class="text-[11px] font-semibold text-slate-700 truncate">${d.title}</span>
+                        <span class="text-[11px] font-bold text-slate-800 truncate">${d.title}</span>
                       </div>
                       <p class="text-[11px] text-slate-500 line-clamp-2 leading-relaxed">
                         ${d.text}
                       </p>
                     </div>
 
-                    <div class="flex items-center justify-between text-[10px] text-slate-400 px-1">
+                    <div class="flex items-center justify-between text-[10px] font-mono text-slate-400 px-1">
                       <span>Trust Rank #${idx + 1}</span>
-                      <span>Published: ${d.date}</span>
+                      <span>${d.date}</span>
                     </div>
                   </div>
 
+                  <!-- LOWER HALF (45% Height): Website Identity, Title & Score Bar -->
                   <div class="h-[45%] p-4 flex flex-col justify-between bg-white">
                     <div>
                       <div class="flex items-center gap-2 mb-1">
@@ -1931,7 +2350,7 @@
                           onerror="this.style.display='none'"
                         />
                         <span class="text-xs font-bold text-blue-600 truncate">${d.source}</span>
-                        <span class="text-[10px] px-2 py-0.5 rounded-full border ${badgeStyle} ml-auto">
+                        <span class="text-[10px] font-semibold px-2 py-0.5 rounded-full border ${badgeStyle} ml-auto">
                           ${badgeText}
                         </span>
                       </div>
@@ -1940,15 +2359,20 @@
                       </h3>
                     </div>
 
-                    <div class="flex items-center justify-between pt-2 border-t border-slate-100 text-[11px] text-slate-400">
-                      <span>Trust Score: <strong class="text-emerald-700">${item.reliability_score} (${trustPct}%)</strong></span>
-                      <span class="text-blue-600 font-medium">Tap / Hover to flip ↻</span>
+                    <div>
+                      <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden mb-2">
+                        <div class="${barColor} h-full rounded-full transition-all duration-300" style="width: ${Math.min(100, Math.max(8, trustPct))}%"></div>
+                      </div>
+                      <div class="flex items-center justify-between text-[11px] text-slate-500">
+                        <span>Hybrid: <strong class="font-mono text-slate-800">${item.hybrid_score}</strong></span>
+                        <span class="text-blue-600 font-semibold">Tap / Hover to flip ↻</span>
+                      </div>
                     </div>
                   </div>
                 </div>
 
-                <!-- BACK FACE -->
-                <div class="flip-card-back bg-slate-900 text-slate-100 p-5 flex flex-col justify-between border border-slate-700 shadow-xl">
+                <!-- BACK FACE: DESCRIPTION + 3 CORE SCORES + DIAGNOSTIC PILLS -->
+                <div class="flip-card-back bg-slate-950 text-slate-100 p-5 flex flex-col justify-between border border-slate-800 shadow-2xl">
                   <div>
                     <div class="flex items-center justify-between border-b border-slate-800 pb-2.5 mb-3">
                       <div class="flex items-center gap-2 truncate">
@@ -1962,22 +2386,22 @@
                       <span class="text-[11px] text-emerald-400 font-mono">Trust #${idx + 1}</span>
                     </div>
 
-                    <div class="mb-4">
-                      <span class="text-[10px] uppercase tracking-wider text-blue-400 font-bold block mb-1">
-                        Document Summary
+                    <div class="mb-3">
+                      <span class="text-[10px] font-mono uppercase tracking-wider text-sky-400 font-bold block mb-1">
+                        Verified Snippet
                       </span>
-                      <p class="text-xs text-slate-300 line-clamp-5 leading-relaxed">
+                      <p class="text-xs text-slate-300 line-clamp-4 leading-relaxed">
                         ${d.text}
                       </p>
                     </div>
 
-                    <div class="space-y-2.5 bg-slate-800/90 p-3 rounded-2xl border border-slate-700/70">
+                    <div class="space-y-2 bg-slate-900/95 p-3 rounded-2xl border border-slate-800">
                       <div>
                         <div class="flex justify-between text-xs mb-1">
                           <span class="text-slate-300 font-medium">1. Reliability Score</span>
                           <span class="font-mono font-bold text-emerald-400">${item.reliability_score} (${trustPct}%)</span>
                         </div>
-                        <div class="w-full bg-slate-700 h-1.5 rounded-full overflow-hidden">
+                        <div class="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
                           <div class="bg-emerald-400 h-full rounded-full" style="width: ${Math.min(100, Math.max(6, trustPct))}%"></div>
                         </div>
                       </div>
@@ -1985,17 +2409,23 @@
                       <div>
                         <div class="flex justify-between text-xs mb-1">
                           <span class="text-slate-300 font-medium">2. Query Relevance</span>
-                          <span class="font-mono font-bold text-blue-400">${item.relevance_score} (${relvPct}%)</span>
+                          <span class="font-mono font-bold text-sky-400">${item.relevance_score} (${relvPct}%)</span>
                         </div>
-                        <div class="w-full bg-slate-700 h-1.5 rounded-full overflow-hidden">
-                          <div class="bg-blue-400 h-full rounded-full" style="width: ${Math.min(100, Math.max(6, relvPct))}%"></div>
+                        <div class="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
+                          <div class="bg-sky-400 h-full rounded-full" style="width: ${Math.min(100, Math.max(6, relvPct))}%"></div>
                         </div>
                       </div>
 
-                      <div class="pt-1 border-t border-slate-700/80 flex justify-between items-center text-xs">
+                      <div class="pt-1 border-t border-slate-800 flex justify-between items-center text-xs">
                         <span class="text-slate-300 font-medium">3. Final Hybrid Score</span>
                         <span class="font-mono font-bold text-amber-300">${item.hybrid_score} (${hybridPct}%)</span>
                       </div>
+                    </div>
+
+                    <div class="grid grid-cols-3 gap-1.5 mt-2.5 text-center text-[10px] font-mono text-slate-400">
+                      <div class="bg-slate-900 border border-slate-800 rounded-lg py-1">BM25: <span class="text-white">${ret.bm25 ?? '-'}</span></div>
+                      <div class="bg-slate-900 border border-slate-800 rounded-lg py-1">PR: <span class="text-white">${rel.pagerank ?? '-'}</span></div>
+                      <div class="bg-slate-900 border border-slate-800 rounded-lg py-1">NB: <span class="text-emerald-400">${rel.nb_trust_prob ?? '-'}</span></div>
                     </div>
                   </div>
 
@@ -2015,68 +2445,121 @@
         `;
       });
 
+      // Render Tab 2: Trust Breakdown Table with Visual Progress Bars
       const trustBody = document.getElementById('trust-table-body');
       trustBody.innerHTML = '';
       data.hybrid_results.forEach(item => {
         const r = item.reliability_details;
+        const pct = Math.round(r.total_reliability * 100);
+        const barCol = pct >= 70 ? 'bg-emerald-500' : pct >= 45 ? 'bg-amber-500' : 'bg-rose-500';
         trustBody.innerHTML += `
-          <tr>
-            <td class="p-3 font-medium text-slate-800">${r.source}</td>
-            <td class="p-3">${r.pagerank}</td>
-            <td class="p-3">${r.hits_authority}</td>
-            <td class="p-3">${r.nb_trust_prob}</td>
-            <td class="p-3">${r.claim_consensus}</td>
-            <td class="p-3">${r.recency_score}</td>
-            <td class="p-3 font-bold text-emerald-600">${r.total_reliability}</td>
+          <tr class="hover:bg-slate-50/80 transition">
+            <td class="p-3.5 font-semibold text-slate-900 flex items-center gap-2">
+              <img src="https://www.google.com/s2/favicons?domain=${r.source}&sz=32" class="w-4 h-4 rounded-sm" onerror="this.style.display='none'" />
+              <span>${r.source}</span>
+            </td>
+            <td class="p-3.5 font-mono">${r.pagerank}</td>
+            <td class="p-3.5 font-mono">${r.hits_authority}</td>
+            <td class="p-3.5 font-mono">${r.nb_trust_prob}</td>
+            <td class="p-3.5 font-mono">${r.claim_consensus}</td>
+            <td class="p-3.5 font-mono">${r.recency_score}</td>
+            <td class="p-3.5">
+              <div class="flex items-center gap-2">
+                <span class="font-mono font-bold text-slate-900 w-10">${r.total_reliability}</span>
+                <div class="w-20 bg-slate-100 h-1.5 rounded-full overflow-hidden">
+                  <div class="${barCol} h-full rounded-full" style="width: ${Math.min(100, Math.max(6, pct))}%"></div>
+                </div>
+              </div>
+            </td>
           </tr>
         `;
       });
 
+      // Render Tab 3: Side-by-Side Compare with Rank Delta Badges
       const compHybrid = document.getElementById('compare-hybrid');
       const compStd = document.getElementById('compare-standard');
       compHybrid.innerHTML = '';
       compStd.innerHTML = '';
-      data.hybrid_results.forEach((item, i) => {
-        compHybrid.innerHTML += `
-          <div class="bg-white p-3.5 rounded-xl border border-slate-200 text-sm">
-            <div class="font-semibold text-slate-800">#${i + 1} ${item.doc.title}</div>
-            <div class="text-xs text-slate-500 mt-1">${item.doc.source} • Trust: <strong class="text-emerald-700">${item.reliability_score}</strong> • Hybrid: <strong>${item.hybrid_score}</strong></div>
-          </div>`;
+
+      const stdRankMap = {};
+      data.standard_results.forEach((item, idx) => {
+        stdRankMap[item.doc.id] = idx + 1;
       });
-      data.standard_results.forEach((item, i) => {
-        compStd.innerHTML += `
-          <div class="bg-white p-3.5 rounded-xl border border-slate-200 text-sm">
-            <div class="font-semibold text-slate-800">#${i + 1} ${item.doc.title}</div>
-            <div class="text-xs text-slate-500 mt-1">${item.doc.source} • Keyword BM25: <strong>${item.retrieval_details.bm25}</strong></div>
+
+      data.hybrid_results.forEach((item, i) => {
+        const hybRank = i + 1;
+        const prevRank = stdRankMap[item.doc.id] || hybRank;
+        const delta = prevRank - hybRank;
+        const deltaBadge = delta > 0
+          ? `<span class="text-[10px] font-mono font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded-full">▲ +${delta} Promoted</span>`
+          : delta < 0
+          ? `<span class="text-[10px] font-mono font-bold bg-rose-50 text-rose-700 border border-rose-200 px-2 py-0.5 rounded-full">▼ ${delta} Demoted</span>`
+          : `<span class="text-[10px] font-mono text-slate-400 px-2 py-0.5">— Same</span>`;
+
+        compHybrid.innerHTML += `
+          <div class="bg-slate-50/70 p-3.5 rounded-2xl border border-slate-200/80 text-sm">
+            <div class="flex items-center justify-between gap-2 mb-1">
+              <span class="font-bold text-slate-900 truncate">#${hybRank} ${item.doc.title}</span>
+              ${deltaBadge}
+            </div>
+            <div class="text-xs text-slate-500 font-mono">${item.doc.source} • Trust: <strong class="text-emerald-700">${item.reliability_score}</strong> • Hybrid: <strong>${item.hybrid_score}</strong></div>
           </div>`;
       });
 
-      document.getElementById('idx-stem').textContent = data.index_preview.stem;
+      data.standard_results.forEach((item, i) => {
+        compStd.innerHTML += `
+          <div class="bg-slate-50/70 p-3.5 rounded-2xl border border-slate-200/80 text-sm">
+            <div class="font-bold text-slate-800 truncate">#${i + 1} ${item.doc.title}</div>
+            <div class="text-xs text-slate-500 font-mono mt-1">${item.doc.source} • Keyword BM25: <strong>${item.retrieval_details.bm25}</strong> • Trust: ${item.reliability_score}</div>
+          </div>`;
+      });
+
+      // Render Tab 4: Index View
+      document.getElementById('idx-stem').textContent = data.index_preview.stem || 'none';
       document.getElementById('idx-inv').textContent = JSON.stringify(data.index_preview.inverted);
       document.getElementById('idx-comp').textContent = JSON.stringify(data.index_preview.compressed_gaps);
       document.getElementById('idx-pos').textContent = JSON.stringify(data.index_preview.positional, null, 2);
 
+      // Render Tab 5: Accuracy Metrics with Progress Bars
       const mCards = document.getElementById('metrics-cards');
       const mStd = data.evaluation.standard_bm25;
       const mHyb = data.evaluation.credence_hybrid;
+
+      function metricRow(label, val, colorClass) {
+        const pct = Math.round(Number(val) * 100);
+        return `
+          <div>
+            <div class="flex justify-between text-xs mb-1">
+              <span class="font-medium text-slate-600">${label}</span>
+              <span class="font-mono font-bold text-slate-900">${val} (${pct}%)</span>
+            </div>
+            <div class="w-full bg-slate-200/70 h-2 rounded-full overflow-hidden">
+              <div class="${colorClass} h-full rounded-full" style="width: ${Math.min(100, Math.max(4, pct))}%"></div>
+            </div>
+          </div>
+        `;
+      }
+
       mCards.innerHTML = `
-        <div class="p-4 rounded-xl bg-emerald-50/60 border border-emerald-200">
-          <div class="font-bold text-emerald-800 mb-2">VerifyIt Ranking (Trust-Prioritized)</div>
-          <div class="text-sm space-y-1 text-slate-700">
-            <div>Precision@3: <strong>${mHyb['Precision@3']}</strong></div>
-            <div>Recall@3: <strong>${mHyb['Recall@3']}</strong></div>
-            <div>F1-Score@3: <strong>${mHyb['F1-Score@3']}</strong></div>
-            <div>Average Precision: <strong>${mHyb['Average Precision (AP)']}</strong></div>
+        <div class="p-5 rounded-2xl bg-emerald-50/50 border border-emerald-200 space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-emerald-900">VerifyIt Hybrid Ranking</span>
+            <span class="text-[11px] font-mono bg-emerald-100 text-emerald-800 px-2.5 py-0.5 rounded-full font-bold">Trust-Prioritized</span>
           </div>
+          ${metricRow('Precision@3', mHyb['Precision@3'], 'bg-emerald-500')}
+          ${metricRow('Recall@3', mHyb['Recall@3'], 'bg-emerald-500')}
+          ${metricRow('F1-Score@3', mHyb['F1-Score@3'], 'bg-emerald-500')}
+          ${metricRow('Average Precision (AP)', mHyb['Average Precision (AP)'], 'bg-emerald-600')}
         </div>
-        <div class="p-4 rounded-xl bg-slate-100 border border-slate-200">
-          <div class="font-bold text-slate-700 mb-2">Standard Keyword Ranking</div>
-          <div class="text-sm space-y-1 text-slate-600">
-            <div>Precision@3: <strong>${mStd['Precision@3']}</strong></div>
-            <div>Recall@3: <strong>${mStd['Recall@3']}</strong></div>
-            <div>F1-Score@3: <strong>${mStd['F1-Score@3']}</strong></div>
-            <div>Average Precision: <strong>${mStd['Average Precision (AP)']}</strong></div>
+        <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-slate-800">Standard Keyword Ranking</span>
+            <span class="text-[11px] font-mono bg-slate-200 text-slate-700 px-2.5 py-0.5 rounded-full font-bold">BM25 Baseline</span>
           </div>
+          ${metricRow('Precision@3', mStd['Precision@3'], 'bg-slate-500')}
+          ${metricRow('Recall@3', mStd['Recall@3'], 'bg-slate-500')}
+          ${metricRow('F1-Score@3', mStd['F1-Score@3'], 'bg-slate-500')}
+          ${metricRow('Average Precision (AP)', mStd['Average Precision (AP)'], 'bg-slate-600')}
         </div>
       `;
     }
