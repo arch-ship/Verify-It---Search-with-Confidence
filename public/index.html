@@ -5,10 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>VerifyIt — Search with Confidence</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
-      --cursor-color: #94a3b8;
+      --cursor-color: #38bdf8;
     }
     body {
       font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -18,12 +18,12 @@
     }
 
     /* =================================================================
-       1. CLASSIC 3D ARCHITECTURAL CINEMATIC INTRO STAGE (KEPT INTACT)
+       1. IMMERSIVE 3D CINEMATIC INTRO STAGE (STARFIELD + ARCHITECTURAL GRID)
        ================================================================= */
     #cinematic-intro {
       position: fixed;
       inset: 0;
-      background: radial-gradient(circle at 50% 42%, #0a0f1d 0%, #030509 58%, #000000 100%);
+      background: radial-gradient(circle at 50% 42%, #070b16 0%, #020408 60%, #000000 100%);
       z-index: 9999;
       display: flex;
       flex-direction: column;
@@ -38,12 +38,12 @@
       position: absolute;
       inset: 0;
       background-image:
-        linear-gradient(to right, rgba(148, 163, 184, 0.04) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(148, 163, 184, 0.04) 1px, transparent 1px);
-      background-size: 64px 64px;
-      mask-image: radial-gradient(ellipse 70% 55% at 50% 50%, black 15%, transparent 80%);
-      -webkit-mask-image: radial-gradient(ellipse 70% 55% at 50% 50%, black 15%, transparent 80%);
-      transform: rotateX(58deg) translateY(120px) translateZ(-180px) scale(1.6);
+        linear-gradient(to right, rgba(56, 189, 248, 0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(56, 189, 248, 0.05) 1px, transparent 1px);
+      background-size: 72px 72px;
+      mask-image: radial-gradient(ellipse 75% 60% at 50% 50%, black 15%, transparent 85%);
+      -webkit-mask-image: radial-gradient(ellipse 75% 60% at 50% 50%, black 15%, transparent 85%);
+      transform: rotateX(58deg) translateY(130px) translateZ(-160px) scale(1.65);
       transform-origin: center center;
       pointer-events: none;
       z-index: 1;
@@ -51,14 +51,14 @@
 
     .ambient-spotlight {
       position: absolute;
-      width: 68vw;
-      height: 68vh;
-      max-width: 960px;
-      max-height: 640px;
+      width: 75vw;
+      height: 75vh;
+      max-width: 1100px;
+      max-height: 750px;
       background:
-        radial-gradient(circle at 50% 45%, rgba(56, 189, 248, 0.075) 0%, rgba(99, 102, 241, 0.045) 42%, transparent 72%);
+        radial-gradient(circle at 50% 45%, rgba(56, 189, 248, 0.09) 0%, rgba(129, 140, 248, 0.05) 45%, transparent 75%);
       pointer-events: none;
-      filter: blur(55px);
+      filter: blur(65px);
       z-index: 1;
     }
 
@@ -73,59 +73,64 @@
     #starfield-canvas { z-index: 2; }
     #smoke-canvas { z-index: 30; }
 
+    /* Generous container to prevent any letter clipping (like 'g' in finding) */
     .intro-stage-box {
       position: relative;
       z-index: 10;
-      width: 90%;
-      max-width: 880px;
-      padding: 2.5rem 2rem;
+      width: 92%;
+      max-width: 1200px;
+      padding: 3rem 2rem;
       text-align: center;
       transform-style: preserve-3d;
+      overflow: visible !important;
       will-change: transform, filter, opacity;
-      transition: filter 1.15s cubic-bezier(0.22, 1, 0.36, 1),
-                  opacity 1.15s cubic-bezier(0.22, 1, 0.36, 1),
+      transition: filter 1.2s cubic-bezier(0.22, 1, 0.36, 1),
+                  opacity 1.2s cubic-bezier(0.22, 1, 0.36, 1),
                   transform 0.25s ease-out;
     }
 
     .dissolve-blur-exit {
-      filter: blur(26px) brightness(1.35);
+      filter: blur(30px) brightness(1.45);
       opacity: 0 !important;
-      transform: scale(1.06) translateY(-14px) translateZ(70px) !important;
-      transition: filter 1.15s cubic-bezier(0.22, 1, 0.36, 1),
-                  opacity 1.15s cubic-bezier(0.22, 1, 0.36, 1),
-                  transform 1.15s cubic-bezier(0.22, 1, 0.36, 1) !important;
+      transform: scale(1.08) translateY(-16px) translateZ(80px) !important;
+      transition: filter 1.2s cubic-bezier(0.22, 1, 0.36, 1),
+                  opacity 1.2s cubic-bezier(0.22, 1, 0.36, 1),
+                  transform 1.2s cubic-bezier(0.22, 1, 0.36, 1) !important;
     }
 
+    /* Refined Sizing & Typography for Intro Scenes (Fixing clipping & scaling for impact) */
     .typo-scene-1 {
       font-family: 'Playfair Display', Georgia, serif;
-      font-weight: 600;
-      letter-spacing: -0.02em;
-      background: linear-gradient(180deg, #ffffff 0%, #e2e8f0 65%, #94a3b8 100%);
+      font-weight: 700;
+      line-height: 1.35;
+      padding-bottom: 0.2em; /* Prevents descenders like 'g', 'y', 'p' from getting cut */
+      background: linear-gradient(180deg, #ffffff 0%, #e2e8f0 70%, #94a3b8 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      filter: drop-shadow(0 14px 32px rgba(0, 0, 0, 0.85));
-      transform: translateZ(36px);
+      filter: drop-shadow(0 16px 36px rgba(0, 0, 0, 0.9));
+      transform: translateZ(40px);
     }
 
     .typo-scene-2-main {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      font-weight: 700;
-      letter-spacing: -0.03em;
-      background: linear-gradient(135deg, #f8fafc 0%, #cbd5e1 55%, #94a3b8 100%);
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      line-height: 1.25;
+      padding-bottom: 0.15em;
+      background: linear-gradient(135deg, #f8fafc 0%, #cbd5e1 55%, #38bdf8 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      filter: drop-shadow(0 12px 28px rgba(0, 0, 0, 0.8));
-      transform: translateZ(40px);
+      filter: drop-shadow(0 14px 32px rgba(0, 0, 0, 0.85));
+      transform: translateZ(45px);
     }
 
     .typo-scene-2-sub {
       font-family: 'Playfair Display', Georgia, serif;
       font-style: italic;
       font-weight: 400;
-      color: #94a3b8;
-      letter-spacing: 0.01em;
-      text-shadow: 0 6px 20px rgba(0, 0, 0, 0.9);
-      transform: translateZ(24px);
+      line-height: 1.5;
+      color: #93c5fd;
+      text-shadow: 0 6px 24px rgba(56, 189, 248, 0.35);
+      transform: translateZ(28px);
     }
 
     .typo-scene-3-intro {
@@ -133,38 +138,40 @@
       font-style: italic;
       font-weight: 400;
       letter-spacing: 0.08em;
-      color: #cbd5e1;
-      text-shadow: 0 4px 20px rgba(56, 189, 248, 0.22);
-      transform: translateZ(28px);
+      color: #38bdf8;
+      text-shadow: 0 4px 22px rgba(56, 189, 248, 0.4);
+      transform: translateZ(30px);
     }
 
     .typo-scene-3-brand {
       font-family: 'Playfair Display', Georgia, serif;
       font-weight: 700;
       letter-spacing: -0.03em;
-      background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 35%, #93c5fd 72%, #64748b 100%);
+      padding-bottom: 0.15em;
+      background: linear-gradient(135deg, #ffffff 0%, #e0f2fe 30%, #38bdf8 70%, #818cf8 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      filter: drop-shadow(0 16px 40px rgba(56, 189, 248, 0.22));
-      transform: translateZ(52px);
+      filter: drop-shadow(0 18px 45px rgba(56, 189, 248, 0.35));
+      transform: translateZ(55px);
     }
 
     .typo-scene-3-desc {
       font-family: 'Plus Jakarta Sans', sans-serif;
-      font-weight: 400;
+      font-weight: 500;
       letter-spacing: 0.01em;
-      color: #94a3b8;
-      transform: translateZ(20px);
+      line-height: 1.6;
+      color: #cbd5e1;
+      transform: translateZ(22px);
     }
 
     .type-cursor {
       display: inline-block;
-      width: 2.5px;
-      height: 0.92em;
+      width: 3px;
+      height: 0.95em;
       background: #38bdf8;
-      margin-left: 5px;
-      vertical-align: -0.08em;
-      box-shadow: 0 0 12px rgba(56, 189, 248, 0.75);
+      margin-left: 6px;
+      vertical-align: -0.1em;
+      box-shadow: 0 0 16px rgba(56, 189, 248, 0.9);
       animation: cursorBlink 0.75s step-end infinite;
     }
 
@@ -173,11 +180,12 @@
       50% { opacity: 0; }
     }
 
+    /* Launch Button 3D Styling (Keeps Inter font unchanged) */
     #launch-wrapper {
       opacity: 0;
       pointer-events: none;
-      transform: translateY(32px) scale(0.94);
-      transition: all 0.75s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transform: translateY(35px) scale(0.92);
+      transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
     #launch-wrapper.revealed {
       opacity: 1;
@@ -188,23 +196,21 @@
     .launch-btn-3d {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
       position: relative;
-      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      background: linear-gradient(135deg, #2563eb 0%, #4f46e5 50%, #0ea5e9 100%);
       color: #ffffff;
-      border: 1px solid rgba(148, 163, 184, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.35);
       box-shadow:
-        0 18px 45px rgba(0, 0, 0, 0.75),
-        0 0 25px rgba(56, 189, 248, 0.25),
-        0 1px 0 rgba(255, 255, 255, 0.2) inset;
+        0 20px 55px rgba(37, 99, 235, 0.6),
+        0 0 30px rgba(56, 189, 248, 0.4),
+        0 1px 0 rgba(255, 255, 255, 0.25) inset;
       transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
-                  box-shadow 0.25s ease,
-                  border-color 0.25s ease;
+                  box-shadow 0.25s ease;
     }
     .launch-btn-3d:hover {
-      transform: translateY(-3px) scale(1.03);
-      border-color: rgba(56, 189, 248, 0.7);
+      transform: translateY(-4px) scale(1.04);
       box-shadow:
-        0 24px 55px rgba(14, 165, 233, 0.35),
-        0 0 30px rgba(56, 189, 248, 0.4);
+        0 28px 65px rgba(56, 189, 248, 0.8),
+        0 0 35px rgba(99, 102, 241, 0.7);
     }
     .launch-btn-3d:active {
       transform: scale(0.97);
@@ -215,17 +221,17 @@
       z-index: 40;
       left: 50%;
       top: 70%;
-      transform: translate(-50%, -50%) scale(1.1);
+      transform: translate(-50%, -50%) scale(1.15);
       pointer-events: none;
       opacity: 0;
-      filter: drop-shadow(0 0 24px rgba(56, 189, 248, 0.85)) drop-shadow(0 16px 28px rgba(249, 115, 22, 0.8));
+      filter: drop-shadow(0 0 30px rgba(56, 189, 248, 0.95)) drop-shadow(0 18px 32px rgba(249, 115, 22, 0.9));
     }
 
     @keyframes rocketSteadyVibe {
-      0%, 100% { transform: translate(-50%, -50%) scale(1.1) translate(0px, 0px); }
-      25% { transform: translate(-50%, -50%) scale(1.1) translate(-1.5px, 1.5px); }
-      50% { transform: translate(-50%, -50%) scale(1.1) translate(1.5px, -1.5px); }
-      75% { transform: translate(-50%, -50%) scale(1.1) translate(-1.5px, -1.5px); }
+      0%, 100% { transform: translate(-50%, -50%) scale(1.15) translate(0px, 0px); }
+      25% { transform: translate(-50%, -50%) scale(1.15) translate(-2px, 1.5px); }
+      50% { transform: translate(-50%, -50%) scale(1.15) translate(2px, -1.5px); }
+      75% { transform: translate(-50%, -50%) scale(1.15) translate(-1.5px, -2px); }
     }
     .rocket-countdown-vibe {
       animation: rocketSteadyVibe 0.08s infinite;
@@ -240,28 +246,28 @@
       pointer-events: none;
       font-family: 'Playfair Display', Georgia, serif;
       font-weight: 700;
-      font-size: clamp(4.5rem, 11vw, 8.5rem);
-      color: #f8fafc;
+      font-size: clamp(5rem, 13vw, 10rem);
+      color: #fef08a;
       text-shadow:
-        0 0 35px rgba(56, 189, 248, 0.75),
-        0 10px 40px rgba(0, 0, 0, 0.9);
+        0 0 45px rgba(250, 204, 21, 0.9),
+        0 0 100px rgba(249, 115, 22, 0.85);
       opacity: 0;
       transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.25s ease;
     }
 
     @keyframes cameraShake {
       0%, 100% { transform: translate(0, 0); }
-      20% { transform: translate(-2.5px, 1.5px); }
-      40% { transform: translate(2.5px, -1.5px); }
-      60% { transform: translate(-1.5px, -2.5px); }
-      80% { transform: translate(1.5px, 2.5px); }
+      20% { transform: translate(-3px, 2px); }
+      40% { transform: translate(3px, -2px); }
+      60% { transform: translate(-2px, -3px); }
+      80% { transform: translate(2px, 3px); }
     }
     .shake-screen {
       animation: cameraShake 0.11s infinite;
     }
 
     /* =================================================================
-       2. GLITCH & GREYISH GREEN-CODE TERMINAL OVERLAY (KEPT INTACT)
+       2. GLITCH & GREYISH GREEN-CODE TERMINAL OVERLAY
        ================================================================= */
     #glitch-terminal-stage {
       position: fixed;
@@ -385,13 +391,11 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* Executive Brand Serif Accent inside Main App */
     .brand-editorial-serif {
       font-family: 'Playfair Display', Georgia, serif;
       letter-spacing: -0.02em;
     }
 
-    /* Glassmorphic Search Console Card */
     .search-console-shell {
       background: rgba(255, 255, 255, 0.92);
       backdrop-filter: blur(20px);
@@ -410,7 +414,6 @@
       transform: translateY(-1px);
     }
 
-    /* Google AI Mode Cursor-Following Glow Button */
     .ai-glow-btn {
       position: relative;
       overflow: hidden;
@@ -461,7 +464,6 @@
     }
     .ai-glow-btn:hover::before { opacity: 1; }
 
-    /* Rotating '+' Attachment Button */
     .plus-toggle-btn {
       transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.2s ease, color 0.2s ease;
     }
@@ -471,7 +473,6 @@
       color: #2563eb;
     }
 
-    /* Three Pulsing Dots for Sequential Source Visiting */
     .visiting-dots {
       display: inline-flex;
       align-items: center;
@@ -491,10 +492,7 @@
       40% { transform: scale(1.25); opacity: 1; }
     }
 
-    /* 5-Stage Pipeline Stepper Pill */
-    .stage-step {
-      transition: all 0.3s ease;
-    }
+    .stage-step { transition: all 0.3s ease; }
     .stage-step.active {
       background: #eff6ff;
       border-color: #93c5fd;
@@ -507,9 +505,6 @@
       color: #047857;
     }
 
-    /* =================================================================
-       4. UPGRADED 3D POP-UP + MOTION-BLUR VERTICAL FLIP CARDS
-       ================================================================= */
     .flip-card-scene {
       perspective: 1500px;
       height: 380px;
@@ -575,7 +570,6 @@
       transform: rotateY(180deg) translateZ(1px);
     }
 
-    /* Custom Range Slider Styling */
     input[type="range"] {
       height: 5px;
       border-radius: 999px;
@@ -586,7 +580,7 @@
 <body class="workspace-bg-mesh text-slate-800 min-h-screen flex">
 
   <!-- ===================================================================
-       STAGE 0: SEMANTIC 3D ARCHITECTURAL CINEMATIC INTRO (KEPT INTACT)
+       STAGE 0: SEMANTIC 3D ARCHITECTURAL CINEMATIC INTRO
        =================================================================== -->
   <section id="cinematic-intro" aria-label="VerifyIt Interactive 3D Introduction">
     <div class="architectural-grid" aria-hidden="true"></div>
@@ -605,9 +599,9 @@
     </header>
 
     <article id="intro-stage" class="intro-stage-box">
-      <h1 id="type-line-1" class="min-h-[1.3em]"></h1>
-      <p id="type-line-2" class="mt-4 min-h-[1.25em]"></p>
-      <p id="type-line-3" class="mt-5 min-h-[1.4em]"></p>
+      <h1 id="type-line-1" class="min-h-[1.4em]"></h1>
+      <p id="type-line-2" class="mt-4 min-h-[1.35em]"></p>
+      <p id="type-line-3" class="mt-5 min-h-[1.5em]"></p>
     </article>
 
     <nav id="launch-wrapper" class="relative z-20 mt-4" aria-label="Launch Application">
@@ -686,14 +680,13 @@
     <!-- MOBILE SIDEBAR BACKDROP -->
     <div id="sidebar-backdrop" onclick="toggleMobileSidebar()" class="fixed inset-0 bg-slate-950/50 backdrop-blur-xs z-30 hidden md:hidden"></div>
 
-    <!-- GEMINI-STYLE COLLAPSIBLE LEFT SIDEBAR (DARK OBSIDIAN EXECUTIVE RAIL) -->
+    <!-- GEMINI-STYLE COLLAPSIBLE LEFT SIDEBAR -->
     <aside
       id="gemini-sidebar"
       class="fixed md:sticky md:top-0 md:h-screen inset-y-0 left-0 z-40 w-68 bg-slate-950 text-slate-300 border-r border-slate-800/90 flex flex-col justify-between transition-all duration-300 -translate-x-full md:translate-x-0 shrink-0 shadow-2xl md:shadow-none"
       aria-label="Primary Workspace Navigation"
     >
       <div>
-        <!-- Brand Header & Collapse Button -->
         <header class="flex items-center justify-between px-4 py-4 border-b border-slate-800/80">
           <div class="flex items-center gap-3 overflow-hidden">
             <button
@@ -718,7 +711,6 @@
           <button type="button" onclick="toggleMobileSidebar()" class="md:hidden p-1.5 rounded-lg text-slate-400 hover:bg-slate-800">✕</button>
         </header>
 
-        <!-- New Search / Reset Action -->
         <div class="px-3 pt-4 pb-2">
           <button
             type="button"
@@ -732,7 +724,6 @@
           </button>
         </div>
 
-        <!-- Workspace Views Navigation -->
         <div class="px-3 py-3">
           <div class="sidebar-label text-[10px] font-mono uppercase tracking-[0.18em] text-slate-500 px-3 mb-2">
             Workspace Views
@@ -790,7 +781,6 @@
           </nav>
         </div>
 
-        <!-- Live Hybrid Formula Balance Meter inside Sidebar -->
         <div class="sidebar-label px-4 py-3 mx-3 mt-2 bg-slate-900/90 rounded-2xl border border-slate-800/80">
           <div class="flex items-center justify-between text-[11px] font-semibold text-slate-300 mb-1.5">
             <span>Active Ranking Ratio</span>
@@ -807,7 +797,6 @@
         </div>
       </div>
 
-      <!-- Sidebar Footer: System Status & Replay Intro -->
       <footer class="p-4 border-t border-slate-800/80 space-y-2.5">
         <div class="flex items-center gap-2.5 text-xs text-slate-400">
           <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shrink-0"></span>
@@ -826,7 +815,6 @@
     <!-- RIGHT MAIN CONTENT AREA -->
     <div class="flex-1 flex flex-col min-w-0 min-h-screen">
 
-      <!-- Mobile Top Bar Trigger -->
       <header class="md:hidden flex items-center justify-between bg-slate-950 text-white px-4 py-3 border-b border-slate-800">
         <button type="button" onclick="toggleMobileSidebar()" class="p-2 rounded-lg text-slate-300 hover:bg-slate-800">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -837,12 +825,8 @@
         <div class="w-8"></div>
       </header>
 
-      <!-- ===============================================================
-           HERO / DOCKED SEARCH CONSOLE SECTION
-           =============================================================== -->
+      <!-- SEARCH HERO HEADER -->
       <section id="app-wrapper" class="flex-1 flex flex-col justify-center items-center px-4 py-10 transition-all duration-300">
-        
-        <!-- EXECUTIVE BRAND HEADER -->
         <header id="brand-header" class="text-center max-w-2xl mx-auto mb-7">
           <div id="hero-status-pills" class="inline-flex flex-wrap items-center justify-center gap-2 mb-4">
             <span class="text-[11px] font-mono uppercase tracking-wider bg-slate-900 text-sky-300 border border-slate-700 px-3 py-1 rounded-full shadow-2xs">
@@ -861,12 +845,11 @@
           </p>
         </header>
 
-        <!-- DYNAMIC AUTO-EXPANDING GLASSMORPHIC SEARCH CONSOLE -->
+        <!-- SEARCH FORM -->
         <form id="search-form" class="w-full max-w-3xl relative">
           <div class="search-console-shell rounded-3xl pl-3.5 pr-3 py-3">
             <div class="flex items-end gap-2">
               
-              <!-- GOOGLE AI MODE '+' ROTATING ATTACHMENT MENU BUTTON -->
               <div class="relative mb-0.5 shrink-0">
                 <button
                   id="plus-menu-btn"
@@ -919,7 +902,6 @@
 
               <input id="file-input" type="file" class="hidden" />
 
-              <!-- Auto-Growing Textarea -->
               <textarea
                 id="query-input"
                 rows="1"
@@ -927,7 +909,6 @@
                 class="w-full bg-transparent focus:outline-none text-slate-900 text-base py-1.5 px-1 resize-none max-h-44 overflow-y-auto leading-relaxed placeholder:text-slate-400"
               ></textarea>
 
-              <!-- GOOGLE AI MODE CURSOR-FOLLOWING GLOW SEARCH BUTTON -->
               <button id="search-btn" type="submit" class="ai-glow-btn shrink-0 flex items-center gap-2 cursor-pointer mb-0.5">
                 <svg class="w-4 h-4 text-sky-300" fill="currentColor" viewBox="0 0 20 20">
                   <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
@@ -937,11 +918,10 @@
             </div>
           </div>
 
-          <!-- DUAL INDEPENDENT SLIDERS + SMART PRF CONTROL BAR -->
+          <!-- DUAL INDEPENDENT SLIDERS -->
           <div class="flex flex-wrap items-center justify-center gap-3 mt-3.5 text-xs text-slate-600">
             <span id="file-badge" class="hidden bg-blue-50 text-blue-700 border border-blue-200 px-3 py-1 rounded-full font-semibold cursor-pointer"></span>
 
-            <!-- Trust Weight Slider -->
             <div class="flex items-center gap-2.5 bg-white/90 backdrop-blur px-3.5 py-1.5 rounded-full border border-slate-200/90 shadow-2xs">
               <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
               <span class="font-semibold text-slate-700">Trust Weight:</span>
@@ -949,7 +929,6 @@
               <span id="trust-label" class="font-mono font-bold text-emerald-700 w-9 text-right">50%</span>
             </div>
 
-            <!-- Relevance Weight Slider -->
             <div class="flex items-center gap-2.5 bg-white/90 backdrop-blur px-3.5 py-1.5 rounded-full border border-slate-200/90 shadow-2xs">
               <span class="w-2 h-2 rounded-full bg-blue-600"></span>
               <span class="font-semibold text-slate-700">Relevance Weight:</span>
@@ -957,14 +936,13 @@
               <span id="relevance-label" class="font-mono font-bold text-blue-700 w-9 text-right">50%</span>
             </div>
 
-            <!-- Pseudo-Relevance Feedback Toggle -->
             <label class="flex items-center gap-2 bg-white/90 backdrop-blur px-3.5 py-1.5 rounded-full border border-slate-200/90 shadow-2xs cursor-pointer">
               <input id="prf-check" type="checkbox" checked class="accent-blue-600 rounded" />
               <span class="font-medium text-slate-700">PRF Query Expansion</span>
             </label>
           </div>
 
-          <!-- QUICK SAMPLE QUERIES FOR ONE-CLICK DEMO TESTING -->
+          <!-- QUICK SAMPLE QUERIES -->
           <div id="quick-queries-row" class="flex flex-wrap items-center justify-center gap-2 mt-5">
             <span class="text-[11px] font-mono uppercase tracking-wider text-slate-400 mr-1">Try Sample:</span>
             <button type="button" onclick="runQuickSample('National Scholarship Portal 2026 official eligibility')" class="text-xs bg-white hover:bg-blue-50 text-slate-600 hover:text-blue-700 border border-slate-200 hover:border-blue-300 px-3 py-1 rounded-full transition cursor-pointer">
@@ -980,9 +958,7 @@
         </form>
       </section>
 
-      <!-- ===============================================================
-           WORKSPACE AREA (5-STAGE PIPELINE + DIAGNOSTICS + RESULTS)
-           =============================================================== -->
+      <!-- WORKSPACE AREA -->
       <main id="workspace-container" class="hidden max-w-6xl w-full mx-auto px-4 md:px-6 pb-20 pt-5">
         
         <!-- 5-STAGE IR PIPELINE PROGRESS RIBBON -->
@@ -1009,14 +985,14 @@
           </div>
         </div>
 
-        <!-- GOOGLE-STYLE "DID YOU MEAN?" SUGGESTED QUERY BANNER -->
+        <!-- DID YOU MEAN BANNER -->
         <div id="did-you-mean-box" class="hidden mb-3.5 bg-amber-50/90 border border-amber-200 rounded-2xl px-4 py-2.5 text-sm text-slate-700 flex items-center gap-2 shadow-2xs">
           <span class="text-amber-600 font-bold">✦ Did you mean:</span>
           <button id="did-you-mean-btn" type="button" class="text-blue-600 font-bold italic hover:underline cursor-pointer"></button>
           <span class="text-xs text-slate-400 ml-auto font-mono">3-gram Jaccard Spell Check</span>
         </div>
 
-        <!-- PROCESSED QUERY + STEMMING / LEMMATIZATION DIAGNOSTIC CARD -->
+        <!-- QUERY DIAGNOSTICS CARD -->
         <section class="bg-white/95 backdrop-blur rounded-2xl p-4 shadow-2xs border border-slate-200/90 mb-3.5 text-xs" aria-label="Query Processing Diagnostics">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-3 pb-3 border-b border-slate-100">
             <div class="flex items-center gap-2 flex-wrap">
@@ -1041,7 +1017,7 @@
           </div>
         </section>
 
-        <!-- SEQUENTIAL 3-DOT SOURCE VISITING PANEL -->
+        <!-- SEQUENTIAL SOURCE VISITING PANEL -->
         <section id="deep-research-box" class="bg-white/95 backdrop-blur border border-slate-200/90 rounded-2xl p-4 mb-3.5 shadow-2xs transition-all" aria-label="Source Verification Progress">
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-2.5">
@@ -1060,7 +1036,6 @@
           <div id="research-links-stream" class="mt-3 flex flex-wrap gap-2"></div>
         </section>
 
-        <!-- GOOGLE-STYLE SEARCH STATS LINE + LIVE TRUST FILTER PILLS -->
         <div id="stats-and-filters-bar" class="hidden flex flex-wrap items-center justify-between gap-3 px-1 mb-5">
           <div id="google-stats-line" class="text-xs text-slate-500 font-medium"></div>
           <div class="flex items-center gap-1.5 text-xs">
@@ -1072,16 +1047,13 @@
           </div>
         </div>
 
-        <!-- ACTUAL RESULTS WRAPPER -->
+        <!-- RESULTS CONTENT WRAPPER -->
         <div id="results-content" class="hidden fade-in">
 
-          <!-- =============================================================
-               EXECUTIVE TOP VERIFIED SOURCE SUMMARY + TRUST GAUGE & REASONING
-               ============================================================= -->
+          <!-- TOP VERIFIED SOURCE SUMMARY -->
           <article class="relative overflow-hidden bg-gradient-to-br from-slate-900 via-slate-900 to-emerald-950 text-white rounded-3xl p-6 mb-7 shadow-xl border border-emerald-500/30">
             <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
               
-              <!-- Left Column: Extracted Answer & Source Metadata -->
               <div class="flex-1">
                 <div class="flex flex-wrap items-center gap-2.5 mb-3">
                   <span class="text-[11px] font-mono font-bold uppercase tracking-wider bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 px-3 py-1 rounded-full">
@@ -1094,7 +1066,6 @@
                 <div id="out-answer-meta" class="text-xs text-slate-400 mt-2 font-mono"></div>
               </div>
 
-              <!-- Right Column: Circular SVG Trust Score Ring -->
               <div class="flex items-center gap-4 bg-slate-950/65 border border-slate-800 px-5 py-4 rounded-2xl shrink-0">
                 <div class="relative w-16 h-16 flex items-center justify-center">
                   <svg class="w-16 h-16 -rotate-90" viewBox="0 0 64 64">
@@ -1121,7 +1092,6 @@
               </div>
             </div>
 
-            <!-- Why this source is ranked #1 most reliable out of all results -->
             <div class="mt-5 pt-4 border-t border-slate-800/90">
               <div class="text-[11px] font-mono uppercase tracking-wider text-emerald-400 mb-1.5 flex items-center gap-1.5">
                 <span>🛡️ Why this source is ranked #1 most reliable out of all results:</span>
@@ -1131,7 +1101,6 @@
             </div>
           </article>
 
-          <!-- ACTIVE VIEW HEADER -->
           <header class="flex flex-wrap items-center justify-between gap-2 mb-5 px-1">
             <div>
               <h2 id="current-view-title" class="text-lg font-extrabold text-slate-900 tracking-tight">
@@ -1146,10 +1115,8 @@
             </span>
           </header>
 
-          <!-- TAB 1: VERTICAL 3D FLIP CARDS GRID -->
           <section id="tab-results" class="tab-pane grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7 pt-1"></section>
 
-          <!-- TAB 2: TRUST BREAKDOWN (WITH VISUAL PROGRESS BARS) -->
           <section id="tab-trust" class="tab-pane hidden bg-white rounded-3xl p-6 border border-slate-200/90 shadow-xs overflow-x-auto">
             <div class="flex items-center justify-between mb-4">
               <div>
@@ -1176,7 +1143,6 @@
             </table>
           </section>
 
-          <!-- TAB 3: SIDE-BY-SIDE KEYWORD COMPARE (WITH RANK SHIFT DELTAS) -->
           <section id="tab-compare" class="tab-pane hidden grid md:grid-cols-2 gap-6">
             <div class="bg-white rounded-3xl p-5 border border-emerald-200/90 shadow-xs">
               <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-100">
@@ -1201,7 +1167,6 @@
             </div>
           </section>
 
-          <!-- TAB 4: INDEX VIEW (TERMINAL-STYLED STAGE 2 INSPECTOR) -->
           <section id="tab-index" class="tab-pane hidden bg-slate-950 text-slate-200 rounded-3xl p-6 border border-slate-800 shadow-xl space-y-4 text-sm">
             <div class="flex items-center justify-between border-b border-slate-800 pb-3">
               <div>
@@ -1234,7 +1199,6 @@
             </div>
           </section>
 
-          <!-- TAB 5: ACCURACY METRICS (WITH VISUAL BARS) -->
           <section id="tab-metrics" class="tab-pane hidden bg-white rounded-3xl p-6 border border-slate-200/90 shadow-xs">
             <div class="flex items-center justify-between mb-5">
               <div>
@@ -1248,7 +1212,6 @@
             <div id="metrics-cards" class="grid md:grid-cols-2 gap-6"></div>
           </section>
 
-          <!-- GOOGLE GEMINI STYLE FEEDBACK BAR AT BOTTOM OF RESPONSE -->
           <footer class="mt-10 pt-4 border-t border-slate-200/80 flex flex-wrap items-center justify-between gap-3 text-xs text-slate-500">
             <div class="flex items-center gap-2">
               <span class="font-medium text-slate-600">Was this search & reliability verification helpful?</span>
@@ -1307,7 +1270,7 @@
     let activeTierFilter = 'all';
 
     /* -------------------------------------------------------------------
-       1. CLASSIC 3D DEPTH STARFIELD & GEOMETRIC CONSTELLATION MESH
+       1. REALISTIC 3D DEPTH STARFIELD & CONSTELLATION MESH
        ------------------------------------------------------------------- */
     const starCanvas = document.getElementById('starfield-canvas');
     const starCtx = starCanvas.getContext('2d');
@@ -1329,12 +1292,12 @@
     function initStarfield() {
       starCanvas.width = window.innerWidth;
       starCanvas.height = window.innerHeight;
-      stars = Array.from({ length: 340 }, () => ({
-        x: (Math.random() - 0.5) * starCanvas.width * 2.2,
-        y: (Math.random() - 0.5) * starCanvas.height * 2.2,
-        z: Math.random() * 1200 + 50,
+      stars = Array.from({ length: 380 }, () => ({
+        x: (Math.random() - 0.5) * starCanvas.width * 2.4,
+        y: (Math.random() - 0.5) * starCanvas.height * 2.4,
+        z: Math.random() * 1200 + 40,
         prevZ: 1200,
-        size: Math.random() * 1.8 + 0.4,
+        size: Math.random() * 1.9 + 0.4,
         color: starColors[Math.floor(Math.random() * starColors.length)],
         twinklePhase: Math.random() * Math.PI * 2
       }));
@@ -1343,19 +1306,19 @@
     window.addEventListener('mousemove', (e) => {
       const normX = (e.clientX / window.innerWidth) - 0.5;
       const normY = (e.clientY / window.innerHeight) - 0.5;
-      targetParallaxX = normX * 110;
-      targetParallaxY = normY * 110;
+      targetParallaxX = normX * 120;
+      targetParallaxY = normY * 120;
 
       if (!introAborted && introStage && !introStage.classList.contains('dissolve-blur-exit')) {
-        const tiltY = normX * 7;
-        const tiltX = -normY * 7;
+        const tiltY = normX * 6;
+        const tiltX = -normY * 6;
         introStage.style.transform = `rotateX(${tiltX.toFixed(2)}deg) rotateY(${tiltY.toFixed(2)}deg)`;
       }
     });
 
     function renderStarfield() {
       if (introAborted) return;
-      starCtx.fillStyle = 'rgba(3, 5, 9, 0.36)';
+      starCtx.fillStyle = 'rgba(2, 4, 8, 0.35)';
       starCtx.fillRect(0, 0, starCanvas.width, starCanvas.height);
 
       mouseParallaxX += (targetParallaxX - mouseParallaxX) * 0.05;
@@ -1367,40 +1330,40 @@
 
       for (const s of stars) {
         s.prevZ = s.z;
-        s.z -= 2.4;
-        s.twinklePhase += 0.04;
+        s.z -= 2.8;
+        s.twinklePhase += 0.05;
 
-        if (s.z <= 15) {
+        if (s.z <= 12) {
           s.z = 1200;
           s.prevZ = 1200;
-          s.x = (Math.random() - 0.5) * starCanvas.width * 2.2;
-          s.y = (Math.random() - 0.5) * starCanvas.height * 2.2;
+          s.x = (Math.random() - 0.5) * starCanvas.width * 2.4;
+          s.y = (Math.random() - 0.5) * starCanvas.height * 2.4;
         }
 
-        const scale = 540 / s.z;
-        const prevScale = 540 / s.prevZ;
+        const scale = 550 / s.z;
+        const prevScale = 550 / s.prevZ;
 
         const px = cx + s.x * scale;
         const py = cy + s.y * scale;
         const prevPx = cx + s.x * prevScale;
         const prevPy = cy + s.y * prevScale;
 
-        const twinkle = 0.75 + 0.25 * Math.sin(s.twinklePhase);
-        const alpha = Math.min(1, (1200 - s.z) / 520) * twinkle;
+        const twinkle = 0.7 + 0.3 * Math.sin(s.twinklePhase);
+        const alpha = Math.min(1, (1200 - s.z) / 500) * twinkle;
 
         starCtx.beginPath();
-        starCtx.strokeStyle = `rgba(${s.color}, ${alpha * 0.42})`;
-        starCtx.lineWidth = Math.max(0.5, s.size * scale * 0.38);
+        starCtx.strokeStyle = `rgba(${s.color}, ${alpha * 0.48})`;
+        starCtx.lineWidth = Math.max(0.5, s.size * scale * 0.4);
         starCtx.moveTo(prevPx, prevPy);
         starCtx.lineTo(px, py);
         starCtx.stroke();
 
         starCtx.beginPath();
         starCtx.fillStyle = `rgba(${s.color}, ${alpha})`;
-        starCtx.arc(px, py, Math.max(0.6, s.size * scale * 0.48), 0, Math.PI * 2);
+        starCtx.arc(px, py, Math.max(0.6, s.size * scale * 0.5), 0, Math.PI * 2);
         starCtx.fill();
 
-        if (s.z < 520 && px > 0 && px < starCanvas.width && py > 0 && py < starCanvas.height) {
+        if (s.z < 500 && px > 0 && px < starCanvas.width && py > 0 && py < starCanvas.height) {
           projectedNodes.push({ x: px, y: py, alpha });
         }
       }
@@ -1410,8 +1373,8 @@
           const dx = projectedNodes[i].x - projectedNodes[j].x;
           const dy = projectedNodes[i].y - projectedNodes[j].y;
           const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < 115) {
-            const lineAlpha = (1 - dist / 115) * 0.11 * Math.min(projectedNodes[i].alpha, projectedNodes[j].alpha);
+          if (dist < 120) {
+            const lineAlpha = (1 - dist / 120) * 0.12 * Math.min(projectedNodes[i].alpha, projectedNodes[j].alpha);
             starCtx.beginPath();
             starCtx.strokeStyle = `rgba(148, 163, 184, ${lineAlpha})`;
             starCtx.lineWidth = 0.6;
@@ -1433,20 +1396,20 @@
     });
 
     /* -------------------------------------------------------------------
-       2. SMOOTH, DELIBERATE TYPEWRITER & BACKSPACE ENGINE
+       2. TYPEWRITER & PAUSE ENGINE (SLOWER & DRAMATIC WITH PAUSES)
        ------------------------------------------------------------------- */
-    async function typeString(element, text, speed = 82) {
+    async function typeString(element, text, speed = 88) {
       let current = element.getAttribute('data-raw') || '';
       for (let i = 0; i < text.length; i++) {
         if (introAborted) return;
         current += text[i];
         element.setAttribute('data-raw', current);
         element.innerHTML = `${current}<span class="type-cursor"></span>`;
-        await sleep(speed + (Math.random() * 20 - 10));
+        await sleep(speed + (Math.random() * 25 - 12));
       }
     }
 
-    async function eraseCharacters(element, count, speed = 68) {
+    async function eraseCharacters(element, count, speed = 65) {
       let current = element.getAttribute('data-raw') || '';
       for (let i = 0; i < count; i++) {
         if (introAborted) return;
@@ -1471,7 +1434,7 @@
     }
 
     /* -------------------------------------------------------------------
-       3. CHOREOGRAPHED 3-SCENE BUILD-UP (PROPORTIONAL CLASSIC SIZING)
+       3. CHOREOGRAPHED 3-SCENE BUILD-UP (SLOWER SPEED & DRAMATIC PAUSES)
        ------------------------------------------------------------------- */
     async function runCinematicIntro() {
       introAborted = false;
@@ -1494,80 +1457,83 @@
       launchBtn.style.pointerEvents = 'auto';
       rocketEl.style.opacity = '0';
 
-      await sleep(550);
+      await sleep(600);
 
-      // SCENE 1
-      line1.className = 'typo-scene-1 text-3xl sm:text-5xl md:text-6xl leading-tight';
-      await typeString(line1, 'Tired of finding??', 88);
-      await sleep(1000);
+      // SCENE 1: "Tired of finding??" -> pause 1.2s -> " Or" -> pause 900ms -> backspace " Or" and "??" -> " the trusted one??"
+      line1.className = 'typo-scene-1 text-3xl sm:text-5xl md:text-6xl';
+      await typeString(line1, 'Tired of finding??', 95);
+      await sleep(1200); // 1.2s dramatic pause
 
-      await typeString(line1, ' Or', 95);
-      await sleep(900);
+      await typeString(line1, ' Or', 105);
+      await sleep(950);
 
-      await eraseCharacters(line1, 5, 72);
-      await sleep(450);
+      // Erase " Or" (3 chars) + "??" (2 chars) = 5 characters
+      await eraseCharacters(line1, 5, 70);
+      await sleep(500);
 
-      await typeString(line1, ' the trusted one??', 85);
-      await sleep(1250);
+      await typeString(line1, ' the trusted one??', 90);
+      await sleep(1400);
 
       stage.classList.add('dissolve-blur-exit');
-      await sleep(1180);
+      await sleep(1250);
       if (introAborted) return;
 
       clearStageLines(line1, line2, line3);
       stage.classList.remove('dissolve-blur-exit');
-      await sleep(280);
+      await sleep(320);
 
-      // SCENE 2
-      line1.className = 'typo-scene-2-main text-2xl sm:text-4xl md:text-5xl leading-tight';
-      line2.className = 'typo-scene-2-sub text-lg sm:text-2xl md:text-3xl mt-5 leading-relaxed max-w-3xl mx-auto';
+      // SCENE 2: "Stop wasting data on random sites" (pause 1s) -> "don't just explore all those fake sites or paid ones..." with deliberate slower pacing
+      line1.className = 'typo-scene-2-main text-2xl sm:text-4xl md:text-5xl';
+      line2.className = 'typo-scene-2-sub text-lg sm:text-2xl md:text-3xl mt-5 max-w-3xl mx-auto';
 
-      await typeString(line1, 'Stop wasting data on random sites', 76);
+      await typeString(line1, 'Stop wasting data on random sites', 82);
       removeCursor(line1);
-      await sleep(1000);
+      await sleep(1100); // Dramatic pause before second clause
 
       await typeString(
         line2,
         "don't just explore all those fake sites or paid ones after you just wrote free in the search bar",
-        52
+        68 // Slower, highly readable pacing
       );
-      await sleep(1350);
+      await sleep(1600);
 
       stage.classList.add('dissolve-blur-exit');
-      await sleep(1180);
+      await sleep(1250);
       if (introAborted) return;
 
       clearStageLines(line1, line2, line3);
       stage.classList.remove('dissolve-blur-exit');
-      await sleep(280);
+      await sleep(320);
 
-      // SCENE 3
+      // SCENE 3: "Introducing" -> "VerifyIt" -> "Your most reliable search engine..." (with intentional pauses)
       line1.className = 'typo-scene-3-intro text-2xl sm:text-3xl md:text-4xl mb-1';
-      line2.className = 'typo-scene-3-brand text-5xl sm:text-6xl md:text-7xl py-2 leading-tight';
-      line3.className = 'typo-scene-3-desc text-sm sm:text-base md:text-lg max-w-xl mx-auto mt-4 leading-relaxed';
+      line2.className = 'typo-scene-3-brand text-5xl sm:text-6xl md:text-7xl py-2';
+      line3.className = 'typo-scene-3-desc text-sm sm:text-base md:text-lg max-w-xl mx-auto mt-4';
 
       await typeString(line1, 'Introducing', 95);
       removeCursor(line1);
-      await sleep(1000);
+      await sleep(1000); // Pause on Introducing
 
-      await typeString(line2, 'VerifyIt', 115);
+      await typeString(line2, 'VerifyIt', 120);
       removeCursor(line2);
-      await sleep(1000);
+      await sleep(1100); // Pause on brand reveal
 
+      // Typing the exact user-requested line with natural pauses
       await typeString(
         line3,
         'Your most reliable search engine, compares multiple website checks the trust score and you are on',
-        48
+        52
       );
 
+      // Automatically reveal the 3D Launch button after Scene 3 finishes (No scroll prompt needed)
       if (!introAborted) {
-        await sleep(350);
+        await sleep(600);
         launchWrap.classList.add('revealed');
       }
     }
 
     /* -------------------------------------------------------------------
-       4. "3 - 2 - 1" STEADY ROCKET COUNTDOWN + SMOKE + GLITCH TERMINAL
+       4. 3-2-1 ROCKET COUNTDOWN + DOWNWARD SMOKE + GLITCH TERMINAL
        ------------------------------------------------------------------- */
     async function triggerSkyrocketLaunch() {
       if (launchTriggered) return;
@@ -1602,17 +1568,17 @@
       let flyFrame = 0;
 
       function spawnSmokePlume(x, y, intensity = 1) {
-        for (let i = 0; i < 10 * intensity; i++) {
-          const angle = (Math.PI / 2) + (Math.random() - 0.5) * 1.45;
-          const speed = Math.random() * 8.5 + 3.5;
+        for (let i = 0; i < 11 * intensity; i++) {
+          const angle = (Math.PI / 2) + (Math.random() - 0.5) * 1.5;
+          const speed = Math.random() * 9 + 4;
           smokePuffs.push({
-            x: x + (Math.random() - 0.5) * 32,
-            y: y + 34,
+            x: x + (Math.random() - 0.5) * 35,
+            y: y + 36,
             vx: Math.cos(angle) * speed * (Math.random() * 1.9 + 0.6),
             vy: Math.sin(angle) * speed,
-            radius: Math.random() * 38 + 24,
-            growRate: Math.random() * 4.0 + 2.2,
-            alpha: Math.random() * 0.45 + 0.45,
+            radius: Math.random() * 42 + 28,
+            growRate: Math.random() * 4.2 + 2.4,
+            alpha: Math.random() * 0.48 + 0.48,
             hue: Math.random() > 0.3 ? '226, 232, 240' : '148, 163, 184'
           });
         }
@@ -1622,24 +1588,24 @@
         sCtx.clearRect(0, 0, smokeCanvas.width, smokeCanvas.height);
 
         if (isCountingDown) {
-          spawnSmokePlume(rocketX, rocketY, 1.35);
+          spawnSmokePlume(rocketX, rocketY, 1.4);
         } else {
           flyFrame++;
-          const accel = flyFrame * 1.65;
-          rocketY -= (10 + accel);
+          const accel = flyFrame * 1.7;
+          rocketY -= (11 + accel);
           rocketEl.style.top = `${rocketY}px`;
 
-          spawnSmokePlume(rocketX, Math.min(rocketY, smokeCanvas.height), 2.5);
+          spawnSmokePlume(rocketX, Math.min(rocketY, smokeCanvas.height), 2.6);
 
-          for (let k = 0; k < 7; k++) {
+          for (let k = 0; k < 8; k++) {
             smokePuffs.push({
               x: Math.random() * smokeCanvas.width,
-              y: smokeCanvas.height - Math.random() * (flyFrame * 16),
+              y: smokeCanvas.height - Math.random() * (flyFrame * 17),
               vx: (Math.random() - 0.5) * 5,
               vy: -Math.random() * 7 - 2,
-              radius: Math.random() * 95 + 65,
-              growRate: 6.2,
-              alpha: 0.65,
+              radius: Math.random() * 100 + 70,
+              growRate: 6.5,
+              alpha: 0.68,
               hue: '203, 213, 225'
             });
           }
@@ -1650,11 +1616,9 @@
           p.x += p.vx;
           p.y += p.vy;
           p.radius += p.growRate;
-          if (isCountingDown) {
-            p.alpha *= 0.988;
-          }
+          if (isCountingDown) p.alpha *= 0.988;
 
-          if (p.alpha <= 0.02 || p.radius > 450) {
+          if (p.alpha <= 0.02 || p.radius > 480) {
             if (isCountingDown) {
               smokePuffs.splice(i, 1);
               continue;
@@ -1672,8 +1636,8 @@
           sCtx.fill();
         }
 
-        if (!isCountingDown && flyFrame > 26) {
-          whiteoutAlpha = Math.min(1, whiteoutAlpha + 0.05);
+        if (!isCountingDown && flyFrame > 25) {
+          whiteoutAlpha = Math.min(1, whiteoutAlpha + 0.052);
           sCtx.fillStyle = `rgba(203, 213, 225, ${whiteoutAlpha})`;
           sCtx.fillRect(0, 0, smokeCanvas.width, smokeCanvas.height);
         }
@@ -1688,23 +1652,24 @@
 
       requestAnimationFrame(animateSmokeAndFlight);
 
+      // "3 - 2 - 1" Countdown Sequence while rocket stays steady
       const counts = ['3', '2', '1'];
       for (const num of counts) {
         countdownEl.textContent = num;
         countdownEl.style.opacity = '1';
-        countdownEl.style.transform = 'translate(-50%, -50%) scale(1.1)';
-        await sleep(650);
+        countdownEl.style.transform = 'translate(-50%, -50%) scale(1.12)';
+        await sleep(700);
         countdownEl.style.opacity = '0';
-        countdownEl.style.transform = 'translate(-50%, -50%) scale(0.8)';
+        countdownEl.style.transform = 'translate(-50%, -50%) scale(0.78)';
         await sleep(300);
       }
 
       rocketEl.classList.remove('rocket-countdown-vibe');
-      isCountingDown = false;
+      isCountingDown = false; // Blast upward!
     }
 
     /* -------------------------------------------------------------------
-       5. GLITCH EFFECT + GREYISH TERMINAL WITH GREEN CODE & CURSOR
+       5. GLITCH EFFECT & GREYISH GREEN-CODE TERMINAL
        ------------------------------------------------------------------- */
     async function runGlitchTerminalSequence() {
       const introEl = document.getElementById('cinematic-intro');
@@ -1733,7 +1698,6 @@
       ];
 
       let completedHTML = '';
-
       termOutput.innerHTML = `<div><span class="text-emerald-300 font-bold">&gt;</span> <span class="term-cursor"></span></div>`;
       await sleep(600);
 
@@ -1749,10 +1713,10 @@
             `<div class="${isLast ? 'text-emerald-300 font-bold mt-2' : ''}">` +
             `<span class="text-emerald-400 font-bold">&gt;</span> ${typed}<span class="term-cursor"></span>` +
             `</div>`;
-          await sleep(isLast ? 55 : 26);
+          await sleep(isLast ? 60 : 28);
         }
 
-        await sleep(isLast ? 950 : 320);
+        await sleep(isLast ? 1000 : 350);
         completedHTML +=
           `<div class="${isLast ? 'text-emerald-300 font-bold mt-2' : ''}">` +
           `<span class="text-emerald-400 font-bold">&gt;</span> ${typed}` +
@@ -1800,7 +1764,7 @@
     });
 
     /* -------------------------------------------------------------------
-       6. UPGRADED VERIFYIT IR WORKSPACE LOGIC
+       6. VERIFYIT IR WORKSPACE LOGIC (INTACT)
        ------------------------------------------------------------------- */
     let desktopSidebarCollapsed = false;
     function toggleDesktopSidebar() {
@@ -1887,9 +1851,7 @@
       if (!e.target.closest('#plus-menu-btn') && !e.target.closest('#plus-dropdown-menu')) {
         closePlusMenu();
       }
-      if (e.target.closest('.source-redirect-link')) {
-        return;
-      }
+      if (e.target.closest('.source-redirect-link')) return;
       const clickedCard = e.target.closest('.flip-card-scene');
       if (!clickedCard) {
         document.querySelectorAll('.flip-card-scene.is-flipped').forEach(c => {
@@ -1931,7 +1893,6 @@
       searchBtn.style.setProperty('--y', `${e.clientY - rect.top}px`);
     });
 
-    // Dual Sliders with Live Ratio Bar & Instant Re-Ranking
     const trustSlider = document.getElementById('trust-slider');
     const trustLabel = document.getElementById('trust-label');
     const relevanceSlider = document.getElementById('relevance-slider');
@@ -1951,7 +1912,6 @@
       document.getElementById('sidebar-trust-bar').style.width = `${tPct}%`;
       document.getElementById('sidebar-rel-bar').style.width = `${rPct}%`;
 
-      // If results are already loaded, dynamically recompute Hybrid Scores & re-render!
       if (lastSearchData && lastSearchData.hybrid_results) {
         const tW = tVal / 100.0;
         const rW = rVal / 100.0;
@@ -2069,7 +2029,6 @@
 
       const tStart = performance.now();
 
-      // Dock search console cleanly to top bar
       const wrapper = document.getElementById('app-wrapper');
       wrapper.classList.remove('flex-1', 'justify-center', 'py-10');
       wrapper.classList.add('pt-5', 'pb-4', 'border-b', 'border-slate-200/80', 'bg-white/80', 'backdrop-blur-md');
@@ -2095,7 +2054,6 @@
       streamContainer.classList.remove('hidden');
       headerDots.classList.remove('hidden');
 
-      // Reset & animate 5-stage pipeline ribbon
       for (let s = 1; s <= 5; s++) setPipelineStep(s, '');
       setPipelineStep(1, 'active');
 
@@ -2223,7 +2181,6 @@
       document.getElementById('out-answer-meta').textContent =
         `Extracted from "${ans.source_title || ans.source_doc}" (${ans.source_domain})`;
 
-      // Update Circular SVG Trust Gauge
       const circumference = 169.6;
       const offset = circumference - (Math.min(100, Math.max(5, topTrustPct)) / 100) * circumference;
       document.getElementById('top-trust-ring').setAttribute('stroke-dashoffset', offset.toFixed(1));
@@ -2260,7 +2217,6 @@
         `;
       }
 
-      // Render Tab 1: Filtered & Sorted 3D Flip Cards
       const tabResults = document.getElementById('tab-results');
       tabResults.innerHTML = '';
 
@@ -2303,10 +2259,7 @@
             <div class="flip-card-lift">
               <div class="flip-card-inner">
                 
-                <!-- FRONT FACE: DIVIDED INTO TWO HALVES -->
                 <div class="flip-card-front bg-white border border-slate-200/90 flex flex-col shadow-sm">
-                  
-                  <!-- UPPER HALF (55% Height): Mini Browser Preview Window -->
                   <div class="h-[55%] bg-gradient-to-br ${previewGradient} p-3.5 flex flex-col justify-between border-b border-slate-200/80 relative">
                     <div class="flex items-center justify-between bg-white/95 backdrop-blur px-2.5 py-1.5 rounded-xl border border-slate-200/80 shadow-2xs">
                       <div class="flex items-center gap-1.5 truncate">
@@ -2340,7 +2293,6 @@
                     </div>
                   </div>
 
-                  <!-- LOWER HALF (45% Height): Website Identity, Title & Score Bar -->
                   <div class="h-[45%] p-4 flex flex-col justify-between bg-white">
                     <div>
                       <div class="flex items-center gap-2 mb-1">
@@ -2371,7 +2323,6 @@
                   </div>
                 </div>
 
-                <!-- BACK FACE: DESCRIPTION + 3 CORE SCORES + DIAGNOSTIC PILLS -->
                 <div class="flip-card-back bg-slate-950 text-slate-100 p-5 flex flex-col justify-between border border-slate-800 shadow-2xl">
                   <div>
                     <div class="flex items-center justify-between border-b border-slate-800 pb-2.5 mb-3">
@@ -2445,7 +2396,6 @@
         `;
       });
 
-      // Render Tab 2: Trust Breakdown Table with Visual Progress Bars
       const trustBody = document.getElementById('trust-table-body');
       trustBody.innerHTML = '';
       data.hybrid_results.forEach(item => {
@@ -2475,7 +2425,6 @@
         `;
       });
 
-      // Render Tab 3: Side-by-Side Compare with Rank Delta Badges
       const compHybrid = document.getElementById('compare-hybrid');
       const compStd = document.getElementById('compare-standard');
       compHybrid.innerHTML = '';
@@ -2514,13 +2463,11 @@
           </div>`;
       });
 
-      // Render Tab 4: Index View
       document.getElementById('idx-stem').textContent = data.index_preview.stem || 'none';
       document.getElementById('idx-inv').textContent = JSON.stringify(data.index_preview.inverted);
       document.getElementById('idx-comp').textContent = JSON.stringify(data.index_preview.compressed_gaps);
       document.getElementById('idx-pos').textContent = JSON.stringify(data.index_preview.positional, null, 2);
 
-      // Render Tab 5: Accuracy Metrics with Progress Bars
       const mCards = document.getElementById('metrics-cards');
       const mStd = data.evaluation.standard_bm25;
       const mHyb = data.evaluation.credence_hybrid;
